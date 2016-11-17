@@ -1,0 +1,753 @@
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.04a
+OBJECT MODULE PLACED IN LCD.OBJ
+ASSEMBLER INVOKED BY: C:\SiLabs\MCU\IDEfiles\C51\BIN\a51.exe LCD.asm XR GEN DB EP NOMOD51
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     $nomod51 
+                       2     ;------------------------------------
+                       3     ;-  Generated Initialization File  --
+                       4     ;------------------------------------
+                       5     
+                       6     ;$include (C8051F340.INC)
+                +1     7     ;------------------------------------------------------------------------------
+                +1     8     ; C8051F340.INC
+                +1     9     ;------------------------------------------------------------------------------
+                +1    10     ; Copyright 2005 Silicon Laboratories, Inc.
+                +1    11     ; http://www.silabs.com
+                +1    12     ;
+                +1    13     ; Program Description:
+                +1    14     ;
+                +1    15     ; Register/bit definitions for the C8051F34x family.
+                +1    16     ;
+                +1    17     ;
+                +1    18     ; FID:            34X000003
+                +1    19     ; Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, 'F346, 'F347
+                +1    20     ; Tool chain:     Keil
+                +1    21     ; Command Line:   None
+                +1    22     ;
+                +1    23     ; Release 1.0
+                +1    24     ;    -Initial Revision (GP\PKC)
+                +1    25     ;    -13 DEC 2005
+                +1    26     ;
+                +1    27     
+                +1    28     ;------------------------------------------------------------------------------
+                +1    29     ; Byte Registers
+                +1    30     ;------------------------------------------------------------------------------
+                +1    31     
+  0080          +1    32     P0        DATA  080H                   ; Port 0 Latch
+  0081          +1    33     SP        DATA  081H                   ; Stack Pointer
+  0082          +1    34     DPL       DATA  082H                   ; Data Pointer Low
+  0083          +1    35     DPH       DATA  083H                   ; Data Pointer High
+  0084          +1    36     EMI0TC    DATA  084H                   ; External Memory Interface Timing
+  0085          +1    37     EMI0CF    DATA  085H                   ; External Memory Interface Config
+  0086          +1    38     OSCLCN    DATA  086H                   ; Internal Low-Freq Oscillator Control
+  0087          +1    39     PCON      DATA  087H                   ; Power Control
+  0088          +1    40     TCON      DATA  088H                   ; Timer/Counter Control
+  0089          +1    41     TMOD      DATA  089H                   ; Timer/Counter Mode
+  008A          +1    42     TL0       DATA  08AH                   ; Timer/Counter 0 Low
+  008B          +1    43     TL1       DATA  08BH                   ; Timer/Counter 1 Low
+  008C          +1    44     TH0       DATA  08CH                   ; Timer/Counter 0 High
+  008D          +1    45     TH1       DATA  08DH                   ; Timer/Counter 1 High
+  008E          +1    46     CKCON     DATA  08EH                   ; Clock Control
+  008F          +1    47     PSCTL     DATA  08FH                   ; Program Store R/W Control
+  0090          +1    48     P1        DATA  090H                   ; Port 1 Latch
+  0091          +1    49     TMR3CN    DATA  091H                   ; Timer/Counter 3Control
+  0092          +1    50     TMR3RLL   DATA  092H                   ; Timer/Counter 3 Reload Low
+  0093          +1    51     TMR3RLH   DATA  093H                   ; Timer/Counter 3 Reload High
+  0094          +1    52     TMR3L     DATA  094H                   ; Timer/Counter 3Low
+  0095          +1    53     TMR3H     DATA  095H                   ; Timer/Counter 3 High
+  0096          +1    54     USB0ADR   DATA  096H                   ; USB0 Indirect Address Register
+  0097          +1    55     USB0DAT   DATA  097H                   ; USB0 Data Register
+  0098          +1    56     SCON0     DATA  098H                   ; UART0 Control
+  0099          +1    57     SBUF0     DATA  099H                   ; UART0 Data Buffer
+  009A          +1    58     CPT1CN    DATA  09AH                   ; Comparator1 Control
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     2
+
+  009B          +1    59     CPT0CN    DATA  09BH                   ; Comparator0 Control
+  009C          +1    60     CPT1MD    DATA  09CH                   ; Comparator1 Mode Selection
+  009D          +1    61     CPT0MD    DATA  09DH                   ; Comparator0 Mode Selection
+  009E          +1    62     CPT1MX    DATA  09EH                   ; Comparator1 MUX Selection
+  009F          +1    63     CPT0MX    DATA  09FH                   ; Comparator0 MUX Selection
+  00A0          +1    64     P2        DATA  0A0H                   ; Port 2 Latch
+  00A1          +1    65     SPI0CFG   DATA  0A1H                   ; SPI Configuration
+  00A2          +1    66     SPI0CKR   DATA  0A2H                   ; SPI Clock Rate Control
+  00A3          +1    67     SPI0DAT   DATA  0A3H                   ; SPI Data
+  00A4          +1    68     P0MDOUT   DATA  0A4H                   ; Port 0 Output Mode Configuration
+  00A5          +1    69     P1MDOUT   DATA  0A5H                   ; Port 1 Output Mode Configuration
+  00A6          +1    70     P2MDOUT   DATA  0A6H                   ; Port 2 Output Mode Configuration
+  00A7          +1    71     P3MDOUT   DATA  0A7H                   ; Port 3 Output Mode Configuration
+  00A8          +1    72     IE        DATA  0A8H                   ; Interrupt Enable
+  00A9          +1    73     CLKSEL    DATA  0A9H                   ; Clock Select
+  00AA          +1    74     EMI0CN    DATA  0AAH                   ; External Memory Interface Control
+  00AC          +1    75     SBCON1    DATA  0ACH                   ; UART1 Baud Rate Generator Control
+  00AE          +1    76     P4MDOUT   DATA  0AEH                   ; Port 4 Output Mode Configuration
+  00AF          +1    77     PFE0CN    DATA  0AFH                   ; Prefetch Engine Control
+  00B0          +1    78     P3        DATA  0B0H                   ; Port 3 Latch
+  00B1          +1    79     OSCXCN    DATA  0B1H                   ; External Oscillator Control
+  00B2          +1    80     OSCICN    DATA  0B2H                   ; Internal Oscillator Control
+  00B3          +1    81     OSCICL    DATA  0B3H                   ; Internal Oscillator Calibration
+  00B4          +1    82     SBRLL1    DATA  0B4H                   ; UART1 Baud Rate Generator Low
+  00B5          +1    83     SBRLH1    DATA  0B5H                   ; UART1 Baud Rate Generator High
+  00B6          +1    84     FLSCL     DATA  0B6H                   ; Flash Scale
+  00B7          +1    85     FLKEY     DATA  0B7H                   ; Flash Lock and Key
+  00B8          +1    86     IP        DATA  0B8H                   ; Interrupt Priority
+  00B9          +1    87     CLKMUL    DATA  0B9H                   ; Clock Multiplier
+  00BA          +1    88     AMX0N     DATA  0BAH                   ; AMUX0 Negative Channel Select
+  00BB          +1    89     AMX0P     DATA  0BBH                   ; AMUX0 Positive Channel Select
+  00BC          +1    90     ADC0CF    DATA  0BCH                   ; ADC0 Configuration
+  00BD          +1    91     ADC0L     DATA  0BDH                   ; ADC0 Low
+  00BE          +1    92     ADC0H     DATA  0BEH                   ; ADC0 High
+  00C0          +1    93     SMB0CN    DATA  0C0H                   ; SMBus Control
+  00C1          +1    94     SMB0CF    DATA  0C1H                   ; SMBus Configuration
+  00C2          +1    95     SMB0DAT   DATA  0C2H                   ; SMBus Data
+  00C3          +1    96     ADC0GTL   DATA  0C3H                   ; ADC0 Greater-Than Compare Low
+  00C4          +1    97     ADC0GTH   DATA  0C4H                   ; ADC0 Greater-Than Compare High
+  00C5          +1    98     ADC0LTL   DATA  0C5H                   ; ADC0 Less-Than Compare Word Low
+  00C6          +1    99     ADC0LTH   DATA  0C6H                   ; ADC0 Less-Than Compare Word High
+  00C7          +1   100     P4        DATA  0C7H                   ; Port 4 Latch
+  00C8          +1   101     TMR2CN    DATA  0C8H                   ; Timer/Counter 2 Control
+  00C9          +1   102     REG0CN    DATA  0C9H                   ; Voltage Regulator Control
+  00CA          +1   103     TMR2RLL   DATA  0CAH                   ; Timer/Counter 2 Reload Low
+  00CB          +1   104     TMR2RLH   DATA  0CBH                   ; Timer/Counter 2 Reload High
+  00CC          +1   105     TMR2L     DATA  0CCH                   ; Timer/Counter 2 Low
+  00CD          +1   106     TMR2H     DATA  0CDH                   ; Timer/Counter 2 High
+  00D0          +1   107     PSW       DATA  0D0H                   ; Program Status Word
+  00D1          +1   108     REF0CN    DATA  0D1H                   ; Voltage Reference Control
+  00D2          +1   109     SCON1     DATA  0D2H                   ; UART1 Control
+  00D3          +1   110     SBUF1     DATA  0D3H                   ; UART1 Data Buffer
+  00D4          +1   111     P0SKIP    DATA  0D4H                   ; Port 0 Skip
+  00D5          +1   112     P1SKIP    DATA  0D5H                   ; Port 1 Skip
+  00D6          +1   113     P2SKIP    DATA  0D6H                   ; Port 2 Skip
+  00D7          +1   114     USB0XCN   DATA  0D7H                   ; USB0 Transceiver Control
+  00D8          +1   115     PCA0CN    DATA  0D8H                   ; PCA Control
+  00D9          +1   116     PCA0MD    DATA  0D9H                   ; PCA Mode
+  00DA          +1   117     PCA0CPM0  DATA  0DAH                   ; PCA Module 0 Mode Register
+  00DB          +1   118     PCA0CPM1  DATA  0DBH                   ; PCA Module 1 Mode Register
+  00DC          +1   119     PCA0CPM2  DATA  0DCH                   ; PCA Module 2 Mode Register
+  00DD          +1   120     PCA0CPM3  DATA  0DDH                   ; PCA Module 3 Mode Register
+  00DE          +1   121     PCA0CPM4  DATA  0DEH                   ; PCA Module 4 Mode Register
+  00DF          +1   122     P3SKIP    DATA  0DFH                   ; Port 3Skip
+  00E0          +1   123     ACC       DATA  0E0H                   ; Accumulator
+  00E1          +1   124     XBR0      DATA  0E1H                   ; Port I/O Crossbar Control 0
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     3
+
+  00E2          +1   125     XBR1      DATA  0E2H                   ; Port I/O Crossbar Control 1
+  00E3          +1   126     XBR2      DATA  0E3H                   ; Port I/O Crossbar Control 2
+  00E4          +1   127     IT01CF    DATA  0E4H                   ; INT0/INT1 Configuration
+  00E5          +1   128     SMOD1     DATA  0E5H                   ; UART1 Mode
+  00E6          +1   129     EIE1      DATA  0E6H                   ; Extended Interrupt Enable 1
+  00E7          +1   130     EIE2      DATA  0E7H                   ; Extended Interrupt Enable 2
+  00E8          +1   131     ADC0CN    DATA  0E8H                   ; ADC0 Control
+  00E9          +1   132     PCA0CPL1  DATA  0E9H                   ; PCA Capture 1 Low
+  00EA          +1   133     PCA0CPH1  DATA  0EAH                   ; PCA Capture 1 High
+  00EB          +1   134     PCA0CPL2  DATA  0EBH                   ; PCA Capture 2 Low
+  00EC          +1   135     PCA0CPH2  DATA  0ECH                   ; PCA Capture 2 High
+  00ED          +1   136     PCA0CPL3  DATA  0EDH                   ; PCA Capture 3 Low
+  00EE          +1   137     PCA0CPH3  DATA  0EEH                   ; PCA Capture 3High
+  00EF          +1   138     RSTSRC    DATA  0EFH                   ; Reset Source Configuration/Status
+  00F0          +1   139     B         DATA  0F0H                   ; B Register
+  00F1          +1   140     P0MDIN    DATA  0F1H                   ; Port 0 Input Mode Configuration
+  00F2          +1   141     P1MDIN    DATA  0F2H                   ; Port 1 Input Mode Configuration
+  00F3          +1   142     P2MDIN    DATA  0F3H                   ; Port 2 Input Mode Configuration
+  00F4          +1   143     P3MDIN    DATA  0F4H                   ; Port 3 Input Mode Configuration
+  00F5          +1   144     P4MDIN    DATA  0F5H                   ; Port 4 Input Mode Configuration
+  00F6          +1   145     EIP1      DATA  0F6H                   ; Extended Interrupt Priority 1
+  00F7          +1   146     EIP2      DATA  0F7H                   ; Extended Interrupt Priority 2
+  00F8          +1   147     SPI0CN    DATA  0F8H                   ; SPI Control
+  00F9          +1   148     PCA0L     DATA  0F9H                   ; PCA Counter Low
+  00FA          +1   149     PCA0H     DATA  0FAH                   ; PCA Counter High
+  00FB          +1   150     PCA0CPL0  DATA  0FBH                   ; PCA Capture 0 Low
+  00FC          +1   151     PCA0CPH0  DATA  0FCH                   ; PCA Capture 0 High
+  00FD          +1   152     PCA0CPL4  DATA  0FDH                   ; PCA Capture 4 Low
+  00FE          +1   153     PCA0CPH4  DATA  0FEH                   ; PCA Capture 4 High
+  00FF          +1   154     VDM0CN    DATA  0FFH                   ; VDD Monitor Control
+                +1   155     
+                +1   156     ;------------------------------------------------------------------------------
+                +1   157     ; Bit Definitions
+                +1   158     ;------------------------------------------------------------------------------
+                +1   159     
+                +1   160     ; TCON  088H
+  008F          +1   161     TF1     BIT     TCON.7                 ; Timer1 overflow flag
+  008E          +1   162     TR1     BIT     TCON.6                 ; Timer1 on/off control
+  008D          +1   163     TF0     BIT     TCON.5                 ; Timer0 overflow flag
+  008C          +1   164     TR0     BIT     TCON.4                 ; Timer0 on/off control
+  008B          +1   165     IE1     BIT     TCON.3                 ; Ext. Interrupt 1 edge flag
+  008A          +1   166     IT1     BIT     TCON.2                 ; Ext. Interrupt 1 type
+  0089          +1   167     IE0     BIT     TCON.1                 ; Ext. Interrupt 0 edge flag
+  0088          +1   168     IT0     BIT     TCON.0                 ; Ext. Interrupt 0 type
+                +1   169     
+                +1   170     ; SCON0  098H
+  009F          +1   171     S0MODE  BIT     SCON0.7                ; Serial mode control bit 0
+                +1   172                                            ; Bit 6 unused
+  009D          +1   173     MCE0    BIT     SCON0.5                ; Multiprocessor communication enable
+  009C          +1   174     REN0    BIT     SCON0.4                ; Receive enable
+  009B          +1   175     TB80    BIT     SCON0.3                ; Transmit bit 8
+  009A          +1   176     RB80    BIT     SCON0.2                ; Receive bit 8
+  0099          +1   177     TI0     BIT     SCON0.1                ; Transmit interrupt flag
+  0098          +1   178     RI0     BIT     SCON0.0                ; Receive interrupt flag
+                +1   179     
+                +1   180     ; IE  0A8H
+  00AF          +1   181     EA      BIT     IE.7                   ; Global interrupt enable
+  00AE          +1   182     ESPI0   BIT     IE.6                   ; Bit 6 unused
+  00AD          +1   183     ET2     BIT     IE.5                   ; Bit 5 unused
+  00AC          +1   184     ES0     BIT     IE.4                   ; UART0 interrupt enable
+  00AB          +1   185     ET1     BIT     IE.3                   ; Timer1 interrupt enable
+  00AA          +1   186     EX1     BIT     IE.2                   ; External interrupt 1 enable
+  00A9          +1   187     ET0     BIT     IE.1                   ; Timer0 interrupt enable
+  00A8          +1   188     EX0     BIT     IE.0                   ; External interrupt 0 enable
+                +1   189     
+                +1   190     ; IP  0B8H
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     4
+
+                +1   191                                            ; Bit 7 unused
+  00BE          +1   192     PSPI0   BIT     IP.6                   ; SPI0 interrupt priority
+  00BD          +1   193     PT2     BIT     IP.5                   ; Timer2 priority
+  00BC          +1   194     PS0     BIT     IP.4                   ; UART0 priority
+  00BB          +1   195     PT1     BIT     IP.3                   ; Timer1 priority
+  00BA          +1   196     PX1     BIT     IP.2                   ; External interrupt 1 priority
+  00B9          +1   197     PT0     BIT     IP.1                   ; Timer0 priority
+  00B8          +1   198     PX0     BIT     IP.0                   ; External interrupt 0 priority
+                +1   199     
+                +1   200     ; SMB0CN  0C0H
+  00C7          +1   201     MASTER  BIT     SMB0CN.7               ; Master/slave indicator
+  00C6          +1   202     TXMODE  BIT     SMB0CN.6               ; Transmit mode indicator
+  00C5          +1   203     STA     BIT     SMB0CN.5               ; Start flag
+  00C4          +1   204     STO     BIT     SMB0CN.4               ; Stop flag
+  00C3          +1   205     ACKRQ   BIT     SMB0CN.3               ; Acknowledge request
+  00C2          +1   206     ARBLOST BIT     SMB0CN.2               ; Arbitration lost indicator
+  00C1          +1   207     ACK     BIT     SMB0CN.1               ; Acknowledge flag
+  00C0          +1   208     SI      BIT     SMB0CN.0               ; SMBus interrupt flag
+                +1   209     
+                +1   210     ; TMR2CN  0C8H
+  00CF          +1   211     TF2H    BIT     TMR2CN.7               ; Timer2 high byte overflow flag
+  00CE          +1   212     TF2L    BIT     TMR2CN.6               ; Timer2 low byte overflow flag
+  00CD          +1   213     TF2LEN  BIT     TMR2CN.5               ; Timer2 low byte interrupt enable
+  00CC          +1   214     T2CE    BIT     TMR2CN.4               ; Timer2 capture enable
+  00CB          +1   215     T2SPLIT BIT     TMR2CN.3               ; Timer2 split mode enable
+  00CA          +1   216     TR2     BIT     TMR2CN.2               ; Timer2 on/off control
+  00C9          +1   217     T2CSS   BIT     TMR2CN.1               ; Timer 2 Capture Source select
+  00C8          +1   218     T2XCLK  BIT     TMR2CN.0               ; Timer2 external clock select
+                +1   219     
+                +1   220     ; PSW  0D0H
+  00D7          +1   221     CY      BIT     PSW.7                  ; Carry flag
+  00D6          +1   222     AC      BIT     PSW.6                  ; Auxiliary carry flag
+  00D5          +1   223     F0      BIT     PSW.5                  ; User flag 0
+  00D4          +1   224     RS1     BIT     PSW.4                  ; Register bank select 1
+  00D3          +1   225     RS0     BIT     PSW.3                  ; Register bank select 0
+  00D2          +1   226     OV      BIT     PSW.2                  ; Overflow flag
+  00D1          +1   227     F1      BIT     PSW.1                  ; User flag 1
+  00D0          +1   228     P       BIT     PSW.0                  ; Accumulator parity flag
+                +1   229     
+                +1   230     ; PCA0CN  0D8H
+  00DF          +1   231     CF      BIT     PCA0CN.7               ; PCA0 counter overflow flag
+  00DE          +1   232     CR      BIT     PCA0CN.6               ; PCA0 counter run control
+                +1   233                                            ; Bit5 UNUSED
+  00DC          +1   234     CCF4    BIT     PCA0CN.4               ; PCA0 module4 capture/compare flag
+  00DB          +1   235     CCF3    BIT     PCA0CN.3               ; PCA0 module3 capture/compare flag
+  00DA          +1   236     CCF2    BIT     PCA0CN.2               ; PCA0 module2 capture/compare flag
+  00D9          +1   237     CCF1    BIT     PCA0CN.1               ; PCA0 module1 capture/compare flag
+  00D8          +1   238     CCF0    BIT     PCA0CN.0               ; PCA0 module0 capture/compare flag
+                +1   239     
+                +1   240     ; ADC0CN  0E8H
+  00EF          +1   241     AD0EN   BIT     ADC0CN.7               ; ADC0 enable
+  00EE          +1   242     AD0TM   BIT     ADC0CN.6               ; ADC0 track mode
+  00ED          +1   243     AD0INT  BIT     ADC0CN.5               ; ADC0 converision complete interrupt flag
+  00EC          +1   244     AD0BUSY BIT     ADC0CN.4               ; ADC0 busy flag
+  00EB          +1   245     AD0WINT BIT     ADC0CN.3               ; ADC0 window compare interrupt flag
+  00EA          +1   246     AD0CM2  BIT     ADC0CN.2               ; ADC0 conversion mode select 2
+  00E9          +1   247     AD0CM1  BIT     ADC0CN.1               ; ADC0 conversion mode select 1
+  00E8          +1   248     AD0CM0  BIT     ADC0CN.0               ; ADC0 conversion mode select 0
+                +1   249     
+                +1   250     ; SPI0CN  0F8H
+  00FF          +1   251     SPIF    BIT     SPI0CN.7               ; SPI0 interrupt flag
+  00FE          +1   252     WCOL    BIT     SPI0CN.6               ; SPI0 write collision flag
+  00FD          +1   253     MODF    BIT     SPI0CN.5               ; SPI0 mode fault flag
+  00FC          +1   254     RXOVRN  BIT     SPI0CN.4               ; SPI0 rx overrun flag
+  00FB          +1   255     NSSMD1  BIT     SPI0CN.3               ; SPI0 slave select mode 1
+  00FA          +1   256     NSSMD0  BIT     SPI0CN.2               ; SPI0 slave select mode 0
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     5
+
+  00F9          +1   257     TXBMT   BIT     SPI0CN.1               ; SPI0 transmit buffer empty
+  00F8          +1   258     SPIEN   BIT     SPI0CN.0               ; SPI0 SPI enable
+                +1   259     
+                +1   260     ;------------------------------------------------------------------------------
+                +1   261     ; End Of File
+                +1   262     ;------------------------------------------------------------------------------
+                     263     
+                     264     
+                     265     
+                     266     
+                     267     
+                     268     ;------------------------------------------------------------------------------------------
+                             ------------------------------------------------------------------------------------------
+                     269     ;Author: Ashwin.V
+                     270     ;Country:India
+                     271     ;Code:LCD interface in 4bit mode
+                     272     ;CPU:At89c51@11.0592Mhz
+                     273     ;Tips:All you need to do is call the line where you want to display the message, mov the ch
+                             arecter to lcd_DATO and call datw.
+                     274     ;If you want to display a string, move the address of the hardcodded string into dptr and c
+                             all datw.
+                     275     ;------------------------------------------------------------------------------------------
+                             -------------------------------------------------------------------------------------------          
+                     276                             
+                     277     ;DB0            equ   P4.0
+                     278     ;DB1            equ   P4.1
+                     279     ;DB2            equ   P4.2
+                     280     ;DB3            equ   P4.3
+                     281     ;DB4    equ   P4.4
+                     282     ;DB5    equ   P4.5
+                     283     ;DB6    equ   P4.6
+                     284     ;DB7    equ   P4.7
+                     285     
+  00B0               286     RS      equ   P3.0
+  00B1               287     RW      equ   P3.1
+  00B2               288     EN                      equ             P3.2
+  00C7               289     DATO    equ   P4
+                     290     
+                     291     
+                     292     
+0000                 293     org 0000h
+                     294       
+0000 020100          295       ljmp inicio
+                     296     
+                     297     
+                     298     ;__________________________________________________
+                     299     ;-----------------main code------------------
+                     300     ;__________________________________________________
+                     301     
+0100                 302     org 100h
+                     303     
+0100                 304     inicio: 
+                     305     
+                     306     ;---------------SETEOS-------------------------  
+0100 75A408          307         mov  P0MDOUT,   #008h
+0103 75A50F          308         mov  P1MDOUT,   #00Fh
+0106 75A7F0          309         mov  P3MDOUT,   #0F0h
+0109 75E102          310         mov  XBR0,      #002h
+010C 75E240          311         mov  XBR1,      #040h
+                     312     
+                     313     
+010F                 314     Oscillator_Init:
+010F 75B283          315         mov  OSCICN,    #083h
+                     316     
+0112                 317     PCA_Init:
+0112 53D9BF          318         anl  PCA0MD,    #0BFh
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     6
+
+0115 75D900          319         mov  PCA0MD,    #000h
+                     320     
+                     321     ;-----------FIN SETEOS------------------------- 
+                     322     
+                     323     
+                     324     ;---------------------------------------------------------
+                     325     
+                     326     
+0118                 327     lcd:
+0118 75C700          328     mov             DATO,#00h
+011B C2B0            329     clr             RS
+011D C2B1            330     clr             RW
+011F C2B2            331     clr             EN
+0121 75A70F          332     mov             P3MDOUT,#00Fh
+0124 75AEFF          333     mov             P4MDOUT,#0FFh
+                     334     
+                     335     
+0127 3198            336     acall           init_lcd
+                     337     
+0129                 338     PRUEBA:
+0129 31CF            339     acall           clear_lcd
+                     340     
+012B 7448            341     MOV A,#'H'
+012D 1201C3          342     LCALL WRITE_TEXT
+0130 744F            343     MOV A,#'O'
+0132 1201C3          344     LCALL WRITE_TEXT
+0135 744C            345     MOV A,#'L'
+0137 1201C3          346     LCALL WRITE_TEXT
+013A 7441            347     MOV A,#'A'
+013C 1201C3          348     LCALL WRITE_TEXT
+013F 7420            349     MOV A,#' '
+0141 1201C3          350     LCALL WRITE_TEXT
+0144 744E            351     MOV A,#'N'
+0146 1201C3          352     LCALL WRITE_TEXT
+0149 7441            353     MOV A,#'A'
+014B 1201C3          354     LCALL WRITE_TEXT
+014E 7454            355     MOV A,#'T'
+0150 1201C3          356     LCALL WRITE_TEXT
+0153 7459            357     MOV A,#'Y'
+0155 1201C3          358     LCALL WRITE_TEXT
+                     359     
+0158 C2B0            360     CLR RS
+015A 75C7C0          361     MOV DATO,#0C0h
+015D D2B2            362     SETB EN
+015F C2B2            363     CLR EN
+0161 1201DC          364     LCALL WAIT_LCD
+                     365     
+0164 7448            366     MOV A,#'H'
+0166 1201C3          367     LCALL WRITE_TEXT
+0169 744F            368     MOV A,#'O'
+016B 1201C3          369     LCALL WRITE_TEXT
+016E 744C            370     MOV A,#'L'
+0170 1201C3          371     LCALL WRITE_TEXT
+0173 7441            372     MOV A,#'A'
+0175 1201C3          373     LCALL WRITE_TEXT
+0178 7420            374     MOV A,#' '
+017A 1201C3          375     LCALL WRITE_TEXT
+017D 7447            376     MOV A,#'G'
+017F 1201C3          377     LCALL WRITE_TEXT
+0182 7441            378     MOV A,#'A'
+0184 1201C3          379     LCALL WRITE_TEXT
+0187 7453            380     MOV A,#'S'
+0189 1201C3          381     LCALL WRITE_TEXT
+018C 7454            382     MOV A,#'T'
+018E 1201C3          383     LCALL WRITE_TEXT
+0191 7459            384     MOV A,#'Y'
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     7
+
+0193 1201C3          385     LCALL WRITE_TEXT
+                     386     
+                     387     
+                     388     
+0196                 389     ciclo:
+0196 2196            390     ajmp            CICLO
+                     391     
+0198                 392     INIT_LCD:
+                     393     
+0198 C2B0            394           CLR RS
+019A 75C738          395           MOV DATO,#38h
+019D D2B2            396           SETB EN
+019F 31FE            397                             acall   DiezMilis      
+01A1 C2B2            398                             CLR EN
+                     399           
+01A3 1201DC          400                             LCALL WAIT_LCD
+01A6 C2B0            401           CLR RS
+01A8 75C70E          402           MOV DATO,#0Eh
+01AB D2B2            403           SETB EN
+01AD 31FE            404                             acall   DiezMilis 
+01AF C2B2            405           CLR EN
+                     406           
+01B1 1201DC          407                             LCALL WAIT_LCD
+01B4 C2B0            408           CLR RS
+01B6 75C706          409           MOV DATO,#06h
+01B9 D2B2            410           SETB EN
+01BB 31FE            411                             acall   DiezMilis 
+01BD C2B2            412           CLR EN
+                     413          
+01BF 1201DC          414           LCALL WAIT_LCD
+01C2 22              415           RET
+                     416     
+                     417     
+01C3                 418     WRITE_TEXT:
+                     419     
+01C3 D2B0            420           SETB RS
+01C5 F5C7            421           MOV DATO,A
+01C7 D2B2            422           SETB EN
+01C9 C2B2            423           CLR EN
+01CB 1201DC          424           LCALL WAIT_LCD
+01CE 22              425           RET
+                     426     
+                     427     
+01CF                 428     CLEAR_LCD:
+                     429     
+01CF C2B0            430           CLR RS
+01D1 75C701          431           MOV DATO,#01h
+01D4 D2B2            432           SETB EN
+01D6 C2B2            433           CLR EN
+01D8 1201DC          434           LCALL WAIT_LCD
+01DB 22              435           RET
+                     436     
+                     437     
+01DC                 438     WAIT_LCD:
+01DC 75AE00          439                             mov             P4MDOUT,#00h
+01DF C2B2            440           CLR EN ;Start LCD command
+01E1 C2B0            441           CLR RS ;It's a command
+01E3 D2B1            442           SETB RW ;It's a read command
+01E5 75C7FF          443           MOV DATO,#0FFh ;Set all pins to FF initially
+01E8 D2B2            444           SETB EN ;Clock out command to LCD
+01EA E5C7            445           MOV A,DATO ;Read the return value
+01EC 20E7ED          446           JB ACC.7,WAIT_LCD ;If bit 7 high, LCD still busy
+01EF C2B2            447           CLR EN ;Finish the command
+01F1 C2B1            448           CLR RW ;Turn off RW for future commands
+01F3 75AEFF          449           mov               P4MDOUT,#0FFh
+01F6 22              450                             RET
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     8
+
+                     451     
+                     452     ;----------------------------------------------------------------------------;
+                     453     
+01F7                 454     UnSeg:
+01F7 7F64            455             mov     r7, #100
+01F9                 456     LazoUnSeg:
+01F9 31FE            457             call    DiezMilis
+                     458     
+01FB DFFC            459             djnz    r7, LazoUnSeg
+01FD 22              460             ret
+                     461     
+                     462     ;----------------------------------------------------------------------------;
+                     463     
+01FE                 464     DiezMilis:
+01FE 7E64            465             mov     r6, #100
+0200                 466     LazoDiezMilis:
+0200 5105            467             call    CienMicros
+                     468     
+0202 DEFC            469             djnz    r6, LazoDiezMilis
+0204 22              470             ret
+                     471     
+                     472     ;----------------------------------------------------------------------------;
+                     473     
+0205                 474     CienMicros:
+0205 7D32            475             mov     r5, #50
+0207                 476     LazoCienMicros:
+0207 DDFE            477             djnz    r5, LazoCienMicros
+0209 22              478             ret
+                     479     
+                     480     ;----------------------------------------------------------------------------;
+                     481     
+                     482     
+                     483     
+                     484     
+                     485     END
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE     9
+
+XREF SYMBOL TABLE LISTING
+---- ------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES / REFERENCES
+
+AC . . . . . . . .  B ADDR   00D0H.6 A      222#
+ACC. . . . . . . .  D ADDR   00E0H   A      123# 446
+ACK. . . . . . . .  B ADDR   00C0H.1 A      207#
+ACKRQ. . . . . . .  B ADDR   00C0H.3 A      205#
+AD0BUSY. . . . . .  B ADDR   00E8H.4 A      244#
+AD0CM0 . . . . . .  B ADDR   00E8H.0 A      248#
+AD0CM1 . . . . . .  B ADDR   00E8H.1 A      247#
+AD0CM2 . . . . . .  B ADDR   00E8H.2 A      246#
+AD0EN. . . . . . .  B ADDR   00E8H.7 A      241#
+AD0INT . . . . . .  B ADDR   00E8H.5 A      243#
+AD0TM. . . . . . .  B ADDR   00E8H.6 A      242#
+AD0WINT. . . . . .  B ADDR   00E8H.3 A      245#
+ADC0CF . . . . . .  D ADDR   00BCH   A      90#
+ADC0CN . . . . . .  D ADDR   00E8H   A      131# 241 242 243 244 245 246 247 248
+ADC0GTH. . . . . .  D ADDR   00C4H   A      97#
+ADC0GTL. . . . . .  D ADDR   00C3H   A      96#
+ADC0H. . . . . . .  D ADDR   00BEH   A      92#
+ADC0L. . . . . . .  D ADDR   00BDH   A      91#
+ADC0LTH. . . . . .  D ADDR   00C6H   A      99#
+ADC0LTL. . . . . .  D ADDR   00C5H   A      98#
+AMX0N. . . . . . .  D ADDR   00BAH   A      88#
+AMX0P. . . . . . .  D ADDR   00BBH   A      89#
+ARBLOST. . . . . .  B ADDR   00C0H.2 A      206#
+B. . . . . . . . .  D ADDR   00F0H   A      139#
+CCF0 . . . . . . .  B ADDR   00D8H.0 A      238#
+CCF1 . . . . . . .  B ADDR   00D8H.1 A      237#
+CCF2 . . . . . . .  B ADDR   00D8H.2 A      236#
+CCF3 . . . . . . .  B ADDR   00D8H.3 A      235#
+CCF4 . . . . . . .  B ADDR   00D8H.4 A      234#
+CF . . . . . . . .  B ADDR   00D8H.7 A      231#
+CICLO. . . . . . .  C ADDR   0196H   A      389# 390
+CIENMICROS . . . .  C ADDR   0205H   A      467 474#
+CKCON. . . . . . .  D ADDR   008EH   A      46#
+CLEAR_LCD. . . . .  C ADDR   01CFH   A      339 428#
+CLKMUL . . . . . .  D ADDR   00B9H   A      87#
+CLKSEL . . . . . .  D ADDR   00A9H   A      73#
+CPT0CN . . . . . .  D ADDR   009BH   A      59#
+CPT0MD . . . . . .  D ADDR   009DH   A      61#
+CPT0MX . . . . . .  D ADDR   009FH   A      63#
+CPT1CN . . . . . .  D ADDR   009AH   A      58#
+CPT1MD . . . . . .  D ADDR   009CH   A      60#
+CPT1MX . . . . . .  D ADDR   009EH   A      62#
+CR . . . . . . . .  B ADDR   00D8H.6 A      232#
+CY . . . . . . . .  B ADDR   00D0H.7 A      221#
+DATO . . . . . . .  D ADDR   00C7H   A      289# 328 361 395 402 409 421 431 443 445
+DIEZMILIS. . . . .  C ADDR   01FEH   A      397 404 411 457 464#
+DPH. . . . . . . .  D ADDR   0083H   A      35#
+DPL. . . . . . . .  D ADDR   0082H   A      34#
+EA . . . . . . . .  B ADDR   00A8H.7 A      181#
+EIE1 . . . . . . .  D ADDR   00E6H   A      129#
+EIE2 . . . . . . .  D ADDR   00E7H   A      130#
+EIP1 . . . . . . .  D ADDR   00F6H   A      145#
+EIP2 . . . . . . .  D ADDR   00F7H   A      146#
+EMI0CF . . . . . .  D ADDR   0085H   A      37#
+EMI0CN . . . . . .  D ADDR   00AAH   A      74#
+EMI0TC . . . . . .  D ADDR   0084H   A      36#
+EN . . . . . . . .  B ADDR   00B0H.2 A      288# 331 362 363 396 398 403 405 410 412 422 423 432 433 440 444 447
+ES0. . . . . . . .  B ADDR   00A8H.4 A      184#
+ESPI0. . . . . . .  B ADDR   00A8H.6 A      182#
+ET0. . . . . . . .  B ADDR   00A8H.1 A      187#
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE    10
+
+ET1. . . . . . . .  B ADDR   00A8H.3 A      185#
+ET2. . . . . . . .  B ADDR   00A8H.5 A      183#
+EX0. . . . . . . .  B ADDR   00A8H.0 A      188#
+EX1. . . . . . . .  B ADDR   00A8H.2 A      186#
+F0 . . . . . . . .  B ADDR   00D0H.5 A      223#
+F1 . . . . . . . .  B ADDR   00D0H.1 A      227#
+FLKEY. . . . . . .  D ADDR   00B7H   A      85#
+FLSCL. . . . . . .  D ADDR   00B6H   A      84#
+IE . . . . . . . .  D ADDR   00A8H   A      72# 181 182 183 184 185 186 187 188
+IE0. . . . . . . .  B ADDR   0088H.1 A      167#
+IE1. . . . . . . .  B ADDR   0088H.3 A      165#
+INICIO . . . . . .  C ADDR   0100H   A      295 304#
+INIT_LCD . . . . .  C ADDR   0198H   A      336 392#
+IP . . . . . . . .  D ADDR   00B8H   A      86# 192 193 194 195 196 197 198
+IT0. . . . . . . .  B ADDR   0088H.0 A      168#
+IT01CF . . . . . .  D ADDR   00E4H   A      127#
+IT1. . . . . . . .  B ADDR   0088H.2 A      166#
+LAZOCIENMICROS . .  C ADDR   0207H   A      476# 477
+LAZODIEZMILIS. . .  C ADDR   0200H   A      466# 469
+LAZOUNSEG. . . . .  C ADDR   01F9H   A      456# 459
+LCD. . . . . . . .  C ADDR   0118H   A      327#
+MASTER . . . . . .  B ADDR   00C0H.7 A      201#
+MCE0 . . . . . . .  B ADDR   0098H.5 A      173#
+MODF . . . . . . .  B ADDR   00F8H.5 A      253#
+NSSMD0 . . . . . .  B ADDR   00F8H.2 A      256#
+NSSMD1 . . . . . .  B ADDR   00F8H.3 A      255#
+OSCICL . . . . . .  D ADDR   00B3H   A      81#
+OSCICN . . . . . .  D ADDR   00B2H   A      80# 315
+OSCILLATOR_INIT. .  C ADDR   010FH   A      314#
+OSCLCN . . . . . .  D ADDR   0086H   A      38#
+OSCXCN . . . . . .  D ADDR   00B1H   A      79#
+OV . . . . . . . .  B ADDR   00D0H.2 A      226#
+P. . . . . . . . .  B ADDR   00D0H.0 A      228#
+P0 . . . . . . . .  D ADDR   0080H   A      32#
+P0MDIN . . . . . .  D ADDR   00F1H   A      140#
+P0MDOUT. . . . . .  D ADDR   00A4H   A      68# 307
+P0SKIP . . . . . .  D ADDR   00D4H   A      111#
+P1 . . . . . . . .  D ADDR   0090H   A      48#
+P1MDIN . . . . . .  D ADDR   00F2H   A      141#
+P1MDOUT. . . . . .  D ADDR   00A5H   A      69# 308
+P1SKIP . . . . . .  D ADDR   00D5H   A      112#
+P2 . . . . . . . .  D ADDR   00A0H   A      64#
+P2MDIN . . . . . .  D ADDR   00F3H   A      142#
+P2MDOUT. . . . . .  D ADDR   00A6H   A      70#
+P2SKIP . . . . . .  D ADDR   00D6H   A      113#
+P3 . . . . . . . .  D ADDR   00B0H   A      78# 286 287 288
+P3MDIN . . . . . .  D ADDR   00F4H   A      143#
+P3MDOUT. . . . . .  D ADDR   00A7H   A      71# 309 332
+P3SKIP . . . . . .  D ADDR   00DFH   A      122#
+P4 . . . . . . . .  D ADDR   00C7H   A      100# 289
+P4MDIN . . . . . .  D ADDR   00F5H   A      144#
+P4MDOUT. . . . . .  D ADDR   00AEH   A      76# 333 439 449
+PCA0CN . . . . . .  D ADDR   00D8H   A      115# 231 232 234 235 236 237 238
+PCA0CPH0 . . . . .  D ADDR   00FCH   A      151#
+PCA0CPH1 . . . . .  D ADDR   00EAH   A      133#
+PCA0CPH2 . . . . .  D ADDR   00ECH   A      135#
+PCA0CPH3 . . . . .  D ADDR   00EEH   A      137#
+PCA0CPH4 . . . . .  D ADDR   00FEH   A      153#
+PCA0CPL0 . . . . .  D ADDR   00FBH   A      150#
+PCA0CPL1 . . . . .  D ADDR   00E9H   A      132#
+PCA0CPL2 . . . . .  D ADDR   00EBH   A      134#
+PCA0CPL3 . . . . .  D ADDR   00EDH   A      136#
+PCA0CPL4 . . . . .  D ADDR   00FDH   A      152#
+PCA0CPM0 . . . . .  D ADDR   00DAH   A      117#
+PCA0CPM1 . . . . .  D ADDR   00DBH   A      118#
+PCA0CPM2 . . . . .  D ADDR   00DCH   A      119#
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE    11
+
+PCA0CPM3 . . . . .  D ADDR   00DDH   A      120#
+PCA0CPM4 . . . . .  D ADDR   00DEH   A      121#
+PCA0H. . . . . . .  D ADDR   00FAH   A      149#
+PCA0L. . . . . . .  D ADDR   00F9H   A      148#
+PCA0MD . . . . . .  D ADDR   00D9H   A      116# 318 319
+PCA_INIT . . . . .  C ADDR   0112H   A      317#
+PCON . . . . . . .  D ADDR   0087H   A      39#
+PFE0CN . . . . . .  D ADDR   00AFH   A      77#
+PRUEBA . . . . . .  C ADDR   0129H   A      338#
+PS0. . . . . . . .  B ADDR   00B8H.4 A      194#
+PSCTL. . . . . . .  D ADDR   008FH   A      47#
+PSPI0. . . . . . .  B ADDR   00B8H.6 A      192#
+PSW. . . . . . . .  D ADDR   00D0H   A      107# 221 222 223 224 225 226 227 228
+PT0. . . . . . . .  B ADDR   00B8H.1 A      197#
+PT1. . . . . . . .  B ADDR   00B8H.3 A      195#
+PT2. . . . . . . .  B ADDR   00B8H.5 A      193#
+PX0. . . . . . . .  B ADDR   00B8H.0 A      198#
+PX1. . . . . . . .  B ADDR   00B8H.2 A      196#
+RB80 . . . . . . .  B ADDR   0098H.2 A      176#
+REF0CN . . . . . .  D ADDR   00D1H   A      108#
+REG0CN . . . . . .  D ADDR   00C9H   A      102#
+REN0 . . . . . . .  B ADDR   0098H.4 A      174#
+RI0. . . . . . . .  B ADDR   0098H.0 A      178#
+RS . . . . . . . .  B ADDR   00B0H.0 A      286# 329 360 394 401 408 420 430 441
+RS0. . . . . . . .  B ADDR   00D0H.3 A      225#
+RS1. . . . . . . .  B ADDR   00D0H.4 A      224#
+RSTSRC . . . . . .  D ADDR   00EFH   A      138#
+RW . . . . . . . .  B ADDR   00B0H.1 A      287# 330 442 448
+RXOVRN . . . . . .  B ADDR   00F8H.4 A      254#
+S0MODE . . . . . .  B ADDR   0098H.7 A      171#
+SBCON1 . . . . . .  D ADDR   00ACH   A      75#
+SBRLH1 . . . . . .  D ADDR   00B5H   A      83#
+SBRLL1 . . . . . .  D ADDR   00B4H   A      82#
+SBUF0. . . . . . .  D ADDR   0099H   A      57#
+SBUF1. . . . . . .  D ADDR   00D3H   A      110#
+SCON0. . . . . . .  D ADDR   0098H   A      56# 171 173 174 175 176 177 178
+SCON1. . . . . . .  D ADDR   00D2H   A      109#
+SI . . . . . . . .  B ADDR   00C0H.0 A      208#
+SMB0CF . . . . . .  D ADDR   00C1H   A      94#
+SMB0CN . . . . . .  D ADDR   00C0H   A      93# 201 202 203 204 205 206 207 208
+SMB0DAT. . . . . .  D ADDR   00C2H   A      95#
+SMOD1. . . . . . .  D ADDR   00E5H   A      128#
+SP . . . . . . . .  D ADDR   0081H   A      33#
+SPI0CFG. . . . . .  D ADDR   00A1H   A      65#
+SPI0CKR. . . . . .  D ADDR   00A2H   A      66#
+SPI0CN . . . . . .  D ADDR   00F8H   A      147# 251 252 253 254 255 256 257 258
+SPI0DAT. . . . . .  D ADDR   00A3H   A      67#
+SPIEN. . . . . . .  B ADDR   00F8H.0 A      258#
+SPIF . . . . . . .  B ADDR   00F8H.7 A      251#
+STA. . . . . . . .  B ADDR   00C0H.5 A      203#
+STO. . . . . . . .  B ADDR   00C0H.4 A      204#
+T2CE . . . . . . .  B ADDR   00C8H.4 A      214#
+T2CSS. . . . . . .  B ADDR   00C8H.1 A      217#
+T2SPLIT. . . . . .  B ADDR   00C8H.3 A      215#
+T2XCLK . . . . . .  B ADDR   00C8H.0 A      218#
+TB80 . . . . . . .  B ADDR   0098H.3 A      175#
+TCON . . . . . . .  D ADDR   0088H   A      40# 161 162 163 164 165 166 167 168
+TF0. . . . . . . .  B ADDR   0088H.5 A      163#
+TF1. . . . . . . .  B ADDR   0088H.7 A      161#
+TF2H . . . . . . .  B ADDR   00C8H.7 A      211#
+TF2L . . . . . . .  B ADDR   00C8H.6 A      212#
+TF2LEN . . . . . .  B ADDR   00C8H.5 A      213#
+TH0. . . . . . . .  D ADDR   008CH   A      44#
+TH1. . . . . . . .  D ADDR   008DH   A      45#
+TI0. . . . . . . .  B ADDR   0098H.1 A      177#
+TL0. . . . . . . .  D ADDR   008AH   A      42#
+A51 MACRO ASSEMBLER  LCD                                                                  11/15/2007 23:18:59 PAGE    12
+
+TL1. . . . . . . .  D ADDR   008BH   A      43#
+TMOD . . . . . . .  D ADDR   0089H   A      41#
+TMR2CN . . . . . .  D ADDR   00C8H   A      101# 211 212 213 214 215 216 217 218
+TMR2H. . . . . . .  D ADDR   00CDH   A      106#
+TMR2L. . . . . . .  D ADDR   00CCH   A      105#
+TMR2RLH. . . . . .  D ADDR   00CBH   A      104#
+TMR2RLL. . . . . .  D ADDR   00CAH   A      103#
+TMR3CN . . . . . .  D ADDR   0091H   A      49#
+TMR3H. . . . . . .  D ADDR   0095H   A      53#
+TMR3L. . . . . . .  D ADDR   0094H   A      52#
+TMR3RLH. . . . . .  D ADDR   0093H   A      51#
+TMR3RLL. . . . . .  D ADDR   0092H   A      50#
+TR0. . . . . . . .  B ADDR   0088H.4 A      164#
+TR1. . . . . . . .  B ADDR   0088H.6 A      162#
+TR2. . . . . . . .  B ADDR   00C8H.2 A      216#
+TXBMT. . . . . . .  B ADDR   00F8H.1 A      257#
+TXMODE . . . . . .  B ADDR   00C0H.6 A      202#
+UNSEG. . . . . . .  C ADDR   01F7H   A      454#
+USB0ADR. . . . . .  D ADDR   0096H   A      54#
+USB0DAT. . . . . .  D ADDR   0097H   A      55#
+USB0XCN. . . . . .  D ADDR   00D7H   A      114#
+VDM0CN . . . . . .  D ADDR   00FFH   A      154#
+WAIT_LCD . . . . .  C ADDR   01DCH   A      364 400 407 414 424 434 438# 446
+WCOL . . . . . . .  B ADDR   00F8H.6 A      252#
+WRITE_TEXT . . . .  C ADDR   01C3H   A      342 344 346 348 350 352 354 356 358 367 369 371 373 375 377 379 381 383
+                                           385 418#
+XBR0 . . . . . . .  D ADDR   00E1H   A      124# 310
+XBR1 . . . . . . .  D ADDR   00E2H   A      125# 311
+XBR2 . . . . . . .  D ADDR   00E3H   A      126#
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

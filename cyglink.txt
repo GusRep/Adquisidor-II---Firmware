@@ -1,1 +1,1 @@
-E:\Programacion\mem_SD.obj  TO E:\Programacion\mem_SD RS(256) PL(68) PW(78) 
+E:\Programacion\ADC\ADC.obj  TO E:\Programacion\LCD\LCD RS(256) PL(68) PW(78) 
