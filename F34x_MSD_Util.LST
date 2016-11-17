@@ -1,0 +1,1738 @@
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE F34X_MSD_UTIL
+OBJECT MODULE PLACED IN F34x_MSD_Util.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\c51.exe F34x_MSD_Util.c PW(80) SB LC OT(9,S
+                    -IZE) CD DB OE DF(__F340_VER__) LARGE
+
+line level    source
+
+   1          //----------------------------------------------------------------
+             --------------
+   2          // F34x_MSD_Util.c
+   3          //----------------------------------------------------------------
+             --------------
+   4          // Copyright 2006 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // This file contains a function which is used to searching the st
+             -ring for
+  10          // the first occurrence of whitespace. The whitespace is a special
+             - sign like 
+  11          // new line, space, etc.
+  12          //
+  13          //
+  14          //
+  15          // How To Test:    See Readme.txt
+  16          //
+  17          //
+  18          // FID:            34X000067
+  19          // Target:         C8051F34x
+  20          // Tool chain:     Keil
+  21          // Command Line:   See Readme.txt
+  22          // Project Name:   F34x_USB_MSD
+  23          //
+  24          // Release 1.1
+  25          //    -All changes by PKC
+  26          //    -09 JUN 2006
+  27          //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  28          //
+  29          // Release 1.0
+  30          //    -Initial Release
+  31          //
+  32          
+  33          //----------------------------------------------------------------
+             --------------
+  34          // Includes
+  35          //----------------------------------------------------------------
+             --------------
+  36          
+  37          #include "F34x_MSD_Definitions.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_Definitions.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 2   
+
+   9      =1  // Header file with all definitions.
+  10      =1  //
+  11      =1  //
+  12      =1  // FID:            34X000032
+  13      =1  // Target:         C8051F34x
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   See Readme.txt
+  16      =1  // Project Name:   F34x_USB_MSD
+  17      =1  //
+  18      =1  // Release 1.1
+  19      =1  //    -All changes by PKC
+  20      =1  //    -09 JUN 2006
+  21      =1  //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  22      =1  //
+  23      =1  // Release 1.0
+  24      =1  //    -Initial Release
+  25      =1  //
+  26      =1  
+  27      =1  //----------------------------------------------------------------
+             --------------
+  28      =1  // Header File Preprocessor Directive
+  29      =1  //----------------------------------------------------------------
+             --------------
+  30      =1  
+  31      =1  #ifndef __DEFINITIONS_H__
+  32      =1  #define __DEFINITIONS_H__
+  33      =1  
+  34      =1  #define DEBUG_TIMEOUTS
+  35      =1  #include "c8051f340.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // C8051F340.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2005 Silicon Laboratories, Inc.
+   5      =2  // http://www.silabs.com
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Register/bit definitions for the C8051F34x family.
+  10      =2  //
+  11      =2  //
+  12      =2  // FID:            34X000002
+  13      =2  // Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, '
+             -F346, 'F347
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   None
+  16      =2  //
+  17      =2  // Release 1.0
+  18      =2  //    -Initial Release (GP\PKC)
+  19      =2  //    -13 DEC 2005
+  20      =2  
+  21      =2  //----------------------------------------------------------------
+             --------------
+  22      =2  // Header File Preprocessor Directive
+  23      =2  //----------------------------------------------------------------
+             --------------
+  24      =2  
+  25      =2  #ifndef C8051F340_H
+  26      =2  #define C8051F340_H
+  27      =2  
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 3   
+
+  28      =2  //----------------------------------------------------------------
+             --------------
+  29      =2  // Byte Registers
+  30      =2  //----------------------------------------------------------------
+             --------------
+  31      =2  
+  32      =2  sfr  P0           =  0x80;             // Port 0 Latch
+  33      =2  sfr  SP           =  0x81;             // Stack Pointer
+  34      =2  sfr  DPL          =  0x82;             // Data Pointer Low
+  35      =2  sfr  DPH          =  0x83;             // Data Pointer High
+  36      =2  sfr  EMI0TC       =  0x84;             // EMIF Timing
+  37      =2  sfr  EMI0CF       =  0x85;             // EMIF Configuration
+  38      =2  sfr  OSCLCN       =  0x86;             // Internal Low-Freq Oscill
+             -ator Control
+  39      =2  sfr  PCON         =  0x87;             // Power Control
+  40      =2  sfr  TCON         =  0x88;             // Timer/Counter Control
+  41      =2  sfr  TMOD         =  0x89;             // Timer/Counter Mode
+  42      =2  sfr  TL0          =  0x8A;             // Timer/Counter 0 Low
+  43      =2  sfr  TL1          =  0x8B;             // Timer/Counter 1 Low
+  44      =2  sfr  TH0          =  0x8C;             // Timer/Counter 0 High
+  45      =2  sfr  TH1          =  0x8D;             // Timer/Counter 1 High
+  46      =2  sfr  CKCON        =  0x8E;             // Clock Control
+  47      =2  sfr  PSCTL        =  0x8F;             // Program Store R/W Contro
+             -l
+  48      =2  sfr  P1           =  0x90;             // Port 1 Latch
+  49      =2  sfr  TMR3CN       =  0x91;             // Timer/Counter 3Control
+  50      =2  sfr  TMR3RLL      =  0x92;             // Timer/Counter 3 Reload L
+             -ow
+  51      =2  sfr  TMR3RLH      =  0x93;             // Timer/Counter 3 Reload H
+             -igh
+  52      =2  sfr  TMR3L        =  0x94;             // Timer/Counter 3Low
+  53      =2  sfr  TMR3H        =  0x95;             // Timer/Counter 3 High
+  54      =2  sfr  USB0ADR      =  0x96;             // USB0 Indirect Address Re
+             -gister
+  55      =2  sfr  USB0DAT      =  0x97;             // USB0 Data Register
+  56      =2  sfr  SCON0        =  0x98;             // UART0 Control
+  57      =2  sfr  SBUF0        =  0x99;             // UART0 Data Buffer
+  58      =2  sfr  CPT1CN       =  0x9A;             // Comparator1 Control
+  59      =2  sfr  CPT0CN       =  0x9B;             // Comparator0 Control
+  60      =2  sfr  CPT1MD       =  0x9C;             // Comparator1 Mode Selecti
+             -on
+  61      =2  sfr  CPT0MD       =  0x9D;             // Comparator0 Mode Selecti
+             -on
+  62      =2  sfr  CPT1MX       =  0x9E;             // Comparator1 MUX Selectio
+             -n
+  63      =2  sfr  CPT0MX       =  0x9F;             // Comparator0 MUX Selectio
+             -n
+  64      =2  sfr  P2           =  0xA0;             // Port 2 Latch
+  65      =2  sfr  SPI0CFG      =  0xA1;             // SPI Configuration
+  66      =2  sfr  SPI0CKR      =  0xA2;             // SPI Clock Rate Control
+  67      =2  sfr  SPI0DAT      =  0xA3;             // SPI Data
+  68      =2  sfr  P0MDOUT      =  0xA4;             // Port 0 Output Mode Confi
+             -guration
+  69      =2  sfr  P1MDOUT      =  0xA5;             // Port 1 Output Mode Confi
+             -guration
+  70      =2  sfr  P2MDOUT      =  0xA6;             // Port 2 Output Mode Confi
+             -guration
+  71      =2  sfr  P3MDOUT      =  0xA7;             // Port 3 Output Mode Confi
+             -guration
+  72      =2  sfr  IE           =  0xA8;             // Interrupt Enable
+  73      =2  sfr  CLKSEL       =  0xA9;             // Clock Select
+  74      =2  sfr  EMI0CN       =  0xAA;             // External Memory Interfac
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 4   
+
+             -e Control
+  75      =2  sfr  SBCON1       =  0xAC;             // UART1 Baud Rate Generato
+             -r Control
+  76      =2  sfr  P4MDOUT      =  0xAE;             // Port 4 Output Mode Confi
+             -guration
+  77      =2  sfr  PFE0CN       =  0xAF;             // Prefetch Engine Control
+  78      =2  sfr  P3           =  0xB0;             // Port 3 Latch
+  79      =2  sfr  OSCXCN       =  0xB1;             // External Oscillator Cont
+             -rol
+  80      =2  sfr  OSCICN       =  0xB2;             // Internal Oscillator Cont
+             -rol
+  81      =2  sfr  OSCICL       =  0xB3;             // Internal Oscillator Cali
+             -bration
+  82      =2  sfr  SBRLL1       =  0xB4;             // UART1 Baud Rate Generato
+             -r Low
+  83      =2  sfr  SBRLH1       =  0xB5;             // UART1 Baud Rate Generato
+             -r High
+  84      =2  sfr  FLSCL        =  0xB6;             // Flash Scale
+  85      =2  sfr  FLKEY        =  0xB7;             // Flash Lock and Key
+  86      =2  sfr  IP           =  0xB8;             // Interrupt Priority
+  87      =2  sfr  CLKMUL       =  0xB9;             // Clock Multiplier
+  88      =2  sfr  AMX0N        =  0xBA;             // AMUX0 Negative Channel S
+             -elect
+  89      =2  sfr  AMX0P        =  0xBB;             // AMUX0 Positive Channel S
+             -elect
+  90      =2  sfr  ADC0CF       =  0xBC;             // ADC0 Configuration
+  91      =2  sfr  ADC0L        =  0xBD;             // ADC0 Low
+  92      =2  sfr  ADC0H        =  0xBE;             // ADC0 High
+  93      =2  sfr  SMB0CN       =  0xC0;             // SMBus Control
+  94      =2  sfr  SMB0CF       =  0xC1;             // SMBus Configuration
+  95      =2  sfr  SMB0DAT      =  0xC2;             // SMBus Data
+  96      =2  sfr  ADC0GTL      =  0xC3;             // ADC0 Greater-Than Compar
+             -e Low
+  97      =2  sfr  ADC0GTH      =  0xC4;             // ADC0 Greater-Than Compar
+             -e High
+  98      =2  sfr  ADC0LTL      =  0xC5;             // ADC0 Less-Than Compare W
+             -ord Low
+  99      =2  sfr  ADC0LTH      =  0xC6;             // ADC0 Less-Than Compare W
+             -ord High
+ 100      =2  sfr  P4           =  0xC7;             // Port 4 Latch
+ 101      =2  sfr  TMR2CN       =  0xC8;             // Timer/Counter 2 Control
+ 102      =2  sfr  REG0CN       =  0xC9;             // Voltage Regulator Contro
+             -l
+ 103      =2  sfr  TMR2RLL      =  0xCA;             // Timer/Counter 2 Reload L
+             -ow
+ 104      =2  sfr  TMR2RLH      =  0xCB;             // Timer/Counter 2 Reload H
+             -igh
+ 105      =2  sfr  TMR2L        =  0xCC;             // Timer/Counter 2 Low
+ 106      =2  sfr  TMR2H        =  0xCD;             // Timer/Counter 2 High
+ 107      =2  sfr  PSW          =  0xD0;             // Program Status Word
+ 108      =2  sfr  REF0CN       =  0xD1;             // Voltage Reference Contro
+             -l
+ 109      =2  sfr  SCON1        =  0xD2;             // UART1 Control
+ 110      =2  sfr  SBUF1        =  0xD3;             // UART1 Data Buffer
+ 111      =2  sfr  P0SKIP       =  0xD4;             // Port 0 Skip
+ 112      =2  sfr  P1SKIP       =  0xD5;             // Port 1 Skip
+ 113      =2  sfr  P2SKIP       =  0xD6;             // Port 2 Skip
+ 114      =2  sfr  USB0XCN      =  0xD7;             // USB0 Transceiver Control
+ 115      =2  sfr  PCA0CN       =  0xD8;             // PCA0 Control
+ 116      =2  sfr  PCA0MD       =  0xD9;             // PCA0 Mode
+ 117      =2  sfr  PCA0CPM0     =  0xDA;             // PCA0 Module 0 Mode Regis
+             -ter
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 5   
+
+ 118      =2  sfr  PCA0CPM1     =  0xDB;             // PCA0 Module 1 Mode Regis
+             -ter
+ 119      =2  sfr  PCA0CPM2     =  0xDC;             // PCA0 Module 2 Mode Regis
+             -ter
+ 120      =2  sfr  PCA0CPM3     =  0xDD;             // PCA0 Module 3 Mode Regis
+             -ter
+ 121      =2  sfr  PCA0CPM4     =  0xDE;             // PCA0 Module 4 Mode Regis
+             -ter
+ 122      =2  sfr  P3SKIP       =  0xDF;             // Port 3 Skip
+ 123      =2  sfr  ACC          =  0xE0;             // Accumulator
+ 124      =2  sfr  XBR0         =  0xE1;             // Port I/O Crossbar Contro
+             -l 0
+ 125      =2  sfr  XBR1         =  0xE2;             // Port I/O Crossbar Contro
+             -l 1
+ 126      =2  sfr  XBR2         =  0xE3;             // Port I/O Crossbar Contro
+             -l 2
+ 127      =2  sfr  IT01CF       =  0xE4;             // INT0/INT1 Configuration
+ 128      =2  sfr  SMOD1        =  0xE5;             // UART1 Mode
+ 129      =2  sfr  EIE1         =  0xE6;             // Extended Interrupt Enabl
+             -e 1
+ 130      =2  sfr  EIE2         =  0xE7;             // Extended Interrupt Enabl
+             -e 2
+ 131      =2  sfr  ADC0CN       =  0xE8;             // ADC0 Control
+ 132      =2  sfr  PCA0CPL1     =  0xE9;             // PCA0 Capture 1 Low
+ 133      =2  sfr  PCA0CPH1     =  0xEA;             // PCA0 Capture 1 High
+ 134      =2  sfr  PCA0CPL2     =  0xEB;             // PCA0 Capture 2 Low
+ 135      =2  sfr  PCA0CPH2     =  0xEC;             // PCA0 Capture 2 High
+ 136      =2  sfr  PCA0CPL3     =  0xED;             // PCA0 Capture 3 Low
+ 137      =2  sfr  PCA0CPH3     =  0xEE;             // PCA0 Capture 3 High
+ 138      =2  sfr  RSTSRC       =  0xEF;             // Reset Source Configurati
+             -on/Status
+ 139      =2  sfr  B            =  0xF0;             // B Register
+ 140      =2  sfr  P0MDIN       =  0xF1;             // Port 0 Input Mode Config
+             -uration
+ 141      =2  sfr  P1MDIN       =  0xF2;             // Port 1 Input Mode Config
+             -uration
+ 142      =2  sfr  P2MDIN       =  0xF3;             // Port 2 Input Mode Config
+             -uration
+ 143      =2  sfr  P3MDIN       =  0xF4;             // Port 3 Input Mode Config
+             -uration
+ 144      =2  sfr  P4MDIN       =  0xF5;             // Port 4 Input Mode Config
+             -uration
+ 145      =2  sfr  EIP1         =  0xF6;             // Extended Interrupt Prior
+             -ity 1
+ 146      =2  sfr  EIP2         =  0xF7;             // Extended Interrupt Prior
+             -ity 2
+ 147      =2  sfr  SPI0CN       =  0xF8;             // SPI0 Control
+ 148      =2  sfr  PCA0L        =  0xF9;             // PCA0 Counter Low
+ 149      =2  sfr  PCA0H        =  0xFA;             // PCA0 Counter High
+ 150      =2  sfr  PCA0CPL0     =  0xFB;             // PCA0 Capture 0 Low
+ 151      =2  sfr  PCA0CPH0     =  0xFC;             // PCA0 Capture 0 High
+ 152      =2  sfr  PCA0CPL4     =  0xFD;             // PCA0 Capture 4 Low
+ 153      =2  sfr  PCA0CPH4     =  0xFE;             // PCA0 Capture 4 High
+ 154      =2  sfr  VDM0CN       =  0xFF;             // VDD Monitor Control
+ 155      =2  
+ 156      =2  
+ 157      =2  //----------------------------------------------------------------
+             --------------
+ 158      =2  // Bit Definitions
+ 159      =2  //----------------------------------------------------------------
+             --------------
+ 160      =2  
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 6   
+
+ 161      =2  // TCON 0x88
+ 162      =2  sbit TF1     = 0x8F;                   // Timer1 overflow flag
+ 163      =2  sbit TR1     = 0x8E;                   // Timer1 on/off control
+ 164      =2  sbit TF0     = 0x8D;                   // Timer0 overflow flag
+ 165      =2  sbit TR0     = 0x8C;                   // Timer0 on/off control
+ 166      =2  sbit IE1     = 0x8B;                   // Ext interrupt 1 edge fla
+             -g
+ 167      =2  sbit IT1     = 0x8A;                   // Ext interrupt 1 type
+ 168      =2  sbit IE0     = 0x89;                   // Ext interrupt 0 edge fla
+             -g
+ 169      =2  sbit IT0     = 0x88;                   // Ext interrupt 0 type
+ 170      =2  
+ 171      =2  // SCON0 0x98
+ 172      =2  sbit S0MODE  = 0x9F;                   // Serial mode control bit 
+             -0
+ 173      =2                                         // Bit6 UNUSED
+ 174      =2  sbit MCE0    = 0x9D;                   // Multiprocessor communica
+             -tion enable
+ 175      =2  sbit REN0    = 0x9C;                   // Receive enable
+ 176      =2  sbit TB80    = 0x9B;                   // Transmit bit 8
+ 177      =2  sbit RB80    = 0x9A;                   // Receive bit 8
+ 178      =2  sbit TI0     = 0x99;                   // Transmit interrupt flag
+ 179      =2  sbit RI0     = 0x98;                   // Receive interrupt flag
+ 180      =2  
+ 181      =2  // IE 0xA8
+ 182      =2  sbit EA      = 0xAF;                   // Global interrupt enable
+ 183      =2  sbit ESPI0   = 0xAE;                   // SPI0 interrupt enable
+ 184      =2  sbit ET2     = 0xAD;                   // Timer2 interrupt enable
+ 185      =2  sbit ES0     = 0xAC;                   // UART0 interrupt enable
+ 186      =2  sbit ET1     = 0xAB;                   // Timer1 interrupt enable
+ 187      =2  sbit EX1     = 0xAA;                   // External interrupt 1 ena
+             -ble
+ 188      =2  sbit ET0     = 0xA9;                   // Timer0 interrupt enable
+ 189      =2  sbit EX0     = 0xA8;                   // External interrupt 0 ena
+             -ble
+ 190      =2  
+ 191      =2  // IP 0xB8
+ 192      =2                                         // Bit7 UNUSED
+ 193      =2  sbit PSPI0   = 0xBE;                   // SPI0 interrupt priority
+ 194      =2  sbit PT2     = 0xBD;                   // Timer2 priority
+ 195      =2  sbit PS0     = 0xBC;                   // UART0 priority
+ 196      =2  sbit PT1     = 0xBB;                   // Timer1 priority
+ 197      =2  sbit PX1     = 0xBA;                   // External interrupt 1 pri
+             -ority
+ 198      =2  sbit PT0     = 0xB9;                   // Timer0 priority
+ 199      =2  sbit PX0     = 0xB8;                   // External interrupt 0 pri
+             -ority
+ 200      =2  
+ 201      =2  // SMB0CN 0xC0
+ 202      =2  sbit MASTER  = 0xC7;                   // Master/slave indicator
+ 203      =2  sbit TXMODE  = 0xC6;                   // Transmit mode indicator
+ 204      =2  sbit STA     = 0xC5;                   // Start flag
+ 205      =2  sbit STO     = 0xC4;                   // Stop flag
+ 206      =2  sbit ACKRQ   = 0xC3;                   // Acknowledge request
+ 207      =2  sbit ARBLOST = 0xC2;                   // Arbitration lost indicat
+             -or
+ 208      =2  sbit ACK     = 0xC1;                   // Acknowledge flag
+ 209      =2  sbit SI      = 0xC0;                   // SMBus interrupt flag
+ 210      =2  
+ 211      =2  // TMR2CN 0xC8
+ 212      =2  sbit TF2H    = 0xCF;                   // Timer2 high byte overflo
+             -w flag
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 7   
+
+ 213      =2  sbit TF2L    = 0xCE;                   // Timer2 low byte overflow
+             - flag
+ 214      =2  sbit TF2LEN  = 0xCD;                   // Timer2 low byte interrup
+             -t enable
+ 215      =2  sbit T2CE    = 0xCC;                   // Timer2 capture enable
+ 216      =2  sbit T2SPLIT = 0xCB;                   // Timer2 split mode enable
+ 217      =2  sbit TR2     = 0xCA;                   // Timer2 on/off control
+ 218      =2  sbit T2CSS   = 0xC9;                   // Timer 2 Capture Source s
+             -elect
+ 219      =2  sbit T2XCLK  = 0xC8;                   // Timer2 external clock se
+             -lect
+ 220      =2  
+ 221      =2  // PSW 0xD0
+ 222      =2  sbit CY      = 0xD7;                   // Carry flag
+ 223      =2  sbit AC      = 0xD6;                   // Auxiliary carry flag
+ 224      =2  sbit F0      = 0xD5;                   // User flag 0
+ 225      =2  sbit RS1     = 0xD4;                   // Register bank select 1
+ 226      =2  sbit RS0     = 0xD3;                   // Register bank select 0
+ 227      =2  sbit OV      = 0xD2;                   // Overflow flag
+ 228      =2  sbit F1      = 0xD1;                   // User flag 1
+ 229      =2  sbit P       = 0xD0;                   // Accumulator parity flag
+ 230      =2  
+ 231      =2  // PCA0CN 0xD8
+ 232      =2  sbit CF      = 0xDF;                   // PCA0 counter overflow fl
+             -ag
+ 233      =2  sbit CR      = 0xDE;                   // PCA0 counter run control
+ 234      =2                                         // Bit5 UNUSED
+ 235      =2  sbit CCF4    = 0xDC;                   // PCA0 module4 capture/com
+             -pare flag
+ 236      =2  sbit CCF3    = 0xDB;                   // PCA0 module3 capture/com
+             -pare flag
+ 237      =2  sbit CCF2    = 0xDA;                   // PCA0 module2 capture/com
+             -pare flag
+ 238      =2  sbit CCF1    = 0xD9;                   // PCA0 module1 capture/com
+             -pare flag
+ 239      =2  sbit CCF0    = 0xD8;                   // PCA0 module0 capture/com
+             -pare flag
+ 240      =2  
+ 241      =2  // ADC0CN 0xE8
+ 242      =2  sbit AD0EN   = 0xEF;                   // ADC0 enable
+ 243      =2  sbit AD0TM   = 0xEE;                   // ADC0 track mode
+ 244      =2  sbit AD0INT  = 0xED;                   // ADC0 conversion complete
+             - interrupt flag
+ 245      =2  sbit AD0BUSY = 0xEC;                   // ADC0 busy flag
+ 246      =2  sbit AD0WINT = 0xEB;                   // ADC0 window compare inte
+             -rrupt flag
+ 247      =2  sbit AD0CM2  = 0xEA;                   // ADC0 conversion mode sel
+             -ect 2
+ 248      =2  sbit AD0CM1  = 0xE9;                   // ADC0 conversion mode sel
+             -ect 1
+ 249      =2  sbit AD0CM0  = 0xE8;                   // ADC0 conversion mode sel
+             -ect 0
+ 250      =2  
+ 251      =2  // SPI0CN 0xF8
+ 252      =2  sbit SPIF    = 0xFF;                   // SPI0 interrupt flag
+ 253      =2  sbit WCOL    = 0xFE;                   // SPI0 write collision fla
+             -g
+ 254      =2  sbit MODF    = 0xFD;                   // SPI0 mode fault flag
+ 255      =2  sbit RXOVRN  = 0xFC;                   // SPI0 rx overrun flag
+ 256      =2  sbit NSSMD1  = 0xFB;                   // SPI0 slave select mode 1
+ 257      =2  sbit NSSMD0  = 0xFA;                   // SPI0 slave select mode 0
+ 258      =2  sbit TXBMT   = 0xF9;                   // SPI0 transmit buffer emp
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 8   
+
+             -ty
+ 259      =2  sbit SPIEN   = 0xF8;                   // SPI0 SPI enable
+ 260      =2  
+ 261      =2  
+ 262      =2  //----------------------------------------------------------------
+             --------------
+ 263      =2  // Interrupt Priorities
+ 264      =2  //----------------------------------------------------------------
+             --------------
+ 265      =2  
+ 266      =2  #define INTERRUPT_INT0             0   // External Interrupt 0
+ 267      =2  #define INTERRUPT_TIMER0           1   // Timer0 Overflow
+ 268      =2  #define INTERRUPT_INT1             2   // External Interrupt 1
+ 269      =2  #define INTERRUPT_TIMER1           3   // Timer1 Overflow
+ 270      =2  #define INTERRUPT_UART0            4   // Serial Port 0
+ 271      =2  #define INTERRUPT_TIMER2           5   // Timer2 Overflow
+ 272      =2  #define INTERRUPT_SPI0             6   // Serial Peripheral Interf
+             -ace 0
+ 273      =2  #define INTERRUPT_SMBUS0           7   // SMBus0 Interface
+ 274      =2  #define INTERRUPT_USB0             8   // USB Interface
+ 275      =2  #define INTERRUPT_ADC0_WINDOW      9   // ADC0 Window Comparison
+ 276      =2  #define INTERRUPT_ADC0_EOC         10  // ADC0 End Of Conversion
+ 277      =2  #define INTERRUPT_PCA0             11  // PCA0 Peripheral
+ 278      =2  #define INTERRUPT_COMPARATOR0      12  // Comparator0
+ 279      =2  #define INTERRUPT_COMPARATOR1      13  // Comparator1
+ 280      =2  #define INTERRUPT_TIMER3           14  // Timer3 Overflow
+ 281      =2  #define INTERRUPT_VBUS_LEVEL       15  // VBUS level-triggered int
+             -errupt
+ 282      =2  #define INTERRUPT_UART1            16  // Serial Port 1
+ 283      =2  
+ 284      =2  //----------------------------------------------------------------
+             --------------
+ 285      =2  // Header File PreProcessor Directive
+ 286      =2  //----------------------------------------------------------------
+             --------------
+ 287      =2  
+ 288      =2  #endif                                 // #define C8051F340_H
+ 289      =2  
+ 290      =2  //----------------------------------------------------------------
+             --------------
+ 291      =2  // End Of File
+ 292      =2  //----------------------------------------------------------------
+             --------------
+  36      =1  #ifdef DEBUG_TIMEOUTS
+  37      =1  sbit START_STOP_SPI = P3^0 ;
+  38      =1  sbit START_STOP_READ_TO = P3^1;
+  39      =1  sbit START_STOP_WRITE_TO = P3^2;
+  40      =1  
+  41      =1  #define START_SPI_TIMEOUT (START_STOP_SPI = 1)
+  42      =1  #define STOP_SPI_TIME_OUT (START_STOP_SPI = 0)
+  43      =1  #define START_READ_COPY (START_STOP_READ_TO = 1)
+  44      =1  #define STOP_READ_COPY (START_STOP_READ_TO = 0)
+  45      =1  #define START_WRITE_COPY (START_STOP_WRITE_TO = 1)
+  46      =1  #define STOP_WRITE_COPY (START_STOP_WRITE_TO = 0)
+  47      =1  #else
+           =1 
+           =1 #define START_SPI_TIMEOUT /\
+           =1 /
+           =1 #define STOP_SPI_TIME_OUT /\
+           =1 /
+           =1 #define START_READ_COPY /\
+           =1 /
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 9   
+
+           =1 #define STOP_READ_COPY /\
+           =1 /
+           =1 #define START_WRITE_COPY /\
+           =1 /
+           =1 #define STOP_WRITE_COPY /\
+           =1 /
+           =1 
+           =1 #endif
+  63      =1  
+  64      =1  #define ENDLINE         "\r\n"
+  65      =1  #define ENDLINE_SGN '\r'
+  66      =1  
+  67      =1  #endif
+  38          #include "F34x_MSD_Util.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_Util.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Header file for F34x_Util.h. It contains functions and variable
+             -s 
+  10      =1  // prototypes.
+  11      =1  //
+  12      =1  //
+  13      =1  // FID:            34X000068
+  14      =1  // Target:         C8051F34x
+  15      =1  // Tool chain:     Keil
+  16      =1  // Command Line:   See Readme.txt
+  17      =1  // Project Name:   F34x_USB_MSD
+  18      =1  //
+  19      =1  // Release 1.1
+  20      =1  //    -All changes by PKC
+  21      =1  //    -09 JUN 2006
+  22      =1  //    -No changes; incremented revision number to match project re
+             -vision
+  23      =1  //
+  24      =1  // Release 1.0
+  25      =1  //    -Initial Release
+  26      =1  //
+  27      =1  
+  28      =1  //----------------------------------------------------------------
+             --------------
+  29      =1  // Header File Preprocessor Directive
+  30      =1  //----------------------------------------------------------------
+             --------------
+  31      =1  
+  32      =1  #ifndef _UTIL_H_
+  33      =1  #define _UTIL_H_
+  34      =1  
+  35      =1  #include "F34x_MSD_USB_Main.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // F34x_MSD_USB_Main.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =2  // http://www.silabs.com
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 10  
+
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Main header file for USB firmware. Includes function prototypes
+             -,
+  10      =2  // standard constants, and configuration constants.//
+  11      =2  //
+  12      =2  // FID:            34X000063
+  13      =2  // Target:         C8051F34x
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   See Readme.txt
+  16      =2  // Project Name:   F34x_USB_MSD
+  17      =2  //
+  18      =2  // Release 1.1
+  19      =2  //    -All changes by PKC
+  20      =2  //    -09 JUN 2006
+  21      =2  //    -No changes; incremented revision number to match project re
+             -vision
+  22      =2  //
+  23      =2  // Release 1.0
+  24      =2  //    -Initial Release
+  25      =2  //
+  26      =2  // 11/22/02 - DM: 1. Updated function prototypes and added constan
+             -ts
+  27      =2  //                to F34x_USB_Main.h with sample interrupt firmwar
+             -e.
+  28      =2  
+  29      =2  //----------------------------------------------------------------
+             --------------
+  30      =2  // Header File Preprocessor Directive
+  31      =2  //----------------------------------------------------------------
+             --------------
+  32      =2  
+  33      =2  #ifndef _USB_MAIN_H_
+  34      =2  #define _USB_MAIN_H_
+  35      =2  
+  36      =2  #include "F34x_MSD_Definitions.h"
+   1      =3  //----------------------------------------------------------------
+             --------------
+   2      =3  // F34x_MSD_Definitions.h
+   3      =3  //----------------------------------------------------------------
+             --------------
+   4      =3  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =3  // http://www.silabs.com
+   6      =3  //
+   7      =3  // Program Description:
+   8      =3  //
+   9      =3  // Header file with all definitions.
+  10      =3  //
+  11      =3  //
+  12      =3  // FID:            34X000032
+  13      =3  // Target:         C8051F34x
+  14      =3  // Tool chain:     Keil
+  15      =3  // Command Line:   See Readme.txt
+  16      =3  // Project Name:   F34x_USB_MSD
+  17      =3  //
+  18      =3  // Release 1.1
+  19      =3  //    -All changes by PKC
+  20      =3  //    -09 JUN 2006
+  21      =3  //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  22      =3  //
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 11  
+
+  23      =3  // Release 1.0
+  24      =3  //    -Initial Release
+  25      =3  //
+  26      =3  
+  27      =3  //----------------------------------------------------------------
+             --------------
+  28      =3  // Header File Preprocessor Directive
+  29      =3  //----------------------------------------------------------------
+             --------------
+  30      =3  
+  31      =3  #ifndef __DEFINITIONS_H__
+           =3 #define __DEFINITIONS_H__
+           =3 
+           =3 #define DEBUG_TIMEOUTS
+           =3 #include "c8051f340.h"
+           =3 #ifdef DEBUG_TIMEOUTS
+           =3 sbit START_STOP_SPI = P3^0 ;
+           =3 sbit START_STOP_READ_TO = P3^1;
+           =3 sbit START_STOP_WRITE_TO = P3^2;
+           =3 
+           =3 #define START_SPI_TIMEOUT (START_STOP_SPI = 1)
+           =3 #define STOP_SPI_TIME_OUT (START_STOP_SPI = 0)
+           =3 #define START_READ_COPY (START_STOP_READ_TO = 1)
+           =3 #define STOP_READ_COPY (START_STOP_READ_TO = 0)
+           =3 #define START_WRITE_COPY (START_STOP_WRITE_TO = 1)
+           =3 #define STOP_WRITE_COPY (START_STOP_WRITE_TO = 0)
+           =3 #else
+           =3 
+           =3 #define START_SPI_TIMEOUT /\
+           =3 /
+           =3 #define STOP_SPI_TIME_OUT /\
+           =3 /
+           =3 #define START_READ_COPY /\
+           =3 /
+           =3 #define STOP_READ_COPY /\
+           =3 /
+           =3 #define START_WRITE_COPY /\
+           =3 /
+           =3 #define STOP_WRITE_COPY /\
+           =3 /
+           =3 
+           =3 #endif
+           =3 
+           =3 #define ENDLINE         "\r\n"
+           =3 #define ENDLINE_SGN '\r'
+           =3 
+           =3 #endif
+  37      =2  //#define _USB_LOW_SPEED_                      // Change this comm
+             -ent to make Full/Low speed
+  38      =2  
+  39      =2  #define SYSCLK                   12000000    // SYSCLK frequency i
+             -n Hz
+  40      =2  
+  41      =2  // USB clock selections (SFR CLKSEL)
+  42      =2  #define USB_4X_CLOCK             0x00        // Select 4x clock mu
+             -ltiplier, for USB Full Speed
+  43      =2  #define USB_INT_OSC_DIV_2        0x10        // See Data Sheet sec
+             -tion 13. Oscillators
+  44      =2  #define USB_EXT_OSC              0x20
+  45      =2  #define USB_EXT_OSC_DIV_2        0x30
+  46      =2  #define USB_EXT_OSC_DIV_3        0x40
+  47      =2  #define USB_EXT_OSC_DIV_4        0x50
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 12  
+
+  48      =2  
+  49      =2  // System clock selections (SFR CLKSEL)
+  50      =2  #define SYS_INT_OSC              0x00        // Select to use inte
+             -rnal oscillator
+  51      =2  #define SYS_4X_MUL               0x03        // Select to use inte
+             -rnal oscillator
+  52      =2  #define SYS_EXT_OSC              0x01        // Select to use an e
+             -xternal oscillator
+  53      =2  #define SYS_4X_DIV_2             0x02
+  54      =2  
+  55      =2  // BYTE type definition
+  56      =2  #ifndef _BYTE_DEF_
+  57      =2  #define _BYTE_DEF_
+  58      =2  typedef unsigned char BYTE;
+  59      =2  #endif   /* _BYTE_DEF_ */
+  60      =2  
+  61      =2  // WORD type definition, for KEIL Compiler
+  62      =2  #ifndef _WORD_DEF_                           // Compiler Specific,
+             - written for Little Endian
+  63      =2  #define _WORD_DEF_
+  64      =2  typedef union {unsigned int i; unsigned char c[2];} WORD;
+  65      =2  #define LSB 1                                // All words sent to 
+             -and received from the host are
+  66      =2  #define MSB 0                                // little endian, thi
+             -s is switched by software when
+  67      =2                                               // neccessary.  These
+             - sections of code have been marked
+  68      =2                                                                                           // with "Compiler Specific" as above for easier modifi
+             -cation
+  69      =2  #endif   /* _WORD_DEF_ */
+  70      =2  
+  71      =2  // DWORD type definition
+  72      =2  #ifndef _DWORD_DEF_
+  73      =2  #define _DWORD_DEF_
+  74      =2  typedef unsigned long DWORD;
+  75      =2  #endif /* _DWORD_DEF_ */
+  76      =2  
+  77      =2  extern volatile DWORD xdata tickcount;
+  78      =2  
+  79      =2  // Define Endpoint Packet Sizes
+  80      =2  #ifdef _USB_LOW_SPEED_
+           =2 #define  EP0_PACKET_SIZE         0x40        // This value can be 
+             -8,16,32,64 depending on device speed, see USB spec
+           =2 #else
+  83      =2  #define  EP0_PACKET_SIZE         0x40
+  84      =2  #endif /* _USB_LOW_SPEED_ */ 
+  85      =2  
+  86      =2  #define  EP1_PACKET_SIZE         0x0040      // Can range 0 - 1024
+             - depending on data and transfer type  
+  87      =2  #define  EP1_PACKET_SIZE_LE      0x4000      // IMPORTANT- this sh
+             -ould be Little-Endian version of EP1_PACKET_SIZE
+  88      =2  #define  EP2_PACKET_SIZE         0x0040      // Can range 0 - 1024
+             - depending on data and transfer type
+  89      =2  #define  EP2_PACKET_SIZE_LE      0x4000      // IMPORTANT- this sh
+             -ould be Little-Endian version of EP2_PACKET_SIZE
+  90      =2  
+  91      =2  // Standard Descriptor Types
+  92      =2  #define  DSC_DEVICE              0x01        // Device Descriptor
+  93      =2  #define  DSC_CONFIG              0x02        // Configuration Desc
+             -riptor
+  94      =2  #define  DSC_STRING              0x03        // String Descriptor
+  95      =2  #define  DSC_INTERFACE           0x04        // Interface Descript
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 13  
+
+             -or
+  96      =2  #define  DSC_ENDPOINT            0x05        // Endpoint Descripto
+             -r
+  97      =2  
+  98      =2  // HID Descriptor Types
+  99      =2  #define DSC_HID                                 0x21            // HID Class Descriptor
+ 100      =2  #define DSC_HID_REPORT                  0x22            // HID Report Descriptor
+ 101      =2  
+ 102      =2  // Standard Request Codes
+ 103      =2  #define  GET_STATUS             0x00        // Code for Get Status
+ 104      =2  #define  CLEAR_FEATURE          0x01        // Code for Clear Feat
+             -ure
+ 105      =2  #define  SET_FEATURE            0x03        // Code for Set Featur
+             -e
+ 106      =2  #define  SET_ADDRESS            0x05        // Code for Set Addres
+             -s
+ 107      =2  #define  GET_DESCRIPTOR         0x06        // Code for Get Descri
+             -ptor
+ 108      =2  #define  SET_DESCRIPTOR         0x07        // Code for Set Descri
+             -ptor(not used)
+ 109      =2  #define  GET_CONFIGURATION      0x08        // Code for Get Config
+             -uration
+ 110      =2  #define  SET_CONFIGURATION      0x09        // Code for Set Config
+             -uration
+ 111      =2  #define  GET_INTERFACE          0x0A        // Code for Get Interf
+             -ace
+ 112      =2  #define  SET_INTERFACE          0x0B        // Code for Set Interf
+             -ace
+ 113      =2  #define  SYNCH_FRAME            0x0C        // Code for Synch Fram
+             -e(not used)
+ 114      =2  #define  MSD_RESET                              0xFF            // Mass-storage device Reset
+ 115      =2  #define  MSD_GET_MAX_LUN                0xFE            // Mass-storage device Get Max LU
+             -N
+ 116      =2  
+ 117      =2  // HID Request Codes
+ 118      =2  #define GET_REPORT                              0x01            // Code for Get Report
+ 119      =2  #define GET_IDLE                                0x02            // Code for Get Idle
+ 120      =2  #define GET_PROTOCOL                    0x03            // Code for Get Protocol
+ 121      =2  #define SET_REPORT                              0x09            // Code for Set Report
+ 122      =2  #define SET_IDLE                                0x0A            // Code for Set Idle
+ 123      =2  #define SET_PROTOCOL                    0x0B            // Code for Set Protocol
+ 124      =2  
+ 125      =2  // Define device states
+ 126      =2  #define  DEV_ATTACHED            0x00        // Device is in Attac
+             -hed State
+ 127      =2  #define  DEV_POWERED             0x01        // Device is in Power
+             -ed State
+ 128      =2  #define  DEV_DEFAULT             0x02        // Device is in Defau
+             -lt State
+ 129      =2  #define  DEV_ADDRESS             0x03        // Device is in Addre
+             -ssed State
+ 130      =2  #define  DEV_CONFIGURED          0x04        // Device is in Confi
+             -gured State
+ 131      =2  #define  DEV_SUSPENDED           0x05        // Device is in Suspe
+             -nded State
+ 132      =2  
+ 133      =2  // Define bmRequestType bitmaps
+ 134      =2  #define  IN_DEVICE               0x00        // Request made to de
+             -vice, direction is IN 
+ 135      =2  #define  OUT_DEVICE              0x80        // Request made to de
+             -vice, direction is OUT
+ 136      =2  #define  IN_INTERFACE            0x01        // Request made to in
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 14  
+
+             -terface, direction is IN
+ 137      =2  #define  OUT_INTERFACE           0x81        // Request made to in
+             -terface, direction is OUT
+ 138      =2  #define  IN_ENDPOINT             0x02        // Request made to en
+             -dpoint, direction is IN
+ 139      =2  #define  OUT_ENDPOINT            0x82        // Request made to en
+             -dpoint, direction is OUT
+ 140      =2  
+ 141      =2  // Define wIndex bitmaps
+ 142      =2  #define  IN_EP1                  0x81        // Index values used 
+             -by Set and Clear feature
+ 143      =2  #define  OUT_EP1                 0x01        // commands for Endpo
+             -int_Halt
+ 144      =2  #define  IN_EP2                  0x82
+ 145      =2  #ifdef __F326_VER__
+           =2 #define  OUT_EP2                                 0x01           
+           =2 #else
+ 148      =2  #define  OUT_EP2                                 0x01           
+ 149      =2  #endif
+ 150      =2  
+ 151      =2  // Define wValue bitmaps for Standard Feature Selectors
+ 152      =2  #define  DEVICE_REMOTE_WAKEUP    0x01        // Remote wakeup feat
+             -ure(not used)
+ 153      =2  #define  ENDPOINT_HALT           0x00        // Endpoint_Halt feat
+             -ure selector
+ 154      =2  
+ 155      =2  // Define Endpoint States
+ 156      =2  #define  EP_IDLE                 0x00        // This signifies End
+             -point Idle State
+ 157      =2  #define  EP_TX                   0x01        // Endpoint Transmit 
+             -State
+ 158      =2  #define  EP_RX                   0x02        // Endpoint Receive S
+             -tate
+ 159      =2  #define  EP_HALT                 0x03        // Endpoint Halt Stat
+             -e (return stalls)
+ 160      =2  #define  EP_STALL                0x04        // Endpoint Stall (se
+             -nd procedural stall next status phase)
+ 161      =2  #define  EP_ADDRESS              0x05        // Endpoint Address (
+             -change FADDR during next status phase)
+ 162      =2  
+ 163      =2  // Function prototypes
+ 164      =2  // USB Routines
+ 165      =2  void USB_Resume(void);                       // This routine resum
+             -es USB operation
+ 166      =2  void USB_Reset(void);                        // Called after USB b
+             -us reset
+ 167      =2  void Handle_Setup(void);                     // Handle setup packe
+             -t on Endpoint 0
+ 168      =2  void Handle_In1(BYTE* ptr_buf);                       // Handle in
+             - packet on Endpoint 1
+ 169      =2  void Handle_Out2(void);                      // Handle out packet 
+             -on Endpoint 2
+ 170      =2  void USB_Suspend(void);                      // This routine calle
+             -d when suspend signalling on bus
+ 171      =2  void Out2_Get_Data(BYTE* ptr_buf);                               // Copies from FIFO to ptr_
+             -buf, clears FIFO-full flag.
+ 172      =2  void Out2_Done(void);                                            // Call this when finished with the d
+             -ata
+ 173      =2  
+ 174      =2  // Standard Requests
+ 175      =2  void Get_Status(void);                       // These are called f
+             -or each specific standard request
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 15  
+
+ 176      =2  void Clear_Feature(void);
+ 177      =2  void Set_Feature(void);
+ 178      =2  void Set_Address(void);
+ 179      =2  void Get_Descriptor(void);
+ 180      =2  void Get_Configuration(void);
+ 181      =2  void Set_Configuration(void);
+ 182      =2  void Get_Interface(void);
+ 183      =2  void Set_Interface(void);
+ 184      =2  
+ 185      =2  // MSD Specific Requests
+ 186      =2  // void Reset_Msd(void);
+ 187      =2  // void Get_MaxLUN(void);
+ 188      =2  
+ 189      =2  // Initialization Routines
+ 190      =2  void Sys_Clk_Init(void);                      // Initialize the sy
+             -stem clock(depends on Full/Low speed)
+ 191      =2  void Port_Init(void);                        // Configure ports fo
+             -r this specific application
+ 192      =2  void USB0_Init(void);                        // Configure USB core
+             - for either Full/Low speed
+ 193      =2  void Timer_Init(void);                       // Start timer 2 for 
+             -use by ADC and to check switches
+ 194      =2  void Adc_Init(void);                         // Configure ADC for 
+             -continuous conversion, low-power mode
+ 195      =2  
+ 196      =2  // Other Routines
+ 197      =2  void Timer2_ISR(void);                       // Called when Timer 
+             -2 overflows, see if switches are pressed
+ 198      =2  void Adc_ConvComple_ISR(void);               // When a conversion 
+             -completes, switch ADC multiplexor
+ 199      =2  void USB_ISR(void);                          // Called to determin
+             -e type of USB interrupt
+ 200      =2  void Fifo_ReadC(BYTE, unsigned int, BYTE *) ;
+ 201      =2  extern void Fifo_Read (BYTE, unsigned int, BYTE *) ; // Used for m
+             -ultiple byte reads of Endpoint fifos
+ 202      =2  extern void Fifo_Write (BYTE, unsigned int, BYTE *) reentrant;// U
+             -sed for multiple byte writes of Endpoint fifos
+ 203      =2  void Force_Stall(void);                      // Forces a procedura
+             -l stall on Endpoint 0
+ 204      =2  void Delay(void);                            // Approximately 80 u
+             -s/1 ms on Full/Low Speed
+ 205      =2  
+ 206      =2  void USB_In(BYTE* ptr_buf,unsigned count);
+ 207      =2  
+ 208      =2  void USB_Bulk_Init(void);
+ 209      =2  
+ 210      =2  extern unsigned xdata Out_Count;
+ 211      =2  extern BYTE xdata Out_Packet[EP2_PACKET_SIZE];
+ 212      =2  extern BYTE xdata In_count;
+ 213      =2  extern BYTE xdata In_Packet[EP1_PACKET_SIZE];
+ 214      =2  //extern BYTE xdata In_Overrun;
+ 215      =2  
+ 216      =2  #endif      /* _USB_MAIN_H_ */
+ 217      =2  
+  36      =1  
+  37      =1  //----------------------------------------------------------------
+             --------------
+  38      =1  // Function Prototypes
+  39      =1  //----------------------------------------------------------------
+             --------------
+  40      =1  
+  41      =1  extern DWORD htonl(DWORD d);
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 16  
+
+  42      =1  extern unsigned htons(unsigned w);
+  43      =1  #define ntohs htons
+  44      =1  #define ntohl htonl
+  45      =1  
+  46      =1  //----------------------------------------------------------------
+             --------------
+  47      =1  // Variable Prototype
+  48      =1  //----------------------------------------------------------------
+             --------------
+  49      =1  
+  50      =1  char* Str_Token(char* str);
+  51      =1  
+  52      =1  //----------------------------------------------------------------
+             --------------
+  53      =1  // Macros Prototypes
+  54      =1  //----------------------------------------------------------------
+             --------------
+  55      =1  
+  56      =1  #define min(a,b) (((a)<(b))?(a):(b))
+  57      =1  #define max(a,b) (((a)>(b))?(a):(b))
+  58      =1  
+  59      =1  #define msb(x) (((x)>>8)&0x000000FFul)
+  60      =1  #define lsb(x) ((x)&0x000000FFul)
+  61      =1  
+  62      =1  #endif
+  39          #include <string.h>
+   1      =1  /*----------------------------------------------------------------
+             -----------
+   2      =1  STRING.H
+   3      =1  
+   4      =1  String functions.
+   5      =1  Copyright (c) 1988-2002 Keil Elektronik GmbH and Keil Software, In
+             -c.
+   6      =1  All rights reserved.
+   7      =1  ------------------------------------------------------------------
+             ---------*/
+   8      =1  
+   9      =1  #ifndef __STRING_H__
+  10      =1  #define __STRING_H__
+  11      =1  
+  12      =1  #ifndef _SIZE_T
+  13      =1   #define _SIZE_T
+  14      =1   typedef unsigned int size_t;
+  15      =1  #endif
+  16      =1  
+  17      =1  #ifndef NULL
+  18      =1   #define NULL ((void *) 0L)
+  19      =1  #endif
+  20      =1  
+  21      =1  #pragma SAVE
+  22      =1  #pragma REGPARMS
+  23      =1  extern char *strcat (char *s1, char *s2);
+  24      =1  extern char *strncat (char *s1, char *s2, int n);
+  25      =1  
+  26      =1  extern char strcmp (char *s1, char *s2);
+  27      =1  extern char strncmp (char *s1, char *s2, int n);
+  28      =1  
+  29      =1  extern char *strcpy (char *s1, char *s2);
+  30      =1  extern char *strncpy (char *s1, char *s2, int n);
+  31      =1  
+  32      =1  extern int strlen (char *);
+  33      =1  
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 17  
+
+  34      =1  extern char *strchr (const char *s, char c);
+  35      =1  extern int strpos (const char *s, char c);
+  36      =1  extern char *strrchr (const char *s, char c);
+  37      =1  extern int strrpos (const char *s, char c);
+  38      =1  
+  39      =1  extern int strspn (char *s, char *set);
+  40      =1  extern int strcspn (char *s, char *set);
+  41      =1  extern char *strpbrk (char *s, char *set);
+  42      =1  extern char *strrpbrk (char *s, char *set);
+  43      =1  extern char *strstr  (char *s, char *sub);
+  44      =1  extern char *strtok  (char *str, const char *set);
+  45      =1  
+  46      =1  extern char memcmp (void *s1, void *s2, int n);
+  47      =1  extern void *memcpy (void *s1, void *s2, int n);
+  48      =1  extern void *memchr (void *s, char val, int n);
+  49      =1  extern void *memccpy (void *s1, void *s2, char val, int n);
+  50      =1  extern void *memmove (void *s1, void *s2, int n);
+  51      =1  extern void *memset  (void *s, char val, int n);
+  52      =1  #pragma RESTORE
+  53      =1  
+  54      =1  #endif
+  40          #include "c8051f340.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // C8051F340.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2005 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Register/bit definitions for the C8051F34x family.
+  10      =1  //
+  11      =1  //
+  12      =1  // FID:            34X000002
+  13      =1  // Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, '
+             -F346, 'F347
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   None
+  16      =1  //
+  17      =1  // Release 1.0
+  18      =1  //    -Initial Release (GP\PKC)
+  19      =1  //    -13 DEC 2005
+  20      =1  
+  21      =1  //----------------------------------------------------------------
+             --------------
+  22      =1  // Header File Preprocessor Directive
+  23      =1  //----------------------------------------------------------------
+             --------------
+  24      =1  
+  25      =1  #ifndef C8051F340_H
+           =1 #define C8051F340_H
+           =1 
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 // Byte Registers
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 
+           =1 sfr  P0           =  0x80;             // Port 0 Latch
+           =1 sfr  SP           =  0x81;             // Stack Pointer
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 18  
+
+           =1 sfr  DPL          =  0x82;             // Data Pointer Low
+           =1 sfr  DPH          =  0x83;             // Data Pointer High
+           =1 sfr  EMI0TC       =  0x84;             // EMIF Timing
+           =1 sfr  EMI0CF       =  0x85;             // EMIF Configuration
+           =1 sfr  OSCLCN       =  0x86;             // Internal Low-Freq Oscill
+             -ator Control
+           =1 sfr  PCON         =  0x87;             // Power Control
+           =1 sfr  TCON         =  0x88;             // Timer/Counter Control
+           =1 sfr  TMOD         =  0x89;             // Timer/Counter Mode
+           =1 sfr  TL0          =  0x8A;             // Timer/Counter 0 Low
+           =1 sfr  TL1          =  0x8B;             // Timer/Counter 1 Low
+           =1 sfr  TH0          =  0x8C;             // Timer/Counter 0 High
+           =1 sfr  TH1          =  0x8D;             // Timer/Counter 1 High
+           =1 sfr  CKCON        =  0x8E;             // Clock Control
+           =1 sfr  PSCTL        =  0x8F;             // Program Store R/W Contro
+             -l
+           =1 sfr  P1           =  0x90;             // Port 1 Latch
+           =1 sfr  TMR3CN       =  0x91;             // Timer/Counter 3Control
+           =1 sfr  TMR3RLL      =  0x92;             // Timer/Counter 3 Reload L
+             -ow
+           =1 sfr  TMR3RLH      =  0x93;             // Timer/Counter 3 Reload H
+             -igh
+           =1 sfr  TMR3L        =  0x94;             // Timer/Counter 3Low
+           =1 sfr  TMR3H        =  0x95;             // Timer/Counter 3 High
+           =1 sfr  USB0ADR      =  0x96;             // USB0 Indirect Address Re
+             -gister
+           =1 sfr  USB0DAT      =  0x97;             // USB0 Data Register
+           =1 sfr  SCON0        =  0x98;             // UART0 Control
+           =1 sfr  SBUF0        =  0x99;             // UART0 Data Buffer
+           =1 sfr  CPT1CN       =  0x9A;             // Comparator1 Control
+           =1 sfr  CPT0CN       =  0x9B;             // Comparator0 Control
+           =1 sfr  CPT1MD       =  0x9C;             // Comparator1 Mode Selecti
+             -on
+           =1 sfr  CPT0MD       =  0x9D;             // Comparator0 Mode Selecti
+             -on
+           =1 sfr  CPT1MX       =  0x9E;             // Comparator1 MUX Selectio
+             -n
+           =1 sfr  CPT0MX       =  0x9F;             // Comparator0 MUX Selectio
+             -n
+           =1 sfr  P2           =  0xA0;             // Port 2 Latch
+           =1 sfr  SPI0CFG      =  0xA1;             // SPI Configuration
+           =1 sfr  SPI0CKR      =  0xA2;             // SPI Clock Rate Control
+           =1 sfr  SPI0DAT      =  0xA3;             // SPI Data
+           =1 sfr  P0MDOUT      =  0xA4;             // Port 0 Output Mode Confi
+             -guration
+           =1 sfr  P1MDOUT      =  0xA5;             // Port 1 Output Mode Confi
+             -guration
+           =1 sfr  P2MDOUT      =  0xA6;             // Port 2 Output Mode Confi
+             -guration
+           =1 sfr  P3MDOUT      =  0xA7;             // Port 3 Output Mode Confi
+             -guration
+           =1 sfr  IE           =  0xA8;             // Interrupt Enable
+           =1 sfr  CLKSEL       =  0xA9;             // Clock Select
+           =1 sfr  EMI0CN       =  0xAA;             // External Memory Interfac
+             -e Control
+           =1 sfr  SBCON1       =  0xAC;             // UART1 Baud Rate Generato
+             -r Control
+           =1 sfr  P4MDOUT      =  0xAE;             // Port 4 Output Mode Confi
+             -guration
+           =1 sfr  PFE0CN       =  0xAF;             // Prefetch Engine Control
+           =1 sfr  P3           =  0xB0;             // Port 3 Latch
+           =1 sfr  OSCXCN       =  0xB1;             // External Oscillator Cont
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 19  
+
+             -rol
+           =1 sfr  OSCICN       =  0xB2;             // Internal Oscillator Cont
+             -rol
+           =1 sfr  OSCICL       =  0xB3;             // Internal Oscillator Cali
+             -bration
+           =1 sfr  SBRLL1       =  0xB4;             // UART1 Baud Rate Generato
+             -r Low
+           =1 sfr  SBRLH1       =  0xB5;             // UART1 Baud Rate Generato
+             -r High
+           =1 sfr  FLSCL        =  0xB6;             // Flash Scale
+           =1 sfr  FLKEY        =  0xB7;             // Flash Lock and Key
+           =1 sfr  IP           =  0xB8;             // Interrupt Priority
+           =1 sfr  CLKMUL       =  0xB9;             // Clock Multiplier
+           =1 sfr  AMX0N        =  0xBA;             // AMUX0 Negative Channel S
+             -elect
+           =1 sfr  AMX0P        =  0xBB;             // AMUX0 Positive Channel S
+             -elect
+           =1 sfr  ADC0CF       =  0xBC;             // ADC0 Configuration
+           =1 sfr  ADC0L        =  0xBD;             // ADC0 Low
+           =1 sfr  ADC0H        =  0xBE;             // ADC0 High
+           =1 sfr  SMB0CN       =  0xC0;             // SMBus Control
+           =1 sfr  SMB0CF       =  0xC1;             // SMBus Configuration
+           =1 sfr  SMB0DAT      =  0xC2;             // SMBus Data
+           =1 sfr  ADC0GTL      =  0xC3;             // ADC0 Greater-Than Compar
+             -e Low
+           =1 sfr  ADC0GTH      =  0xC4;             // ADC0 Greater-Than Compar
+             -e High
+           =1 sfr  ADC0LTL      =  0xC5;             // ADC0 Less-Than Compare W
+             -ord Low
+           =1 sfr  ADC0LTH      =  0xC6;             // ADC0 Less-Than Compare W
+             -ord High
+           =1 sfr  P4           =  0xC7;             // Port 4 Latch
+           =1 sfr  TMR2CN       =  0xC8;             // Timer/Counter 2 Control
+           =1 sfr  REG0CN       =  0xC9;             // Voltage Regulator Contro
+             -l
+           =1 sfr  TMR2RLL      =  0xCA;             // Timer/Counter 2 Reload L
+             -ow
+           =1 sfr  TMR2RLH      =  0xCB;             // Timer/Counter 2 Reload H
+             -igh
+           =1 sfr  TMR2L        =  0xCC;             // Timer/Counter 2 Low
+           =1 sfr  TMR2H        =  0xCD;             // Timer/Counter 2 High
+           =1 sfr  PSW          =  0xD0;             // Program Status Word
+           =1 sfr  REF0CN       =  0xD1;             // Voltage Reference Contro
+             -l
+           =1 sfr  SCON1        =  0xD2;             // UART1 Control
+           =1 sfr  SBUF1        =  0xD3;             // UART1 Data Buffer
+           =1 sfr  P0SKIP       =  0xD4;             // Port 0 Skip
+           =1 sfr  P1SKIP       =  0xD5;             // Port 1 Skip
+           =1 sfr  P2SKIP       =  0xD6;             // Port 2 Skip
+           =1 sfr  USB0XCN      =  0xD7;             // USB0 Transceiver Control
+           =1 sfr  PCA0CN       =  0xD8;             // PCA0 Control
+           =1 sfr  PCA0MD       =  0xD9;             // PCA0 Mode
+           =1 sfr  PCA0CPM0     =  0xDA;             // PCA0 Module 0 Mode Regis
+             -ter
+           =1 sfr  PCA0CPM1     =  0xDB;             // PCA0 Module 1 Mode Regis
+             -ter
+           =1 sfr  PCA0CPM2     =  0xDC;             // PCA0 Module 2 Mode Regis
+             -ter
+           =1 sfr  PCA0CPM3     =  0xDD;             // PCA0 Module 3 Mode Regis
+             -ter
+           =1 sfr  PCA0CPM4     =  0xDE;             // PCA0 Module 4 Mode Regis
+             -ter
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 20  
+
+           =1 sfr  P3SKIP       =  0xDF;             // Port 3 Skip
+           =1 sfr  ACC          =  0xE0;             // Accumulator
+           =1 sfr  XBR0         =  0xE1;             // Port I/O Crossbar Contro
+             -l 0
+           =1 sfr  XBR1         =  0xE2;             // Port I/O Crossbar Contro
+             -l 1
+           =1 sfr  XBR2         =  0xE3;             // Port I/O Crossbar Contro
+             -l 2
+           =1 sfr  IT01CF       =  0xE4;             // INT0/INT1 Configuration
+           =1 sfr  SMOD1        =  0xE5;             // UART1 Mode
+           =1 sfr  EIE1         =  0xE6;             // Extended Interrupt Enabl
+             -e 1
+           =1 sfr  EIE2         =  0xE7;             // Extended Interrupt Enabl
+             -e 2
+           =1 sfr  ADC0CN       =  0xE8;             // ADC0 Control
+           =1 sfr  PCA0CPL1     =  0xE9;             // PCA0 Capture 1 Low
+           =1 sfr  PCA0CPH1     =  0xEA;             // PCA0 Capture 1 High
+           =1 sfr  PCA0CPL2     =  0xEB;             // PCA0 Capture 2 Low
+           =1 sfr  PCA0CPH2     =  0xEC;             // PCA0 Capture 2 High
+           =1 sfr  PCA0CPL3     =  0xED;             // PCA0 Capture 3 Low
+           =1 sfr  PCA0CPH3     =  0xEE;             // PCA0 Capture 3 High
+           =1 sfr  RSTSRC       =  0xEF;             // Reset Source Configurati
+             -on/Status
+           =1 sfr  B            =  0xF0;             // B Register
+           =1 sfr  P0MDIN       =  0xF1;             // Port 0 Input Mode Config
+             -uration
+           =1 sfr  P1MDIN       =  0xF2;             // Port 1 Input Mode Config
+             -uration
+           =1 sfr  P2MDIN       =  0xF3;             // Port 2 Input Mode Config
+             -uration
+           =1 sfr  P3MDIN       =  0xF4;             // Port 3 Input Mode Config
+             -uration
+           =1 sfr  P4MDIN       =  0xF5;             // Port 4 Input Mode Config
+             -uration
+           =1 sfr  EIP1         =  0xF6;             // Extended Interrupt Prior
+             -ity 1
+           =1 sfr  EIP2         =  0xF7;             // Extended Interrupt Prior
+             -ity 2
+           =1 sfr  SPI0CN       =  0xF8;             // SPI0 Control
+           =1 sfr  PCA0L        =  0xF9;             // PCA0 Counter Low
+           =1 sfr  PCA0H        =  0xFA;             // PCA0 Counter High
+           =1 sfr  PCA0CPL0     =  0xFB;             // PCA0 Capture 0 Low
+           =1 sfr  PCA0CPH0     =  0xFC;             // PCA0 Capture 0 High
+           =1 sfr  PCA0CPL4     =  0xFD;             // PCA0 Capture 4 Low
+           =1 sfr  PCA0CPH4     =  0xFE;             // PCA0 Capture 4 High
+           =1 sfr  VDM0CN       =  0xFF;             // VDD Monitor Control
+           =1 
+           =1 
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 // Bit Definitions
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 
+           =1 // TCON 0x88
+           =1 sbit TF1     = 0x8F;                   // Timer1 overflow flag
+           =1 sbit TR1     = 0x8E;                   // Timer1 on/off control
+           =1 sbit TF0     = 0x8D;                   // Timer0 overflow flag
+           =1 sbit TR0     = 0x8C;                   // Timer0 on/off control
+           =1 sbit IE1     = 0x8B;                   // Ext interrupt 1 edge fla
+             -g
+           =1 sbit IT1     = 0x8A;                   // Ext interrupt 1 type
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 21  
+
+           =1 sbit IE0     = 0x89;                   // Ext interrupt 0 edge fla
+             -g
+           =1 sbit IT0     = 0x88;                   // Ext interrupt 0 type
+           =1 
+           =1 // SCON0 0x98
+           =1 sbit S0MODE  = 0x9F;                   // Serial mode control bit 
+             -0
+           =1                                        // Bit6 UNUSED
+           =1 sbit MCE0    = 0x9D;                   // Multiprocessor communica
+             -tion enable
+           =1 sbit REN0    = 0x9C;                   // Receive enable
+           =1 sbit TB80    = 0x9B;                   // Transmit bit 8
+           =1 sbit RB80    = 0x9A;                   // Receive bit 8
+           =1 sbit TI0     = 0x99;                   // Transmit interrupt flag
+           =1 sbit RI0     = 0x98;                   // Receive interrupt flag
+           =1 
+           =1 // IE 0xA8
+           =1 sbit EA      = 0xAF;                   // Global interrupt enable
+           =1 sbit ESPI0   = 0xAE;                   // SPI0 interrupt enable
+           =1 sbit ET2     = 0xAD;                   // Timer2 interrupt enable
+           =1 sbit ES0     = 0xAC;                   // UART0 interrupt enable
+           =1 sbit ET1     = 0xAB;                   // Timer1 interrupt enable
+           =1 sbit EX1     = 0xAA;                   // External interrupt 1 ena
+             -ble
+           =1 sbit ET0     = 0xA9;                   // Timer0 interrupt enable
+           =1 sbit EX0     = 0xA8;                   // External interrupt 0 ena
+             -ble
+           =1 
+           =1 // IP 0xB8
+           =1                                        // Bit7 UNUSED
+           =1 sbit PSPI0   = 0xBE;                   // SPI0 interrupt priority
+           =1 sbit PT2     = 0xBD;                   // Timer2 priority
+           =1 sbit PS0     = 0xBC;                   // UART0 priority
+           =1 sbit PT1     = 0xBB;                   // Timer1 priority
+           =1 sbit PX1     = 0xBA;                   // External interrupt 1 pri
+             -ority
+           =1 sbit PT0     = 0xB9;                   // Timer0 priority
+           =1 sbit PX0     = 0xB8;                   // External interrupt 0 pri
+             -ority
+           =1 
+           =1 // SMB0CN 0xC0
+           =1 sbit MASTER  = 0xC7;                   // Master/slave indicator
+           =1 sbit TXMODE  = 0xC6;                   // Transmit mode indicator
+           =1 sbit STA     = 0xC5;                   // Start flag
+           =1 sbit STO     = 0xC4;                   // Stop flag
+           =1 sbit ACKRQ   = 0xC3;                   // Acknowledge request
+           =1 sbit ARBLOST = 0xC2;                   // Arbitration lost indicat
+             -or
+           =1 sbit ACK     = 0xC1;                   // Acknowledge flag
+           =1 sbit SI      = 0xC0;                   // SMBus interrupt flag
+           =1 
+           =1 // TMR2CN 0xC8
+           =1 sbit TF2H    = 0xCF;                   // Timer2 high byte overflo
+             -w flag
+           =1 sbit TF2L    = 0xCE;                   // Timer2 low byte overflow
+             - flag
+           =1 sbit TF2LEN  = 0xCD;                   // Timer2 low byte interrup
+             -t enable
+           =1 sbit T2CE    = 0xCC;                   // Timer2 capture enable
+           =1 sbit T2SPLIT = 0xCB;                   // Timer2 split mode enable
+           =1 sbit TR2     = 0xCA;                   // Timer2 on/off control
+           =1 sbit T2CSS   = 0xC9;                   // Timer 2 Capture Source s
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 22  
+
+             -elect
+           =1 sbit T2XCLK  = 0xC8;                   // Timer2 external clock se
+             -lect
+           =1 
+           =1 // PSW 0xD0
+           =1 sbit CY      = 0xD7;                   // Carry flag
+           =1 sbit AC      = 0xD6;                   // Auxiliary carry flag
+           =1 sbit F0      = 0xD5;                   // User flag 0
+           =1 sbit RS1     = 0xD4;                   // Register bank select 1
+           =1 sbit RS0     = 0xD3;                   // Register bank select 0
+           =1 sbit OV      = 0xD2;                   // Overflow flag
+           =1 sbit F1      = 0xD1;                   // User flag 1
+           =1 sbit P       = 0xD0;                   // Accumulator parity flag
+           =1 
+           =1 // PCA0CN 0xD8
+           =1 sbit CF      = 0xDF;                   // PCA0 counter overflow fl
+             -ag
+           =1 sbit CR      = 0xDE;                   // PCA0 counter run control
+           =1                                        // Bit5 UNUSED
+           =1 sbit CCF4    = 0xDC;                   // PCA0 module4 capture/com
+             -pare flag
+           =1 sbit CCF3    = 0xDB;                   // PCA0 module3 capture/com
+             -pare flag
+           =1 sbit CCF2    = 0xDA;                   // PCA0 module2 capture/com
+             -pare flag
+           =1 sbit CCF1    = 0xD9;                   // PCA0 module1 capture/com
+             -pare flag
+           =1 sbit CCF0    = 0xD8;                   // PCA0 module0 capture/com
+             -pare flag
+           =1 
+           =1 // ADC0CN 0xE8
+           =1 sbit AD0EN   = 0xEF;                   // ADC0 enable
+           =1 sbit AD0TM   = 0xEE;                   // ADC0 track mode
+           =1 sbit AD0INT  = 0xED;                   // ADC0 conversion complete
+             - interrupt flag
+           =1 sbit AD0BUSY = 0xEC;                   // ADC0 busy flag
+           =1 sbit AD0WINT = 0xEB;                   // ADC0 window compare inte
+             -rrupt flag
+           =1 sbit AD0CM2  = 0xEA;                   // ADC0 conversion mode sel
+             -ect 2
+           =1 sbit AD0CM1  = 0xE9;                   // ADC0 conversion mode sel
+             -ect 1
+           =1 sbit AD0CM0  = 0xE8;                   // ADC0 conversion mode sel
+             -ect 0
+           =1 
+           =1 // SPI0CN 0xF8
+           =1 sbit SPIF    = 0xFF;                   // SPI0 interrupt flag
+           =1 sbit WCOL    = 0xFE;                   // SPI0 write collision fla
+             -g
+           =1 sbit MODF    = 0xFD;                   // SPI0 mode fault flag
+           =1 sbit RXOVRN  = 0xFC;                   // SPI0 rx overrun flag
+           =1 sbit NSSMD1  = 0xFB;                   // SPI0 slave select mode 1
+           =1 sbit NSSMD0  = 0xFA;                   // SPI0 slave select mode 0
+           =1 sbit TXBMT   = 0xF9;                   // SPI0 transmit buffer emp
+             -ty
+           =1 sbit SPIEN   = 0xF8;                   // SPI0 SPI enable
+           =1 
+           =1 
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 // Interrupt Priorities
+           =1 //----------------------------------------------------------------
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 23  
+
+             --------------
+           =1 
+           =1 #define INTERRUPT_INT0             0   // External Interrupt 0
+           =1 #define INTERRUPT_TIMER0           1   // Timer0 Overflow
+           =1 #define INTERRUPT_INT1             2   // External Interrupt 1
+           =1 #define INTERRUPT_TIMER1           3   // Timer1 Overflow
+           =1 #define INTERRUPT_UART0            4   // Serial Port 0
+           =1 #define INTERRUPT_TIMER2           5   // Timer2 Overflow
+           =1 #define INTERRUPT_SPI0             6   // Serial Peripheral Interf
+             -ace 0
+           =1 #define INTERRUPT_SMBUS0           7   // SMBus0 Interface
+           =1 #define INTERRUPT_USB0             8   // USB Interface
+           =1 #define INTERRUPT_ADC0_WINDOW      9   // ADC0 Window Comparison
+           =1 #define INTERRUPT_ADC0_EOC         10  // ADC0 End Of Conversion
+           =1 #define INTERRUPT_PCA0             11  // PCA0 Peripheral
+           =1 #define INTERRUPT_COMPARATOR0      12  // Comparator0
+           =1 #define INTERRUPT_COMPARATOR1      13  // Comparator1
+           =1 #define INTERRUPT_TIMER3           14  // Timer3 Overflow
+           =1 #define INTERRUPT_VBUS_LEVEL       15  // VBUS level-triggered int
+             -errupt
+           =1 #define INTERRUPT_UART1            16  // Serial Port 1
+           =1 
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 // Header File PreProcessor Directive
+           =1 //----------------------------------------------------------------
+             --------------
+           =1 
+           =1 #endif                                 // #define C8051F340_H
+ 289      =1  
+ 290      =1  //----------------------------------------------------------------
+             --------------
+ 291      =1  // End Of File
+ 292      =1  //----------------------------------------------------------------
+             --------------
+  41          
+  42          DWORD htonl(DWORD d) {
+  43   1              DWORD rtn=0;
+  44   1              rtn|=((d&0xFF000000L)>>24);
+  45   1              rtn|=((d&0x00FF0000L)>> 8);
+  46   1              rtn|=((d&0x0000FF00L)<< 8);
+  47   1              rtn|=((d&0x000000FFL)<<24);
+  48   1              return rtn;
+  49   1      }
+  50          
+  51          unsigned htons(unsigned w) {
+  52   1              unsigned rtn=0;
+  53   1              rtn|=((w&0xFF00u)>>8);
+  54   1              rtn|=((w&0x00FFu)<<8);
+  55   1              return rtn;
+  56   1      }
+  57          
+  58          #define whitespace " \t\0\n\r"
+  59          
+  60          //----------------------------------------------------------------
+             -------------
+  61          // Str_Token
+  62          //----------------------------------------------------------------
+             -------------
+  63          //
+  64          // This function searches the whitespaces and returns the address 
+             -of first
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 24  
+
+  65          // found whitespace sign.
+  66          //
+  67          // Parameters   : str - command string
+  68          // Return Value : address of found whitespace
+  69          //----------------------------------------------------------------
+             -------------
+  70          
+  71          char* Str_Token(char* str) {
+  72   1              static char* s;
+  73   1              static char old;
+  74   1              char*rtn;
+  75   1      
+  76   1              if(str) s=str; else *s=old;
+  77   1              while(*s && strchr(whitespace,*s))      // Skip leading whitespace
+  78   1                      s++;
+  79   1              if(!*s) return 0;
+  80   1              rtn=s;
+  81   1              while(*s && !strchr(whitespace,*s))     // Find next whitespace
+  82   1                      s++;
+  83   1              old=*s;
+  84   1              *s='\0';
+  85   1              return rtn;
+  86   1      }
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 25  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION Com000B (BEGIN)
+0000         L?0012:
+0000         L?0013:
+0000 120000      E     LCALL   ?C?LOR
+0003 900000      R     MOV     DPTR,#rtn
+0006         L?0014:
+0006 120000      E     LCALL   ?C?LSTXDATA
+0009 900000      R     MOV     DPTR,#rtn
+000C 22                RET     
+000D         L?0015:
+000D         L?0016:
+000D 900000      R     MOV     DPTR,#s
+0010 120000      E     LCALL   ?C?PLDXDATA
+0013 020000      E     LJMP    ?C?CLDPTR
+0016         L?0017:
+0016         L?0018:
+0016 900000      R     MOV     DPTR,#d
+0019 120000      E     LCALL   ?C?LLDXDATA
+001C E4                CLR     A
+001D 22                RET     
+             ; FUNCTION Com000B (END)
+
+             ; FUNCTION _htonl (BEGIN)
+                                           ; SOURCE LINE # 42
+0000 900000      R     MOV     DPTR,#d
+                                           ; SOURCE LINE # 43
+0003 120000      R     LCALL   L?0014
+0006 120000      E     LCALL   ?C?LSTKXDATA
+0009 00                DB      00H
+000A 00                DB      00H
+000B 00                DB      00H
+000C 00                DB      00H
+                                           ; SOURCE LINE # 44
+000D 900000      R     MOV     DPTR,#rtn
+0010 120000      E     LCALL   ?C?LLDXDATA0
+0013 C000              PUSH    AR0
+0015 120000      R     LCALL   L?0017
+0018 FF                MOV     R7,A
+0019 FE                MOV     R6,A
+001A FD                MOV     R5,A
+001B EC                MOV     A,R4
+001C 7818              MOV     R0,#018H
+001E 120000      E     LCALL   ?C?ULSHR
+0021 D000              POP     AR0
+                                           ; SOURCE LINE # 45
+0023 120000      R     LCALL   L?0012
+0026 120000      E     LCALL   ?C?LLDXDATA0
+0029 C000              PUSH    AR0
+002B 120000      R     LCALL   L?0017
+002E FF                MOV     R7,A
+002F FE                MOV     R6,A
+0030 E4                CLR     A
+0031 FC                MOV     R4,A
+0032 7808              MOV     R0,#08H
+0034 120000      E     LCALL   ?C?ULSHR
+0037 D000              POP     AR0
+                                           ; SOURCE LINE # 46
+0039 120000      R     LCALL   L?0012
+003C 120000      E     LCALL   ?C?LLDXDATA0
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 26  
+
+003F C000              PUSH    AR0
+0041 120000      R     LCALL   L?0018
+0044 FF                MOV     R7,A
+0045 E4                CLR     A
+0046 FD                MOV     R5,A
+0047 FC                MOV     R4,A
+0048 7808              MOV     R0,#08H
+004A 120000      E     LCALL   ?C?LSHL
+004D D000              POP     AR0
+                                           ; SOURCE LINE # 47
+004F 120000      R     LCALL   L?0013
+0052 120000      E     LCALL   ?C?LLDXDATA0
+0055 C000              PUSH    AR0
+0057 120000      R     LCALL   L?0018
+005A FE                MOV     R6,A
+005B FD                MOV     R5,A
+005C FC                MOV     R4,A
+005D 7818              MOV     R0,#018H
+005F 120000      E     LCALL   ?C?LSHL
+0062 D000              POP     AR0
+                                           ; SOURCE LINE # 48
+0064 120000      R     LCALL   L?0013
+0067 120000      E     LCALL   ?C?LLDXDATA
+                                           ; SOURCE LINE # 49
+006A         ?C0001:
+006A 22                RET     
+             ; FUNCTION _htonl (END)
+
+             ; FUNCTION _htons (BEGIN)
+                                           ; SOURCE LINE # 51
+;---- Variable 'w' assigned to Register 'R4/R5' ----
+0000 AD07              MOV     R5,AR7
+                                           ; SOURCE LINE # 52
+;---- Variable 'rtn' assigned to Register 'R2/R3' ----
+                                           ; SOURCE LINE # 53
+0002 EE                MOV     A,R6
+0003 FB                MOV     R3,A
+                                           ; SOURCE LINE # 54
+0004 ED                MOV     A,R5
+0005 FA                MOV     R2,A
+0006 EB                MOV     A,R3
+                                           ; SOURCE LINE # 55
+0007 AE02              MOV     R6,AR2
+0009 FF                MOV     R7,A
+                                           ; SOURCE LINE # 56
+000A         ?C0002:
+000A 22                RET     
+             ; FUNCTION _htons (END)
+
+             ; FUNCTION _Str_Token (BEGIN)
+                                           ; SOURCE LINE # 71
+;---- Variable 'str' assigned to Register 'R1/R2/R3' ----
+                                           ; SOURCE LINE # 76
+0000 EA                MOV     A,R2
+0001 49                ORL     A,R1
+0002 4B                ORL     A,R3
+0003 6008              JZ      ?C0003
+0005 900000      R     MOV     DPTR,#s
+0008 120000      E     LCALL   ?C?PSTXDATA
+000B 800F              SJMP    ?C0005
+000D         ?C0003:
+000D 900000      R     MOV     DPTR,#old
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 27  
+
+0010 E0                MOVX    A,@DPTR
+0011 FF                MOV     R7,A
+0012 900000      R     MOV     DPTR,#s
+0015 120000      E     LCALL   ?C?PLDXDATA
+0018 EF                MOV     A,R7
+0019 120000      E     LCALL   ?C?CSTPTR
+001C         ?C0005:
+                                           ; SOURCE LINE # 77
+001C 120000      R     LCALL   L?0015
+001F FD                MOV     R5,A
+0020 6011              JZ      ?C0006
+0022 120000      R     LCALL   L?0019
+0025 600C              JZ      ?C0006
+                                           ; SOURCE LINE # 78
+0027 900000      R     MOV     DPTR,#s+01H
+002A E4                CLR     A
+002B 75F001            MOV     B,#01H
+002E 120000      E     LCALL   ?C?IILDX
+0031 80E9              SJMP    ?C0005
+0033         ?C0006:
+                                           ; SOURCE LINE # 79
+0033 120000      R     LCALL   L?0015
+0036 7004              JNZ     ?C0007
+0038 FB                MOV     R3,A
+0039 FA                MOV     R2,A
+003A F9                MOV     R1,A
+003B 22                RET     
+003C         ?C0007:
+                                           ; SOURCE LINE # 80
+003C 900000      R     MOV     DPTR,#s
+003F 120000      E     LCALL   ?C?PLDXDATA
+0042 900000      R     MOV     DPTR,#rtn
+0045 120000      E     LCALL   ?C?PSTXDATA
+0048         ?C0009:
+                                           ; SOURCE LINE # 81
+0048 120000      R     LCALL   L?0016
+004B FD                MOV     R5,A
+004C 6010              JZ      ?C0010
+004E 120000      R     LCALL   L?0019
+0051 700B              JNZ     ?C0010
+                                           ; SOURCE LINE # 82
+0053 900000      R     MOV     DPTR,#s+01H
+0056 75F001            MOV     B,#01H
+0059 120000      E     LCALL   ?C?IILDX
+005C 80EA              SJMP    ?C0009
+005E         ?C0010:
+                                           ; SOURCE LINE # 83
+005E 120000      R     LCALL   L?0016
+0061 900000      R     MOV     DPTR,#old
+0064 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 84
+0065 E4                CLR     A
+0066 120000      E     LCALL   ?C?CSTPTR
+                                           ; SOURCE LINE # 85
+0069 900000      R     MOV     DPTR,#rtn
+006C 120000      E     LCALL   ?C?PLDXDATA
+                                           ; SOURCE LINE # 86
+006F         ?C0008:
+006F 22                RET     
+0070         L?0019:
+0070 7BFF              MOV     R3,#0FFH
+0072 7A00        R     MOV     R2,#HIGH ?SC_0
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 28  
+
+0074 7900        R     MOV     R1,#LOW ?SC_0
+0076 120000      E     LCALL   _strchr
+0079 EA                MOV     A,R2
+007A 49                ORL     A,R1
+007B 4B                ORL     A,R3
+007C 22                RET     
+             ; FUNCTION _Str_Token (END)
+
+C51 COMPILER V8.02   F34X_MSD_UTIL                 07/24/2007 22:07:38 PAGE 29  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+_Str_Token . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  str. . . . . . . . . . . . . . . . .  * REG *  DATA   PTR      0001H  3
+  s. . . . . . . . . . . . . . . . . .  STATIC   XDATA  PTR      0000H  3
+  old. . . . . . . . . . . . . . . . .  STATIC   XDATA  CHAR     0003H  1
+  rtn. . . . . . . . . . . . . . . . .  AUTO     XDATA  PTR      0000H  3
+DWORD. . . . . . . . . . . . . . . . .  TYPEDEF  -----  U_LONG   -----  4
+P3 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B0H  1
+_htonl . . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  d. . . . . . . . . . . . . . . . . .  AUTO     XDATA  U_LONG   0000H  4
+  rtn. . . . . . . . . . . . . . . . .  AUTO     XDATA  U_LONG   0004H  4
+_htons . . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  w. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0004H  2
+  rtn. . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0002H  2
+size_t . . . . . . . . . . . . . . . .  TYPEDEF  -----  U_INT    -----  2
+BYTE . . . . . . . . . . . . . . . . .  TYPEDEF  -----  U_CHAR   -----  1
+WORD . . . . . . . . . . . . . . . . .  TYPEDEF  -----  UNION    -----  2
+  i. . . . . . . . . . . . . . . . . .  MEMBER   -----  U_INT    0000H  2
+  c. . . . . . . . . . . . . . . . . .  MEMBER   -----  ARRAY    0000H  2
+_strchr. . . . . . . . . . . . . . . .  EXTERN   CODE   PROC     -----  -----
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    273    ----
+   CONSTANT SIZE    =      6    ----
+   XDATA SIZE       =      4      11
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

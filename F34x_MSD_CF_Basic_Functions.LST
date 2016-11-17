@@ -1,0 +1,2165 @@
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE F34X_MSD_CF_BASIC_FUNCTIONS
+OBJECT MODULE PLACED IN F34x_MSD_CF_Basic_Functions.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\c51.exe F34x_MSD_CF_Basic_Functions.c PW(80
+                    -) SB LC OT(9,SIZE) CD DB OE DF(__F340_VER__) LARGE
+
+line level    source
+
+   1          //----------------------------------------------------------------
+             --------------
+   2          // F34x_MSD_Basic_Functions.c
+   3          //----------------------------------------------------------------
+             --------------
+   4          // Copyright 2006 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // Module contains basic functions for Compact Flash card.
+  10          //
+  11          //
+  12          //
+  13          // How To Test:    See Readme.txt
+  14          //
+  15          //
+  16          // FID:            34X000028
+  17          // Target:         C8051F34x
+  18          // Tool chain:     Keil
+  19          // Command Line:   See Readme.txt
+  20          // Project Name:   F34x_USB_MSD
+  21          //
+  22          // Release 1.1
+  23          //    -All changes by PKC
+  24          //    -09 JUN 2006
+  25          //    -No changes; incremented revision number to match project re
+             -vision
+  26          //
+  27          // Release 1.0
+  28          //    -Initial Release
+  29          //
+  30          
+  31          //----------------------------------------------------------------
+             --------------
+  32          // Includes
+  33          //----------------------------------------------------------------
+             --------------
+  34          
+  35          #include "F34x_MSD_Physical_Settings.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_Physical_Settings.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Header file with common definitions
+  10      =1  //
+  11      =1  //
+  12      =1  // FID:            34X000048
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 2   
+
+  13      =1  // Target:         C8051F34x
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   See Readme.txt
+  16      =1  // Project Name:   F34x_USB_MSD
+  17      =1  //
+  18      =1  // Release 1.1
+  19      =1  //    -All changes by PKC
+  20      =1  //    -09 JUN 2006
+  21      =1  //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  22      =1  //
+  23      =1  // Release 1.0
+  24      =1  //    -Initial Release
+  25      =1  //
+  26      =1  
+  27      =1  //----------------------------------------------------------------
+             --------------
+  28      =1  // Header File Preprocessor Directive
+  29      =1  //----------------------------------------------------------------
+             --------------
+  30      =1  
+  31      =1  #ifndef __PHYSICAL_SETTINGS_H__
+  32      =1  #define __PHYSICAL_SETTINGS_H__
+  33      =1  
+  34      =1  #include "c8051f340.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // C8051F340.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2005 Silicon Laboratories, Inc.
+   5      =2  // http://www.silabs.com
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Register/bit definitions for the C8051F34x family.
+  10      =2  //
+  11      =2  //
+  12      =2  // FID:            34X000002
+  13      =2  // Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, '
+             -F346, 'F347
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   None
+  16      =2  //
+  17      =2  // Release 1.0
+  18      =2  //    -Initial Release (GP\PKC)
+  19      =2  //    -13 DEC 2005
+  20      =2  
+  21      =2  //----------------------------------------------------------------
+             --------------
+  22      =2  // Header File Preprocessor Directive
+  23      =2  //----------------------------------------------------------------
+             --------------
+  24      =2  
+  25      =2  #ifndef C8051F340_H
+  26      =2  #define C8051F340_H
+  27      =2  
+  28      =2  //----------------------------------------------------------------
+             --------------
+  29      =2  // Byte Registers
+  30      =2  //----------------------------------------------------------------
+             --------------
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 3   
+
+  31      =2  
+  32      =2  sfr  P0           =  0x80;             // Port 0 Latch
+  33      =2  sfr  SP           =  0x81;             // Stack Pointer
+  34      =2  sfr  DPL          =  0x82;             // Data Pointer Low
+  35      =2  sfr  DPH          =  0x83;             // Data Pointer High
+  36      =2  sfr  EMI0TC       =  0x84;             // EMIF Timing
+  37      =2  sfr  EMI0CF       =  0x85;             // EMIF Configuration
+  38      =2  sfr  OSCLCN       =  0x86;             // Internal Low-Freq Oscill
+             -ator Control
+  39      =2  sfr  PCON         =  0x87;             // Power Control
+  40      =2  sfr  TCON         =  0x88;             // Timer/Counter Control
+  41      =2  sfr  TMOD         =  0x89;             // Timer/Counter Mode
+  42      =2  sfr  TL0          =  0x8A;             // Timer/Counter 0 Low
+  43      =2  sfr  TL1          =  0x8B;             // Timer/Counter 1 Low
+  44      =2  sfr  TH0          =  0x8C;             // Timer/Counter 0 High
+  45      =2  sfr  TH1          =  0x8D;             // Timer/Counter 1 High
+  46      =2  sfr  CKCON        =  0x8E;             // Clock Control
+  47      =2  sfr  PSCTL        =  0x8F;             // Program Store R/W Contro
+             -l
+  48      =2  sfr  P1           =  0x90;             // Port 1 Latch
+  49      =2  sfr  TMR3CN       =  0x91;             // Timer/Counter 3Control
+  50      =2  sfr  TMR3RLL      =  0x92;             // Timer/Counter 3 Reload L
+             -ow
+  51      =2  sfr  TMR3RLH      =  0x93;             // Timer/Counter 3 Reload H
+             -igh
+  52      =2  sfr  TMR3L        =  0x94;             // Timer/Counter 3Low
+  53      =2  sfr  TMR3H        =  0x95;             // Timer/Counter 3 High
+  54      =2  sfr  USB0ADR      =  0x96;             // USB0 Indirect Address Re
+             -gister
+  55      =2  sfr  USB0DAT      =  0x97;             // USB0 Data Register
+  56      =2  sfr  SCON0        =  0x98;             // UART0 Control
+  57      =2  sfr  SBUF0        =  0x99;             // UART0 Data Buffer
+  58      =2  sfr  CPT1CN       =  0x9A;             // Comparator1 Control
+  59      =2  sfr  CPT0CN       =  0x9B;             // Comparator0 Control
+  60      =2  sfr  CPT1MD       =  0x9C;             // Comparator1 Mode Selecti
+             -on
+  61      =2  sfr  CPT0MD       =  0x9D;             // Comparator0 Mode Selecti
+             -on
+  62      =2  sfr  CPT1MX       =  0x9E;             // Comparator1 MUX Selectio
+             -n
+  63      =2  sfr  CPT0MX       =  0x9F;             // Comparator0 MUX Selectio
+             -n
+  64      =2  sfr  P2           =  0xA0;             // Port 2 Latch
+  65      =2  sfr  SPI0CFG      =  0xA1;             // SPI Configuration
+  66      =2  sfr  SPI0CKR      =  0xA2;             // SPI Clock Rate Control
+  67      =2  sfr  SPI0DAT      =  0xA3;             // SPI Data
+  68      =2  sfr  P0MDOUT      =  0xA4;             // Port 0 Output Mode Confi
+             -guration
+  69      =2  sfr  P1MDOUT      =  0xA5;             // Port 1 Output Mode Confi
+             -guration
+  70      =2  sfr  P2MDOUT      =  0xA6;             // Port 2 Output Mode Confi
+             -guration
+  71      =2  sfr  P3MDOUT      =  0xA7;             // Port 3 Output Mode Confi
+             -guration
+  72      =2  sfr  IE           =  0xA8;             // Interrupt Enable
+  73      =2  sfr  CLKSEL       =  0xA9;             // Clock Select
+  74      =2  sfr  EMI0CN       =  0xAA;             // External Memory Interfac
+             -e Control
+  75      =2  sfr  SBCON1       =  0xAC;             // UART1 Baud Rate Generato
+             -r Control
+  76      =2  sfr  P4MDOUT      =  0xAE;             // Port 4 Output Mode Confi
+             -guration
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 4   
+
+  77      =2  sfr  PFE0CN       =  0xAF;             // Prefetch Engine Control
+  78      =2  sfr  P3           =  0xB0;             // Port 3 Latch
+  79      =2  sfr  OSCXCN       =  0xB1;             // External Oscillator Cont
+             -rol
+  80      =2  sfr  OSCICN       =  0xB2;             // Internal Oscillator Cont
+             -rol
+  81      =2  sfr  OSCICL       =  0xB3;             // Internal Oscillator Cali
+             -bration
+  82      =2  sfr  SBRLL1       =  0xB4;             // UART1 Baud Rate Generato
+             -r Low
+  83      =2  sfr  SBRLH1       =  0xB5;             // UART1 Baud Rate Generato
+             -r High
+  84      =2  sfr  FLSCL        =  0xB6;             // Flash Scale
+  85      =2  sfr  FLKEY        =  0xB7;             // Flash Lock and Key
+  86      =2  sfr  IP           =  0xB8;             // Interrupt Priority
+  87      =2  sfr  CLKMUL       =  0xB9;             // Clock Multiplier
+  88      =2  sfr  AMX0N        =  0xBA;             // AMUX0 Negative Channel S
+             -elect
+  89      =2  sfr  AMX0P        =  0xBB;             // AMUX0 Positive Channel S
+             -elect
+  90      =2  sfr  ADC0CF       =  0xBC;             // ADC0 Configuration
+  91      =2  sfr  ADC0L        =  0xBD;             // ADC0 Low
+  92      =2  sfr  ADC0H        =  0xBE;             // ADC0 High
+  93      =2  sfr  SMB0CN       =  0xC0;             // SMBus Control
+  94      =2  sfr  SMB0CF       =  0xC1;             // SMBus Configuration
+  95      =2  sfr  SMB0DAT      =  0xC2;             // SMBus Data
+  96      =2  sfr  ADC0GTL      =  0xC3;             // ADC0 Greater-Than Compar
+             -e Low
+  97      =2  sfr  ADC0GTH      =  0xC4;             // ADC0 Greater-Than Compar
+             -e High
+  98      =2  sfr  ADC0LTL      =  0xC5;             // ADC0 Less-Than Compare W
+             -ord Low
+  99      =2  sfr  ADC0LTH      =  0xC6;             // ADC0 Less-Than Compare W
+             -ord High
+ 100      =2  sfr  P4           =  0xC7;             // Port 4 Latch
+ 101      =2  sfr  TMR2CN       =  0xC8;             // Timer/Counter 2 Control
+ 102      =2  sfr  REG0CN       =  0xC9;             // Voltage Regulator Contro
+             -l
+ 103      =2  sfr  TMR2RLL      =  0xCA;             // Timer/Counter 2 Reload L
+             -ow
+ 104      =2  sfr  TMR2RLH      =  0xCB;             // Timer/Counter 2 Reload H
+             -igh
+ 105      =2  sfr  TMR2L        =  0xCC;             // Timer/Counter 2 Low
+ 106      =2  sfr  TMR2H        =  0xCD;             // Timer/Counter 2 High
+ 107      =2  sfr  PSW          =  0xD0;             // Program Status Word
+ 108      =2  sfr  REF0CN       =  0xD1;             // Voltage Reference Contro
+             -l
+ 109      =2  sfr  SCON1        =  0xD2;             // UART1 Control
+ 110      =2  sfr  SBUF1        =  0xD3;             // UART1 Data Buffer
+ 111      =2  sfr  P0SKIP       =  0xD4;             // Port 0 Skip
+ 112      =2  sfr  P1SKIP       =  0xD5;             // Port 1 Skip
+ 113      =2  sfr  P2SKIP       =  0xD6;             // Port 2 Skip
+ 114      =2  sfr  USB0XCN      =  0xD7;             // USB0 Transceiver Control
+ 115      =2  sfr  PCA0CN       =  0xD8;             // PCA0 Control
+ 116      =2  sfr  PCA0MD       =  0xD9;             // PCA0 Mode
+ 117      =2  sfr  PCA0CPM0     =  0xDA;             // PCA0 Module 0 Mode Regis
+             -ter
+ 118      =2  sfr  PCA0CPM1     =  0xDB;             // PCA0 Module 1 Mode Regis
+             -ter
+ 119      =2  sfr  PCA0CPM2     =  0xDC;             // PCA0 Module 2 Mode Regis
+             -ter
+ 120      =2  sfr  PCA0CPM3     =  0xDD;             // PCA0 Module 3 Mode Regis
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 5   
+
+             -ter
+ 121      =2  sfr  PCA0CPM4     =  0xDE;             // PCA0 Module 4 Mode Regis
+             -ter
+ 122      =2  sfr  P3SKIP       =  0xDF;             // Port 3 Skip
+ 123      =2  sfr  ACC          =  0xE0;             // Accumulator
+ 124      =2  sfr  XBR0         =  0xE1;             // Port I/O Crossbar Contro
+             -l 0
+ 125      =2  sfr  XBR1         =  0xE2;             // Port I/O Crossbar Contro
+             -l 1
+ 126      =2  sfr  XBR2         =  0xE3;             // Port I/O Crossbar Contro
+             -l 2
+ 127      =2  sfr  IT01CF       =  0xE4;             // INT0/INT1 Configuration
+ 128      =2  sfr  SMOD1        =  0xE5;             // UART1 Mode
+ 129      =2  sfr  EIE1         =  0xE6;             // Extended Interrupt Enabl
+             -e 1
+ 130      =2  sfr  EIE2         =  0xE7;             // Extended Interrupt Enabl
+             -e 2
+ 131      =2  sfr  ADC0CN       =  0xE8;             // ADC0 Control
+ 132      =2  sfr  PCA0CPL1     =  0xE9;             // PCA0 Capture 1 Low
+ 133      =2  sfr  PCA0CPH1     =  0xEA;             // PCA0 Capture 1 High
+ 134      =2  sfr  PCA0CPL2     =  0xEB;             // PCA0 Capture 2 Low
+ 135      =2  sfr  PCA0CPH2     =  0xEC;             // PCA0 Capture 2 High
+ 136      =2  sfr  PCA0CPL3     =  0xED;             // PCA0 Capture 3 Low
+ 137      =2  sfr  PCA0CPH3     =  0xEE;             // PCA0 Capture 3 High
+ 138      =2  sfr  RSTSRC       =  0xEF;             // Reset Source Configurati
+             -on/Status
+ 139      =2  sfr  B            =  0xF0;             // B Register
+ 140      =2  sfr  P0MDIN       =  0xF1;             // Port 0 Input Mode Config
+             -uration
+ 141      =2  sfr  P1MDIN       =  0xF2;             // Port 1 Input Mode Config
+             -uration
+ 142      =2  sfr  P2MDIN       =  0xF3;             // Port 2 Input Mode Config
+             -uration
+ 143      =2  sfr  P3MDIN       =  0xF4;             // Port 3 Input Mode Config
+             -uration
+ 144      =2  sfr  P4MDIN       =  0xF5;             // Port 4 Input Mode Config
+             -uration
+ 145      =2  sfr  EIP1         =  0xF6;             // Extended Interrupt Prior
+             -ity 1
+ 146      =2  sfr  EIP2         =  0xF7;             // Extended Interrupt Prior
+             -ity 2
+ 147      =2  sfr  SPI0CN       =  0xF8;             // SPI0 Control
+ 148      =2  sfr  PCA0L        =  0xF9;             // PCA0 Counter Low
+ 149      =2  sfr  PCA0H        =  0xFA;             // PCA0 Counter High
+ 150      =2  sfr  PCA0CPL0     =  0xFB;             // PCA0 Capture 0 Low
+ 151      =2  sfr  PCA0CPH0     =  0xFC;             // PCA0 Capture 0 High
+ 152      =2  sfr  PCA0CPL4     =  0xFD;             // PCA0 Capture 4 Low
+ 153      =2  sfr  PCA0CPH4     =  0xFE;             // PCA0 Capture 4 High
+ 154      =2  sfr  VDM0CN       =  0xFF;             // VDD Monitor Control
+ 155      =2  
+ 156      =2  
+ 157      =2  //----------------------------------------------------------------
+             --------------
+ 158      =2  // Bit Definitions
+ 159      =2  //----------------------------------------------------------------
+             --------------
+ 160      =2  
+ 161      =2  // TCON 0x88
+ 162      =2  sbit TF1     = 0x8F;                   // Timer1 overflow flag
+ 163      =2  sbit TR1     = 0x8E;                   // Timer1 on/off control
+ 164      =2  sbit TF0     = 0x8D;                   // Timer0 overflow flag
+ 165      =2  sbit TR0     = 0x8C;                   // Timer0 on/off control
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 6   
+
+ 166      =2  sbit IE1     = 0x8B;                   // Ext interrupt 1 edge fla
+             -g
+ 167      =2  sbit IT1     = 0x8A;                   // Ext interrupt 1 type
+ 168      =2  sbit IE0     = 0x89;                   // Ext interrupt 0 edge fla
+             -g
+ 169      =2  sbit IT0     = 0x88;                   // Ext interrupt 0 type
+ 170      =2  
+ 171      =2  // SCON0 0x98
+ 172      =2  sbit S0MODE  = 0x9F;                   // Serial mode control bit 
+             -0
+ 173      =2                                         // Bit6 UNUSED
+ 174      =2  sbit MCE0    = 0x9D;                   // Multiprocessor communica
+             -tion enable
+ 175      =2  sbit REN0    = 0x9C;                   // Receive enable
+ 176      =2  sbit TB80    = 0x9B;                   // Transmit bit 8
+ 177      =2  sbit RB80    = 0x9A;                   // Receive bit 8
+ 178      =2  sbit TI0     = 0x99;                   // Transmit interrupt flag
+ 179      =2  sbit RI0     = 0x98;                   // Receive interrupt flag
+ 180      =2  
+ 181      =2  // IE 0xA8
+ 182      =2  sbit EA      = 0xAF;                   // Global interrupt enable
+ 183      =2  sbit ESPI0   = 0xAE;                   // SPI0 interrupt enable
+ 184      =2  sbit ET2     = 0xAD;                   // Timer2 interrupt enable
+ 185      =2  sbit ES0     = 0xAC;                   // UART0 interrupt enable
+ 186      =2  sbit ET1     = 0xAB;                   // Timer1 interrupt enable
+ 187      =2  sbit EX1     = 0xAA;                   // External interrupt 1 ena
+             -ble
+ 188      =2  sbit ET0     = 0xA9;                   // Timer0 interrupt enable
+ 189      =2  sbit EX0     = 0xA8;                   // External interrupt 0 ena
+             -ble
+ 190      =2  
+ 191      =2  // IP 0xB8
+ 192      =2                                         // Bit7 UNUSED
+ 193      =2  sbit PSPI0   = 0xBE;                   // SPI0 interrupt priority
+ 194      =2  sbit PT2     = 0xBD;                   // Timer2 priority
+ 195      =2  sbit PS0     = 0xBC;                   // UART0 priority
+ 196      =2  sbit PT1     = 0xBB;                   // Timer1 priority
+ 197      =2  sbit PX1     = 0xBA;                   // External interrupt 1 pri
+             -ority
+ 198      =2  sbit PT0     = 0xB9;                   // Timer0 priority
+ 199      =2  sbit PX0     = 0xB8;                   // External interrupt 0 pri
+             -ority
+ 200      =2  
+ 201      =2  // SMB0CN 0xC0
+ 202      =2  sbit MASTER  = 0xC7;                   // Master/slave indicator
+ 203      =2  sbit TXMODE  = 0xC6;                   // Transmit mode indicator
+ 204      =2  sbit STA     = 0xC5;                   // Start flag
+ 205      =2  sbit STO     = 0xC4;                   // Stop flag
+ 206      =2  sbit ACKRQ   = 0xC3;                   // Acknowledge request
+ 207      =2  sbit ARBLOST = 0xC2;                   // Arbitration lost indicat
+             -or
+ 208      =2  sbit ACK     = 0xC1;                   // Acknowledge flag
+ 209      =2  sbit SI      = 0xC0;                   // SMBus interrupt flag
+ 210      =2  
+ 211      =2  // TMR2CN 0xC8
+ 212      =2  sbit TF2H    = 0xCF;                   // Timer2 high byte overflo
+             -w flag
+ 213      =2  sbit TF2L    = 0xCE;                   // Timer2 low byte overflow
+             - flag
+ 214      =2  sbit TF2LEN  = 0xCD;                   // Timer2 low byte interrup
+             -t enable
+ 215      =2  sbit T2CE    = 0xCC;                   // Timer2 capture enable
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 7   
+
+ 216      =2  sbit T2SPLIT = 0xCB;                   // Timer2 split mode enable
+ 217      =2  sbit TR2     = 0xCA;                   // Timer2 on/off control
+ 218      =2  sbit T2CSS   = 0xC9;                   // Timer 2 Capture Source s
+             -elect
+ 219      =2  sbit T2XCLK  = 0xC8;                   // Timer2 external clock se
+             -lect
+ 220      =2  
+ 221      =2  // PSW 0xD0
+ 222      =2  sbit CY      = 0xD7;                   // Carry flag
+ 223      =2  sbit AC      = 0xD6;                   // Auxiliary carry flag
+ 224      =2  sbit F0      = 0xD5;                   // User flag 0
+ 225      =2  sbit RS1     = 0xD4;                   // Register bank select 1
+ 226      =2  sbit RS0     = 0xD3;                   // Register bank select 0
+ 227      =2  sbit OV      = 0xD2;                   // Overflow flag
+ 228      =2  sbit F1      = 0xD1;                   // User flag 1
+ 229      =2  sbit P       = 0xD0;                   // Accumulator parity flag
+ 230      =2  
+ 231      =2  // PCA0CN 0xD8
+ 232      =2  sbit CF      = 0xDF;                   // PCA0 counter overflow fl
+             -ag
+ 233      =2  sbit CR      = 0xDE;                   // PCA0 counter run control
+ 234      =2                                         // Bit5 UNUSED
+ 235      =2  sbit CCF4    = 0xDC;                   // PCA0 module4 capture/com
+             -pare flag
+ 236      =2  sbit CCF3    = 0xDB;                   // PCA0 module3 capture/com
+             -pare flag
+ 237      =2  sbit CCF2    = 0xDA;                   // PCA0 module2 capture/com
+             -pare flag
+ 238      =2  sbit CCF1    = 0xD9;                   // PCA0 module1 capture/com
+             -pare flag
+ 239      =2  sbit CCF0    = 0xD8;                   // PCA0 module0 capture/com
+             -pare flag
+ 240      =2  
+ 241      =2  // ADC0CN 0xE8
+ 242      =2  sbit AD0EN   = 0xEF;                   // ADC0 enable
+ 243      =2  sbit AD0TM   = 0xEE;                   // ADC0 track mode
+ 244      =2  sbit AD0INT  = 0xED;                   // ADC0 conversion complete
+             - interrupt flag
+ 245      =2  sbit AD0BUSY = 0xEC;                   // ADC0 busy flag
+ 246      =2  sbit AD0WINT = 0xEB;                   // ADC0 window compare inte
+             -rrupt flag
+ 247      =2  sbit AD0CM2  = 0xEA;                   // ADC0 conversion mode sel
+             -ect 2
+ 248      =2  sbit AD0CM1  = 0xE9;                   // ADC0 conversion mode sel
+             -ect 1
+ 249      =2  sbit AD0CM0  = 0xE8;                   // ADC0 conversion mode sel
+             -ect 0
+ 250      =2  
+ 251      =2  // SPI0CN 0xF8
+ 252      =2  sbit SPIF    = 0xFF;                   // SPI0 interrupt flag
+ 253      =2  sbit WCOL    = 0xFE;                   // SPI0 write collision fla
+             -g
+ 254      =2  sbit MODF    = 0xFD;                   // SPI0 mode fault flag
+ 255      =2  sbit RXOVRN  = 0xFC;                   // SPI0 rx overrun flag
+ 256      =2  sbit NSSMD1  = 0xFB;                   // SPI0 slave select mode 1
+ 257      =2  sbit NSSMD0  = 0xFA;                   // SPI0 slave select mode 0
+ 258      =2  sbit TXBMT   = 0xF9;                   // SPI0 transmit buffer emp
+             -ty
+ 259      =2  sbit SPIEN   = 0xF8;                   // SPI0 SPI enable
+ 260      =2  
+ 261      =2  
+ 262      =2  //----------------------------------------------------------------
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 8   
+
+             --------------
+ 263      =2  // Interrupt Priorities
+ 264      =2  //----------------------------------------------------------------
+             --------------
+ 265      =2  
+ 266      =2  #define INTERRUPT_INT0             0   // External Interrupt 0
+ 267      =2  #define INTERRUPT_TIMER0           1   // Timer0 Overflow
+ 268      =2  #define INTERRUPT_INT1             2   // External Interrupt 1
+ 269      =2  #define INTERRUPT_TIMER1           3   // Timer1 Overflow
+ 270      =2  #define INTERRUPT_UART0            4   // Serial Port 0
+ 271      =2  #define INTERRUPT_TIMER2           5   // Timer2 Overflow
+ 272      =2  #define INTERRUPT_SPI0             6   // Serial Peripheral Interf
+             -ace 0
+ 273      =2  #define INTERRUPT_SMBUS0           7   // SMBus0 Interface
+ 274      =2  #define INTERRUPT_USB0             8   // USB Interface
+ 275      =2  #define INTERRUPT_ADC0_WINDOW      9   // ADC0 Window Comparison
+ 276      =2  #define INTERRUPT_ADC0_EOC         10  // ADC0 End Of Conversion
+ 277      =2  #define INTERRUPT_PCA0             11  // PCA0 Peripheral
+ 278      =2  #define INTERRUPT_COMPARATOR0      12  // Comparator0
+ 279      =2  #define INTERRUPT_COMPARATOR1      13  // Comparator1
+ 280      =2  #define INTERRUPT_TIMER3           14  // Timer3 Overflow
+ 281      =2  #define INTERRUPT_VBUS_LEVEL       15  // VBUS level-triggered int
+             -errupt
+ 282      =2  #define INTERRUPT_UART1            16  // Serial Port 1
+ 283      =2  
+ 284      =2  //----------------------------------------------------------------
+             --------------
+ 285      =2  // Header File PreProcessor Directive
+ 286      =2  //----------------------------------------------------------------
+             --------------
+ 287      =2  
+ 288      =2  #endif                                 // #define C8051F340_H
+ 289      =2  
+ 290      =2  //----------------------------------------------------------------
+             --------------
+ 291      =2  // End Of File
+ 292      =2  //----------------------------------------------------------------
+             --------------
+  35      =1  
+  36      =1  // Physical size in bytes of one MMC FLASH sector
+  37      =1  #define PHYSICAL_BLOCK_SIZE     512   
+  38      =1  
+  39      =1  sbit SCLK = P0^0;
+  40      =1  sbit SCS  = P0^3;
+  41      =1  sbit MISO = P0^1;
+  42      =1  sbit MOSI = P0^2;
+  43      =1  
+  44      =1  #endif
+  36          #include "F34x_MSD_CF_Basic_Functions.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_CF_Basic_Functions.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Header file with function prototypes relevant to F34x_CF_Basic_
+             -Functions.c
+  10      =1  //
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 9   
+
+  11      =1  //
+  12      =1  // FID:            34X000029
+  13      =1  // Target:         C8051F34x
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   See Readme.txt
+  16      =1  // Project Name:   F34x_USB_MSD
+  17      =1  //
+  18      =1  // Release 1.1
+  19      =1  //    -All changes by PKC
+  20      =1  //    -09 JUN 2006
+  21      =1  //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  22      =1  //
+  23      =1  // Release 1.0
+  24      =1  //    -Initial Release
+  25      =1  //
+  26      =1  
+  27      =1  //----------------------------------------------------------------
+             --------------
+  28      =1  // Header File Preprocessor Directive
+  29      =1  //----------------------------------------------------------------
+             --------------
+  30      =1  
+  31      =1  #ifndef __CF_BASIC_H__
+  32      =1  #define __CF_BASIC_H__
+  33      =1  
+  34      =1  #include <intrins.h>
+   1      =2  /*----------------------------------------------------------------
+             -----------
+   2      =2  INTRINS.H
+   3      =2  
+   4      =2  Intrinsic functions for C51.
+   5      =2  Copyright (c) 1988-2004 Keil Elektronik GmbH and Keil Software, In
+             -c.
+   6      =2  All rights reserved.
+   7      =2  ------------------------------------------------------------------
+             ---------*/
+   8      =2  
+   9      =2  #ifndef __INTRINS_H__
+  10      =2  #define __INTRINS_H__
+  11      =2  
+  12      =2  extern void          _nop_     (void);
+  13      =2  extern bit           _testbit_ (bit);
+  14      =2  extern unsigned char _cror_    (unsigned char, unsigned char);
+  15      =2  extern unsigned int  _iror_    (unsigned int,  unsigned char);
+  16      =2  extern unsigned long _lror_    (unsigned long, unsigned char);
+  17      =2  extern unsigned char _crol_    (unsigned char, unsigned char);
+  18      =2  extern unsigned int  _irol_    (unsigned int,  unsigned char);
+  19      =2  extern unsigned long _lrol_    (unsigned long, unsigned char);
+  20      =2  extern unsigned char _chkfloat_(float);
+  21      =2  extern void          _push_    (unsigned char _sfr);
+  22      =2  extern void          _pop_     (unsigned char _sfr);
+  23      =2  
+  24      =2  #endif
+  25      =2  
+  35      =1  #include "c8051f340.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // C8051F340.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2005 Silicon Laboratories, Inc.
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 10  
+
+   5      =2  // http://www.silabs.com
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Register/bit definitions for the C8051F34x family.
+  10      =2  //
+  11      =2  //
+  12      =2  // FID:            34X000002
+  13      =2  // Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, '
+             -F346, 'F347
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   None
+  16      =2  //
+  17      =2  // Release 1.0
+  18      =2  //    -Initial Release (GP\PKC)
+  19      =2  //    -13 DEC 2005
+  20      =2  
+  21      =2  //----------------------------------------------------------------
+             --------------
+  22      =2  // Header File Preprocessor Directive
+  23      =2  //----------------------------------------------------------------
+             --------------
+  24      =2  
+  25      =2  #ifndef C8051F340_H
+           =2 #define C8051F340_H
+           =2 
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 // Byte Registers
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 
+           =2 sfr  P0           =  0x80;             // Port 0 Latch
+           =2 sfr  SP           =  0x81;             // Stack Pointer
+           =2 sfr  DPL          =  0x82;             // Data Pointer Low
+           =2 sfr  DPH          =  0x83;             // Data Pointer High
+           =2 sfr  EMI0TC       =  0x84;             // EMIF Timing
+           =2 sfr  EMI0CF       =  0x85;             // EMIF Configuration
+           =2 sfr  OSCLCN       =  0x86;             // Internal Low-Freq Oscill
+             -ator Control
+           =2 sfr  PCON         =  0x87;             // Power Control
+           =2 sfr  TCON         =  0x88;             // Timer/Counter Control
+           =2 sfr  TMOD         =  0x89;             // Timer/Counter Mode
+           =2 sfr  TL0          =  0x8A;             // Timer/Counter 0 Low
+           =2 sfr  TL1          =  0x8B;             // Timer/Counter 1 Low
+           =2 sfr  TH0          =  0x8C;             // Timer/Counter 0 High
+           =2 sfr  TH1          =  0x8D;             // Timer/Counter 1 High
+           =2 sfr  CKCON        =  0x8E;             // Clock Control
+           =2 sfr  PSCTL        =  0x8F;             // Program Store R/W Contro
+             -l
+           =2 sfr  P1           =  0x90;             // Port 1 Latch
+           =2 sfr  TMR3CN       =  0x91;             // Timer/Counter 3Control
+           =2 sfr  TMR3RLL      =  0x92;             // Timer/Counter 3 Reload L
+             -ow
+           =2 sfr  TMR3RLH      =  0x93;             // Timer/Counter 3 Reload H
+             -igh
+           =2 sfr  TMR3L        =  0x94;             // Timer/Counter 3Low
+           =2 sfr  TMR3H        =  0x95;             // Timer/Counter 3 High
+           =2 sfr  USB0ADR      =  0x96;             // USB0 Indirect Address Re
+             -gister
+           =2 sfr  USB0DAT      =  0x97;             // USB0 Data Register
+           =2 sfr  SCON0        =  0x98;             // UART0 Control
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 11  
+
+           =2 sfr  SBUF0        =  0x99;             // UART0 Data Buffer
+           =2 sfr  CPT1CN       =  0x9A;             // Comparator1 Control
+           =2 sfr  CPT0CN       =  0x9B;             // Comparator0 Control
+           =2 sfr  CPT1MD       =  0x9C;             // Comparator1 Mode Selecti
+             -on
+           =2 sfr  CPT0MD       =  0x9D;             // Comparator0 Mode Selecti
+             -on
+           =2 sfr  CPT1MX       =  0x9E;             // Comparator1 MUX Selectio
+             -n
+           =2 sfr  CPT0MX       =  0x9F;             // Comparator0 MUX Selectio
+             -n
+           =2 sfr  P2           =  0xA0;             // Port 2 Latch
+           =2 sfr  SPI0CFG      =  0xA1;             // SPI Configuration
+           =2 sfr  SPI0CKR      =  0xA2;             // SPI Clock Rate Control
+           =2 sfr  SPI0DAT      =  0xA3;             // SPI Data
+           =2 sfr  P0MDOUT      =  0xA4;             // Port 0 Output Mode Confi
+             -guration
+           =2 sfr  P1MDOUT      =  0xA5;             // Port 1 Output Mode Confi
+             -guration
+           =2 sfr  P2MDOUT      =  0xA6;             // Port 2 Output Mode Confi
+             -guration
+           =2 sfr  P3MDOUT      =  0xA7;             // Port 3 Output Mode Confi
+             -guration
+           =2 sfr  IE           =  0xA8;             // Interrupt Enable
+           =2 sfr  CLKSEL       =  0xA9;             // Clock Select
+           =2 sfr  EMI0CN       =  0xAA;             // External Memory Interfac
+             -e Control
+           =2 sfr  SBCON1       =  0xAC;             // UART1 Baud Rate Generato
+             -r Control
+           =2 sfr  P4MDOUT      =  0xAE;             // Port 4 Output Mode Confi
+             -guration
+           =2 sfr  PFE0CN       =  0xAF;             // Prefetch Engine Control
+           =2 sfr  P3           =  0xB0;             // Port 3 Latch
+           =2 sfr  OSCXCN       =  0xB1;             // External Oscillator Cont
+             -rol
+           =2 sfr  OSCICN       =  0xB2;             // Internal Oscillator Cont
+             -rol
+           =2 sfr  OSCICL       =  0xB3;             // Internal Oscillator Cali
+             -bration
+           =2 sfr  SBRLL1       =  0xB4;             // UART1 Baud Rate Generato
+             -r Low
+           =2 sfr  SBRLH1       =  0xB5;             // UART1 Baud Rate Generato
+             -r High
+           =2 sfr  FLSCL        =  0xB6;             // Flash Scale
+           =2 sfr  FLKEY        =  0xB7;             // Flash Lock and Key
+           =2 sfr  IP           =  0xB8;             // Interrupt Priority
+           =2 sfr  CLKMUL       =  0xB9;             // Clock Multiplier
+           =2 sfr  AMX0N        =  0xBA;             // AMUX0 Negative Channel S
+             -elect
+           =2 sfr  AMX0P        =  0xBB;             // AMUX0 Positive Channel S
+             -elect
+           =2 sfr  ADC0CF       =  0xBC;             // ADC0 Configuration
+           =2 sfr  ADC0L        =  0xBD;             // ADC0 Low
+           =2 sfr  ADC0H        =  0xBE;             // ADC0 High
+           =2 sfr  SMB0CN       =  0xC0;             // SMBus Control
+           =2 sfr  SMB0CF       =  0xC1;             // SMBus Configuration
+           =2 sfr  SMB0DAT      =  0xC2;             // SMBus Data
+           =2 sfr  ADC0GTL      =  0xC3;             // ADC0 Greater-Than Compar
+             -e Low
+           =2 sfr  ADC0GTH      =  0xC4;             // ADC0 Greater-Than Compar
+             -e High
+           =2 sfr  ADC0LTL      =  0xC5;             // ADC0 Less-Than Compare W
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 12  
+
+             -ord Low
+           =2 sfr  ADC0LTH      =  0xC6;             // ADC0 Less-Than Compare W
+             -ord High
+           =2 sfr  P4           =  0xC7;             // Port 4 Latch
+           =2 sfr  TMR2CN       =  0xC8;             // Timer/Counter 2 Control
+           =2 sfr  REG0CN       =  0xC9;             // Voltage Regulator Contro
+             -l
+           =2 sfr  TMR2RLL      =  0xCA;             // Timer/Counter 2 Reload L
+             -ow
+           =2 sfr  TMR2RLH      =  0xCB;             // Timer/Counter 2 Reload H
+             -igh
+           =2 sfr  TMR2L        =  0xCC;             // Timer/Counter 2 Low
+           =2 sfr  TMR2H        =  0xCD;             // Timer/Counter 2 High
+           =2 sfr  PSW          =  0xD0;             // Program Status Word
+           =2 sfr  REF0CN       =  0xD1;             // Voltage Reference Contro
+             -l
+           =2 sfr  SCON1        =  0xD2;             // UART1 Control
+           =2 sfr  SBUF1        =  0xD3;             // UART1 Data Buffer
+           =2 sfr  P0SKIP       =  0xD4;             // Port 0 Skip
+           =2 sfr  P1SKIP       =  0xD5;             // Port 1 Skip
+           =2 sfr  P2SKIP       =  0xD6;             // Port 2 Skip
+           =2 sfr  USB0XCN      =  0xD7;             // USB0 Transceiver Control
+           =2 sfr  PCA0CN       =  0xD8;             // PCA0 Control
+           =2 sfr  PCA0MD       =  0xD9;             // PCA0 Mode
+           =2 sfr  PCA0CPM0     =  0xDA;             // PCA0 Module 0 Mode Regis
+             -ter
+           =2 sfr  PCA0CPM1     =  0xDB;             // PCA0 Module 1 Mode Regis
+             -ter
+           =2 sfr  PCA0CPM2     =  0xDC;             // PCA0 Module 2 Mode Regis
+             -ter
+           =2 sfr  PCA0CPM3     =  0xDD;             // PCA0 Module 3 Mode Regis
+             -ter
+           =2 sfr  PCA0CPM4     =  0xDE;             // PCA0 Module 4 Mode Regis
+             -ter
+           =2 sfr  P3SKIP       =  0xDF;             // Port 3 Skip
+           =2 sfr  ACC          =  0xE0;             // Accumulator
+           =2 sfr  XBR0         =  0xE1;             // Port I/O Crossbar Contro
+             -l 0
+           =2 sfr  XBR1         =  0xE2;             // Port I/O Crossbar Contro
+             -l 1
+           =2 sfr  XBR2         =  0xE3;             // Port I/O Crossbar Contro
+             -l 2
+           =2 sfr  IT01CF       =  0xE4;             // INT0/INT1 Configuration
+           =2 sfr  SMOD1        =  0xE5;             // UART1 Mode
+           =2 sfr  EIE1         =  0xE6;             // Extended Interrupt Enabl
+             -e 1
+           =2 sfr  EIE2         =  0xE7;             // Extended Interrupt Enabl
+             -e 2
+           =2 sfr  ADC0CN       =  0xE8;             // ADC0 Control
+           =2 sfr  PCA0CPL1     =  0xE9;             // PCA0 Capture 1 Low
+           =2 sfr  PCA0CPH1     =  0xEA;             // PCA0 Capture 1 High
+           =2 sfr  PCA0CPL2     =  0xEB;             // PCA0 Capture 2 Low
+           =2 sfr  PCA0CPH2     =  0xEC;             // PCA0 Capture 2 High
+           =2 sfr  PCA0CPL3     =  0xED;             // PCA0 Capture 3 Low
+           =2 sfr  PCA0CPH3     =  0xEE;             // PCA0 Capture 3 High
+           =2 sfr  RSTSRC       =  0xEF;             // Reset Source Configurati
+             -on/Status
+           =2 sfr  B            =  0xF0;             // B Register
+           =2 sfr  P0MDIN       =  0xF1;             // Port 0 Input Mode Config
+             -uration
+           =2 sfr  P1MDIN       =  0xF2;             // Port 1 Input Mode Config
+             -uration
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 13  
+
+           =2 sfr  P2MDIN       =  0xF3;             // Port 2 Input Mode Config
+             -uration
+           =2 sfr  P3MDIN       =  0xF4;             // Port 3 Input Mode Config
+             -uration
+           =2 sfr  P4MDIN       =  0xF5;             // Port 4 Input Mode Config
+             -uration
+           =2 sfr  EIP1         =  0xF6;             // Extended Interrupt Prior
+             -ity 1
+           =2 sfr  EIP2         =  0xF7;             // Extended Interrupt Prior
+             -ity 2
+           =2 sfr  SPI0CN       =  0xF8;             // SPI0 Control
+           =2 sfr  PCA0L        =  0xF9;             // PCA0 Counter Low
+           =2 sfr  PCA0H        =  0xFA;             // PCA0 Counter High
+           =2 sfr  PCA0CPL0     =  0xFB;             // PCA0 Capture 0 Low
+           =2 sfr  PCA0CPH0     =  0xFC;             // PCA0 Capture 0 High
+           =2 sfr  PCA0CPL4     =  0xFD;             // PCA0 Capture 4 Low
+           =2 sfr  PCA0CPH4     =  0xFE;             // PCA0 Capture 4 High
+           =2 sfr  VDM0CN       =  0xFF;             // VDD Monitor Control
+           =2 
+           =2 
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 // Bit Definitions
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 
+           =2 // TCON 0x88
+           =2 sbit TF1     = 0x8F;                   // Timer1 overflow flag
+           =2 sbit TR1     = 0x8E;                   // Timer1 on/off control
+           =2 sbit TF0     = 0x8D;                   // Timer0 overflow flag
+           =2 sbit TR0     = 0x8C;                   // Timer0 on/off control
+           =2 sbit IE1     = 0x8B;                   // Ext interrupt 1 edge fla
+             -g
+           =2 sbit IT1     = 0x8A;                   // Ext interrupt 1 type
+           =2 sbit IE0     = 0x89;                   // Ext interrupt 0 edge fla
+             -g
+           =2 sbit IT0     = 0x88;                   // Ext interrupt 0 type
+           =2 
+           =2 // SCON0 0x98
+           =2 sbit S0MODE  = 0x9F;                   // Serial mode control bit 
+             -0
+           =2                                        // Bit6 UNUSED
+           =2 sbit MCE0    = 0x9D;                   // Multiprocessor communica
+             -tion enable
+           =2 sbit REN0    = 0x9C;                   // Receive enable
+           =2 sbit TB80    = 0x9B;                   // Transmit bit 8
+           =2 sbit RB80    = 0x9A;                   // Receive bit 8
+           =2 sbit TI0     = 0x99;                   // Transmit interrupt flag
+           =2 sbit RI0     = 0x98;                   // Receive interrupt flag
+           =2 
+           =2 // IE 0xA8
+           =2 sbit EA      = 0xAF;                   // Global interrupt enable
+           =2 sbit ESPI0   = 0xAE;                   // SPI0 interrupt enable
+           =2 sbit ET2     = 0xAD;                   // Timer2 interrupt enable
+           =2 sbit ES0     = 0xAC;                   // UART0 interrupt enable
+           =2 sbit ET1     = 0xAB;                   // Timer1 interrupt enable
+           =2 sbit EX1     = 0xAA;                   // External interrupt 1 ena
+             -ble
+           =2 sbit ET0     = 0xA9;                   // Timer0 interrupt enable
+           =2 sbit EX0     = 0xA8;                   // External interrupt 0 ena
+             -ble
+           =2 
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 14  
+
+           =2 // IP 0xB8
+           =2                                        // Bit7 UNUSED
+           =2 sbit PSPI0   = 0xBE;                   // SPI0 interrupt priority
+           =2 sbit PT2     = 0xBD;                   // Timer2 priority
+           =2 sbit PS0     = 0xBC;                   // UART0 priority
+           =2 sbit PT1     = 0xBB;                   // Timer1 priority
+           =2 sbit PX1     = 0xBA;                   // External interrupt 1 pri
+             -ority
+           =2 sbit PT0     = 0xB9;                   // Timer0 priority
+           =2 sbit PX0     = 0xB8;                   // External interrupt 0 pri
+             -ority
+           =2 
+           =2 // SMB0CN 0xC0
+           =2 sbit MASTER  = 0xC7;                   // Master/slave indicator
+           =2 sbit TXMODE  = 0xC6;                   // Transmit mode indicator
+           =2 sbit STA     = 0xC5;                   // Start flag
+           =2 sbit STO     = 0xC4;                   // Stop flag
+           =2 sbit ACKRQ   = 0xC3;                   // Acknowledge request
+           =2 sbit ARBLOST = 0xC2;                   // Arbitration lost indicat
+             -or
+           =2 sbit ACK     = 0xC1;                   // Acknowledge flag
+           =2 sbit SI      = 0xC0;                   // SMBus interrupt flag
+           =2 
+           =2 // TMR2CN 0xC8
+           =2 sbit TF2H    = 0xCF;                   // Timer2 high byte overflo
+             -w flag
+           =2 sbit TF2L    = 0xCE;                   // Timer2 low byte overflow
+             - flag
+           =2 sbit TF2LEN  = 0xCD;                   // Timer2 low byte interrup
+             -t enable
+           =2 sbit T2CE    = 0xCC;                   // Timer2 capture enable
+           =2 sbit T2SPLIT = 0xCB;                   // Timer2 split mode enable
+           =2 sbit TR2     = 0xCA;                   // Timer2 on/off control
+           =2 sbit T2CSS   = 0xC9;                   // Timer 2 Capture Source s
+             -elect
+           =2 sbit T2XCLK  = 0xC8;                   // Timer2 external clock se
+             -lect
+           =2 
+           =2 // PSW 0xD0
+           =2 sbit CY      = 0xD7;                   // Carry flag
+           =2 sbit AC      = 0xD6;                   // Auxiliary carry flag
+           =2 sbit F0      = 0xD5;                   // User flag 0
+           =2 sbit RS1     = 0xD4;                   // Register bank select 1
+           =2 sbit RS0     = 0xD3;                   // Register bank select 0
+           =2 sbit OV      = 0xD2;                   // Overflow flag
+           =2 sbit F1      = 0xD1;                   // User flag 1
+           =2 sbit P       = 0xD0;                   // Accumulator parity flag
+           =2 
+           =2 // PCA0CN 0xD8
+           =2 sbit CF      = 0xDF;                   // PCA0 counter overflow fl
+             -ag
+           =2 sbit CR      = 0xDE;                   // PCA0 counter run control
+           =2                                        // Bit5 UNUSED
+           =2 sbit CCF4    = 0xDC;                   // PCA0 module4 capture/com
+             -pare flag
+           =2 sbit CCF3    = 0xDB;                   // PCA0 module3 capture/com
+             -pare flag
+           =2 sbit CCF2    = 0xDA;                   // PCA0 module2 capture/com
+             -pare flag
+           =2 sbit CCF1    = 0xD9;                   // PCA0 module1 capture/com
+             -pare flag
+           =2 sbit CCF0    = 0xD8;                   // PCA0 module0 capture/com
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 15  
+
+             -pare flag
+           =2 
+           =2 // ADC0CN 0xE8
+           =2 sbit AD0EN   = 0xEF;                   // ADC0 enable
+           =2 sbit AD0TM   = 0xEE;                   // ADC0 track mode
+           =2 sbit AD0INT  = 0xED;                   // ADC0 conversion complete
+             - interrupt flag
+           =2 sbit AD0BUSY = 0xEC;                   // ADC0 busy flag
+           =2 sbit AD0WINT = 0xEB;                   // ADC0 window compare inte
+             -rrupt flag
+           =2 sbit AD0CM2  = 0xEA;                   // ADC0 conversion mode sel
+             -ect 2
+           =2 sbit AD0CM1  = 0xE9;                   // ADC0 conversion mode sel
+             -ect 1
+           =2 sbit AD0CM0  = 0xE8;                   // ADC0 conversion mode sel
+             -ect 0
+           =2 
+           =2 // SPI0CN 0xF8
+           =2 sbit SPIF    = 0xFF;                   // SPI0 interrupt flag
+           =2 sbit WCOL    = 0xFE;                   // SPI0 write collision fla
+             -g
+           =2 sbit MODF    = 0xFD;                   // SPI0 mode fault flag
+           =2 sbit RXOVRN  = 0xFC;                   // SPI0 rx overrun flag
+           =2 sbit NSSMD1  = 0xFB;                   // SPI0 slave select mode 1
+           =2 sbit NSSMD0  = 0xFA;                   // SPI0 slave select mode 0
+           =2 sbit TXBMT   = 0xF9;                   // SPI0 transmit buffer emp
+             -ty
+           =2 sbit SPIEN   = 0xF8;                   // SPI0 SPI enable
+           =2 
+           =2 
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 // Interrupt Priorities
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 
+           =2 #define INTERRUPT_INT0             0   // External Interrupt 0
+           =2 #define INTERRUPT_TIMER0           1   // Timer0 Overflow
+           =2 #define INTERRUPT_INT1             2   // External Interrupt 1
+           =2 #define INTERRUPT_TIMER1           3   // Timer1 Overflow
+           =2 #define INTERRUPT_UART0            4   // Serial Port 0
+           =2 #define INTERRUPT_TIMER2           5   // Timer2 Overflow
+           =2 #define INTERRUPT_SPI0             6   // Serial Peripheral Interf
+             -ace 0
+           =2 #define INTERRUPT_SMBUS0           7   // SMBus0 Interface
+           =2 #define INTERRUPT_USB0             8   // USB Interface
+           =2 #define INTERRUPT_ADC0_WINDOW      9   // ADC0 Window Comparison
+           =2 #define INTERRUPT_ADC0_EOC         10  // ADC0 End Of Conversion
+           =2 #define INTERRUPT_PCA0             11  // PCA0 Peripheral
+           =2 #define INTERRUPT_COMPARATOR0      12  // Comparator0
+           =2 #define INTERRUPT_COMPARATOR1      13  // Comparator1
+           =2 #define INTERRUPT_TIMER3           14  // Timer3 Overflow
+           =2 #define INTERRUPT_VBUS_LEVEL       15  // VBUS level-triggered int
+             -errupt
+           =2 #define INTERRUPT_UART1            16  // Serial Port 1
+           =2 
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 // Header File PreProcessor Directive
+           =2 //----------------------------------------------------------------
+             --------------
+           =2 
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 16  
+
+           =2 #endif                                 // #define C8051F340_H
+ 289      =2  
+ 290      =2  //----------------------------------------------------------------
+             --------------
+ 291      =2  // End Of File
+ 292      =2  //----------------------------------------------------------------
+             --------------
+  36      =1  
+  37      =1  #define         CF_NO_CARD              0x01
+  38      =1  sbit CF_RST = P1^0;
+  39      =1  sbit CF_OE = P1^1;
+  40      =1  sbit CF_CE1 = P1^2;
+  41      =1  sbit CF_CD1 = P1^3;
+  42      =1  sbit CF_RDY = P1^4;
+  43      =1  sbit CF_WE = P1^6;
+  44      =1  
+  45      =1  
+  46      =1  //----------------------------------------------------------------
+             --------------
+  47      =1  // Macro Prototypes
+  48      =1  //----------------------------------------------------------------
+             --------------
+  49      =1  
+  50      =1  #define CF_SET_ADDR_LINE(value) {\
+  51      =1          P3 &= ~0xe0;\
+  52      =1          P3 |= (value << 5) & 0xe0;\
+  53      =1  }
+  54      =1  
+  55      =1  #define CF_WR_DATA(value) {\
+  56      =1          P4MDOUT = 0xFF;\
+  57      =1          P4 = value;\
+  58      =1  }
+  59      =1  
+  60      =1  #define CF_READ_DATA    P4
+  61      =1  
+  62      =1  #define CF_WAIT_STATE {\
+  63      =1          _nop_ ();\
+  64      =1          _nop_ ();\
+  65      =1          _nop_ ();\
+  66      =1  }
+  67      =1  
+  68      =1  #define CF_READWRITE_IDLE {\
+  69      =1          P4MDOUT = 0x00;\
+  70      =1          P4 =0xff;\
+  71      =1          CF_OE = 1;\
+  72      =1          CF_WE = 1;\
+  73      =1  }
+  74      =1  
+  75      =1  #define CF_WRITE {\
+  76      =1          CF_OE = 1;\
+  77      =1          CF_WE = 0;\
+  78      =1  }
+  79      =1  
+  80      =1  #define CF_READ {\
+  81      =1          P4MDOUT = 0x00;\
+  82      =1          P4 =0xff;\
+  83      =1          CF_WE = 1;\
+  84      =1          CF_OE = 0;\
+  85      =1  }
+  86      =1  
+  87      =1  
+  88      =1  //----------------------------------------------------------------
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 17  
+
+             --------------
+  89      =1  // Function Prototypes
+  90      =1  //----------------------------------------------------------------
+             --------------
+  91      =1  
+  92      =1  char Dtct_Card(void);
+  93      =1  void Wait_Drq();
+  94      =1  void Wait_Busy();
+  95      =1  char Identify_Drive(char* buffer);
+  96      =1  char Init_CF();
+  97      =1  char Write_Sector(unsigned long address, char* buffer);
+  98      =1  char Read_Sector(unsigned long address, char* buffer);
+  99      =1  
+ 100      =1  //----------------------------------------------------------------
+             --------------
+ 101      =1  // Macro Prototypes
+ 102      =1  //----------------------------------------------------------------
+             --------------
+ 103      =1  
+ 104      =1  //#define MACRO_CF_VERSIONS
+ 105      =1  #ifndef MACRO_CF_VERSIONS
+ 106      =1  
+ 107      =1  //----------------------------------------------------------------
+             --------------
+ 108      =1  // Function Prototypes
+ 109      =1  //----------------------------------------------------------------
+             --------------
+ 110      =1  
+ 111      =1  char CF_GET_REGISTER_VALUE(char addr);
+ 112      =1  void CF_SET_REGISTER_VALUE(char addr, char value);
+ 113      =1  
+ 114      =1  #else
+           =1 #define CF_GET_REGISTER_VALUE(addr,value) {\
+           =1         CF_SET_ADDR_LINE(addr);\
+           =1         CF_READ;\
+           =1         CF_WAIT_STATE;\
+           =1         value = CF_READ_DATA;\
+           =1         CF_READWRITE_IDLE;\
+           =1 }
+           =1 #define CF_SET_REGISTER_VALUE(addr,value) {\
+           =1         CF_SET_ADDR_LINE(addr);\
+           =1         CF_WR_DATA(value);\
+           =1         CF_WRITE;\
+           =1         CF_WAIT_STATE;\
+           =1         CF_READWRITE_IDLE;\
+           =1 }
+           =1 #endif
+ 130      =1  
+ 131      =1  #endif
+  37          #include <stdio.h>
+   1      =1  /*----------------------------------------------------------------
+             -----------
+   2      =1  STDIO.H
+   3      =1  
+   4      =1  Prototypes for standard I/O functions.
+   5      =1  Copyright (c) 1988-2002 Keil Elektronik GmbH and Keil Software, In
+             -c.
+   6      =1  All rights reserved.
+   7      =1  ------------------------------------------------------------------
+             ---------*/
+   8      =1  
+   9      =1  #ifndef __STDIO_H__
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 18  
+
+  10      =1  #define __STDIO_H__
+  11      =1  
+  12      =1  #ifndef EOF
+  13      =1   #define EOF -1
+  14      =1  #endif
+  15      =1  
+  16      =1  #ifndef NULL
+  17      =1   #define NULL ((void *) 0)
+  18      =1  #endif
+  19      =1  
+  20      =1  #ifndef _SIZE_T
+  21      =1   #define _SIZE_T
+  22      =1   typedef unsigned int size_t;
+  23      =1  #endif
+  24      =1  
+  25      =1  #pragma SAVE
+  26      =1  #pragma REGPARMS
+  27      =1  extern char _getkey (void);
+  28      =1  extern char getchar (void);
+  29      =1  extern char ungetchar (char);
+  30      =1  extern char putchar (char);
+  31      =1  extern int printf   (const char *, ...);
+  32      =1  extern int sprintf  (char *, const char *, ...);
+  33      =1  extern int vprintf  (const char *, char *);
+  34      =1  extern int vsprintf (char *, const char *, char *);
+  35      =1  extern char *gets (char *, int n);
+  36      =1  extern int scanf (const char *, ...);
+  37      =1  extern int sscanf (char *, const char *, ...);
+  38      =1  extern int puts (const char *);
+  39      =1  
+  40      =1  #pragma RESTORE
+  41      =1  
+  42      =1  #endif
+  43      =1  
+  38          
+  39          sbit Led1 = P2^2;
+  40          sbit Led2 = P2^3;
+  41          void CF_Port_Init();
+  42          
+  43          //----------------------------------------------------------------
+             -------------
+  44          // Init_CF
+  45          //----------------------------------------------------------------
+             -------------
+  46          //
+  47          // This routine initializes the Compact Flash memory card
+  48          //
+  49          // Parameters   :
+  50          // Return Value :
+  51          //----------------------------------------------------------------
+             -------------
+  52          
+  53          char Init_CF()
+  54          {
+  55   1        xdata char result = Dtct_Card(); 
+  56   1        xdata unsigned int loop = 0;
+  57   1        xdata unsigned reinit = 0;
+  58   1        if (result == 1) return (CF_NO_CARD); 
+  59   1      REINIT:
+  60   1        CF_RST = 1;
+  61   1        while(++loop);
+  62   1        CF_WAIT_STATE;
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 19  
+
+  63   1        CF_WAIT_STATE;
+  64   1        CF_WAIT_STATE;
+  65   1        CF_WAIT_STATE;
+  66   1        CF_RST = 0;
+  67   1        while(!CF_RDY) {
+  68   2          if(++loop == 0) {
+  69   3            CF_GET_REGISTER_VALUE(0x01);
+  70   3            goto REINIT;
+  71   3          }
+  72   2        }
+  73   1        while(++loop);
+  74   1        if((CF_GET_REGISTER_VALUE(0x01) & 0xf0) != 0)
+  75   1          goto REINIT;
+  76   1        return 0;
+  77   1      }
+  78          
+  79          
+  80          //----------------------------------------------------------------
+             -------------
+  81          // Wait_Drq
+  82          //----------------------------------------------------------------
+             -------------
+  83          //
+  84          // This function waits until data reqeust bit in staus register is
+             - clear
+  85          //
+  86          // Parameters   :
+  87          // Return Value :
+  88          //----------------------------------------------------------------
+             -------------
+  89          
+  90          void Wait_Drq()
+  91          {
+  92   1        xdata char wait, wait_drq;
+  93   1        xdata int loopguard = 0;
+  94   1        do {
+  95   2          #ifndef MACRO_CF_VERSIONS
+  96   2          wait = CF_GET_REGISTER_VALUE(0x07); // Read status register
+  97   2          #else
+                  CF_GET_REGISTER_VALUE(0x07,wait);   // Read status register
+                  #endif
+ 100   2          if(wait & 0x01) {
+ 101   3            wait_drq = CF_GET_REGISTER_VALUE(0x01);
+ 102   3            return;
+ 103   3          }
+ 104   2          wait_drq = wait & 0x08;             // Wait for DRQ to SET
+ 105   2        } while (wait_drq == (char)0x00);
+ 106   1      }
+ 107          
+ 108          
+ 109          //----------------------------------------------------------------
+             -------------
+ 110          // Wait_Busy
+ 111          //----------------------------------------------------------------
+             -------------
+ 112          //
+ 113          // This function waits until busy bit is set
+ 114          //
+ 115          // Parameters   :
+ 116          // Return Value :
+ 117          //----------------------------------------------------------------
+             -------------
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 20  
+
+ 118          
+ 119          void Wait_Busy()
+ 120          {
+ 121   1        xdata char wait, wait_bsy;
+ 122   1        do {
+ 123   2          #ifndef MACRO_CF_VERSIONS
+ 124   2          wait = CF_GET_REGISTER_VALUE(0x07); // Read status register
+ 125   2          #else
+                  CF_GET_REGISTER_VALUE(0x07,wait);   // Read status register
+                  #endif
+ 128   2          wait_bsy = wait & 0x80;             // Wait for DRQ to SET
+ 129   2        } while (wait_bsy == (char)0x80);
+ 130   1      }
+ 131          
+ 132          
+ 133          //----------------------------------------------------------------
+             -------------
+ 134          // Dtct_Card
+ 135          //----------------------------------------------------------------
+             -------------
+ 136          //
+ 137          // Function detcts if compact flash card is in slot
+ 138          //
+ 139          // Parameters   :
+ 140          // Return Value : 0 card is on , 1 off
+ 141          //----------------------------------------------------------------
+             -------------
+ 142          
+ 143          char Dtct_Card(void)
+ 144          {
+ 145   1        xdata char card_detect;
+ 146   1        card_detect = CF_CD1; 
+ 147   1        return (card_detect); // 0 card is on , 1 off
+ 148   1      }
+ 149          
+ 150          #ifndef MACRO_CF_VERSIONS
+ 151          
+ 152          //----------------------------------------------------------------
+             -------------
+ 153          // CF_GET_REGISTER_VALUE
+ 154          //----------------------------------------------------------------
+             -------------
+ 155          //
+ 156          // Function returns value from register pointed by addr
+ 157          //
+ 158          // Parameters   : addr - address value of CF register
+ 159          // Return Value : value stroed in register
+ 160          //----------------------------------------------------------------
+             -------------
+ 161          
+ 162          char CF_GET_REGISTER_VALUE(char addr)
+ 163          {
+ 164   1        xdata char ret = 0;
+ 165   1        CF_SET_ADDR_LINE(addr);
+ 166   1        CF_READ;
+ 167   1        CF_WAIT_STATE;
+ 168   1        ret = CF_READ_DATA;
+ 169   1        CF_READWRITE_IDLE;
+ 170   1        return ret;
+ 171   1      }
+ 172          
+ 173          
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 21  
+
+ 174          //----------------------------------------------------------------
+             -------------
+ 175          // CF_SET_REGISTER_VALUE
+ 176          //----------------------------------------------------------------
+             -------------
+ 177          //
+ 178          // Function sets value of register
+ 179          //
+ 180          // Parameters   : addr - register address
+ 181          //                                value - value to set
+ 182          // Return Value : 
+ 183          //----------------------------------------------------------------
+             -------------
+ 184          
+ 185          void CF_SET_REGISTER_VALUE(char addr, char value)
+ 186          {
+ 187   1        CF_SET_ADDR_LINE(addr);
+ 188   1        CF_WR_DATA(value);
+ 189   1        CF_WRITE;
+ 190   1        CF_WAIT_STATE;
+ 191   1        CF_READWRITE_IDLE;
+ 192   1      }
+ 193          #endif
+ 194          
+ 195          //----------------------------------------------------------------
+             -------------
+ 196          // Write_Sector
+ 197          //----------------------------------------------------------------
+             -------------
+ 198          //
+ 199          // Function writes buffer into address
+ 200          //
+ 201          // Parameters   : address - LBA address
+ 202          //                buffer - buffer with data to write
+ 203          // Return Value : return error status or 0 if everything was OK
+ 204          //----------------------------------------------------------------
+             -------------
+ 205          
+ 206          char Write_Sector(unsigned long address, char* buffer)
+ 207          {
+ 208   1        xdata char cylinder_low, cylinder_high,sector,head;
+ 209   1        xdata char result, error;
+ 210   1        xdata int i;
+ 211   1        result = Dtct_Card(); 
+ 212   1        if (result == 1) return (CF_NO_CARD); 
+ 213   1              
+ 214   1        Led2=1;
+ 215   1        sector = address & 0xff;
+ 216   1        cylinder_low = (address >> 8 ) & 0x0FF; 
+ 217   1        cylinder_high = (address >> 16) & 0xff; 
+ 218   1        head = (address >> 24) & 0x0f;
+ 219   1      
+ 220   1              
+ 221   1        CF_SET_REGISTER_VALUE(2,0x01);
+ 222   1        CF_SET_REGISTER_VALUE(3,sector);
+ 223   1        CF_SET_REGISTER_VALUE(4,cylinder_low);
+ 224   1        CF_SET_REGISTER_VALUE(5,cylinder_high);
+ 225   1        CF_SET_REGISTER_VALUE(6,(0xE0 | head));
+ 226   1        CF_SET_REGISTER_VALUE(7,0x30);
+ 227   1      
+ 228   1        error = CF_GET_REGISTER_VALUE(1);
+ 229   1      
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 22  
+
+ 230   1        Wait_Drq(); // Wait for DRQ
+ 231   1        Wait_Busy(); 
+ 232   1      
+ 233   1        for(i=0;i<PHYSICAL_BLOCK_SIZE;i++) {
+ 234   2          CF_SET_REGISTER_VALUE(0,buffer[i]);
+ 235   2        }
+ 236   1      
+ 237   1        Wait_Busy(); 
+ 238   1        #ifndef MACRO_CF_VERSIONS
+ 239   1        error = CF_GET_REGISTER_VALUE(1);
+ 240   1        #else
+                CF_GET_REGISTER_VALUE(1,error);
+                #endif
+ 243   1        Led2=0;
+ 244   1        return(error); 
+ 245   1      }
+ 246          
+ 247          
+ 248          //----------------------------------------------------------------
+             -------------
+ 249          // Read_Sector
+ 250          //----------------------------------------------------------------
+             -------------
+ 251          //
+ 252          // Function reads buffer from address
+ 253          //
+ 254          // Parameters   : address - LBA address
+ 255          //                buffer - buffer with data to write
+ 256          // Return Value : return error status or 0 if everything was OK
+ 257          //----------------------------------------------------------------
+             -------------
+ 258          
+ 259          char Read_Sector(unsigned long address, char* buffer)
+ 260          {
+ 261   1        xdata char cylinder_low, cylinder_high,sector,head;
+ 262   1        xdata char result, error;
+ 263   1        xdata int i;
+ 264   1        result = Dtct_Card(); 
+ 265   1        if (result == 1) return (CF_NO_CARD); 
+ 266   1        Led1 = 1;
+ 267   1        sector = address & 0xff;
+ 268   1        cylinder_low = (address >> 8 ) & 0x0FF; 
+ 269   1        cylinder_high = (address >> 16) & 0xff; 
+ 270   1        head = (address >> 24) & 0x0f;
+ 271   1      
+ 272   1        error = CF_GET_REGISTER_VALUE(1);
+ 273   1              
+ 274   1        CF_SET_REGISTER_VALUE(2,0x01);
+ 275   1        CF_SET_REGISTER_VALUE(3,sector);
+ 276   1        CF_SET_REGISTER_VALUE(4,cylinder_low);
+ 277   1        CF_SET_REGISTER_VALUE(5,cylinder_high);
+ 278   1        CF_SET_REGISTER_VALUE(6,(0xE0 | head));
+ 279   1        CF_SET_REGISTER_VALUE(7,0x20);
+ 280   1      
+ 281   1        error = CF_GET_REGISTER_VALUE(1);
+ 282   1      
+ 283   1        Wait_Drq(); // Wait for DRQ
+ 284   1      
+ 285   1        #ifndef MACRO_CF_VERSIONS
+ 286   1        error = CF_GET_REGISTER_VALUE(1);
+ 287   1        #else
+                CF_GET_REGISTER_VALUE(1,error);
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 23  
+
+                #endif
+ 290   1      
+ 291   1                      
+ 292   1      
+ 293   1        for(i=0;i<PHYSICAL_BLOCK_SIZE;i++) {
+ 294   2      #ifndef MACRO_CF_VERSIONS
+ 295   2          buffer[i] = CF_GET_REGISTER_VALUE(0);
+ 296   2      #else
+                  CF_GET_REGISTER_VALUE(0,buffer[i]);
+              #endif
+ 299   2        }
+ 300   1        Wait_Busy();
+ 301   1        #ifndef MACRO_CF_VERSIONS
+ 302   1        error = CF_GET_REGISTER_VALUE(1);
+ 303   1        #else
+                CF_GET_REGISTER_VALUE(1,error);
+                #endif
+ 306   1        Led1 = 0;
+ 307   1        return(error); 
+ 308   1      }
+ 309          
+ 310          //----------------------------------------------------------------
+             -------------
+ 311          // Identify_Drive
+ 312          //----------------------------------------------------------------
+             -------------
+ 313          //
+ 314          // This function reads identifier from card
+ 315          //
+ 316          // Parameters   : buffer - buffer on data from CF
+ 317          // Return Value : error number if occurs 
+ 318          //----------------------------------------------------------------
+             -------------
+ 319          
+ 320          char Identify_Drive(char* buffer)
+ 321          {
+ 322   1        xdata char error,result;
+ 323   1        xdata int i;
+ 324   1              
+ 325   1        result = Dtct_Card();
+ 326   1        if (result == 1) return (CF_NO_CARD); 
+ 327   1      
+ 328   1        while(((error = CF_GET_REGISTER_VALUE(1)) & 0xF0) != 0);
+ 329   1                              
+ 330   1      
+ 331   1        CF_SET_REGISTER_VALUE(6,0);
+ 332   1        CF_SET_REGISTER_VALUE(7,0xEC);
+ 333   1      
+ 334   1        error = CF_GET_REGISTER_VALUE(1);
+ 335   1      
+ 336   1              
+ 337   1        Wait_Drq();
+ 338   1        for (i = 0; i < PHYSICAL_BLOCK_SIZE; i++) {
+ 339   2          #ifndef MACRO_CF_VERSIONS
+ 340   2          *(buffer + i) = CF_GET_REGISTER_VALUE(0);
+ 341   2          #else
+                  CF_GET_REGISTER_VALUE(0,*(buffer + i));
+                  #endif
+ 344   2        }
+ 345   1        #ifndef MACRO_CF_VERSIONS
+ 346   1        error = CF_GET_REGISTER_VALUE(1);
+ 347   1        #else
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 24  
+
+                CF_GET_REGISTER_VALUE(1,error);
+                #endif
+ 350   1        return error; 
+ 351   1      }
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 25  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION Com002D (BEGIN)
+0000         L?0046:
+0000         L?0047:
+0000 900000      R     MOV     DPTR,#loop
+0003         L?0048:
+0003 E4                CLR     A
+0004 75F001            MOV     B,#01H
+0007 020000      E     LJMP    ?C?IILDX
+000A         L?0049:
+000A E4                CLR     A
+000B         L?0050:
+000B 900000      R     MOV     DPTR,#address
+000E 020000      E     LJMP    ?C?LLDXDATA
+0011         L?0053:
+0011         L?0054:
+0011 7F01              MOV     R7,#01H
+0013 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+0016 900000      R     MOV     DPTR,#error
+0019 EF                MOV     A,R7
+001A F0                MOVX    @DPTR,A
+001B 22                RET     
+001C         L?0055:
+001C E4                CLR     A
+001D         L?0056:
+001D 900000      R     MOV     DPTR,#address
+0020 020000      E     LJMP    ?C?LLDXDATA
+0023         L?0057:
+0023 120000      E     LCALL   ?C?PLDXDATA
+0026 8D82              MOV     DPL,R5
+0028 8C83              MOV     DPH,R4
+002A EF                MOV     A,R7
+002B 120000      E     LCALL   ?C?CSTOPTR
+002E 0D                INC     R5
+002F 22                RET     
+0030         L?0058:
+0030         L?0059:
+0030 120000      E     LCALL   ?C?PSTXDATA
+0033 120000      R     LCALL   Dtct_Card
+0036 EF                MOV     A,R7
+0037 22                RET     
+0038         L?0061:
+0038 53B01F            ANL     P3,#01FH
+003B EF                MOV     A,R7
+003C C4                SWAP    A
+003D 33                RLC     A
+003E 54E0              ANL     A,#0E0H
+0040 42B0              ORL     P3,A
+0042 22                RET     
+0043         L?0062:
+0043 7F01              MOV     R7,#01H
+0045 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+0048 900000      R     MOV     DPTR,#error
+004B EF                MOV     A,R7
+004C F0                MOVX    @DPTR,A
+004D 22                RET     
+004E         L?0063:
+004E F5AE              MOV     P4MDOUT,A
+0050 75C7FF            MOV     P4,#0FFH
+0053 D291              SETB    CF_OE
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 26  
+
+0055 D296              SETB    CF_WE
+0057 22                RET     
+0058         L?0064:
+0058 7818              MOV     R0,#018H
+005A 120000      E     LCALL   ?C?ULSHR
+005D EF                MOV     A,R7
+005E 540F              ANL     A,#0FH
+0060 FF                MOV     R7,A
+0061 22                RET     
+             ; FUNCTION Com002D (END)
+
+             ; FUNCTION Init_CF (BEGIN)
+                                           ; SOURCE LINE # 53
+                                           ; SOURCE LINE # 54
+                                           ; SOURCE LINE # 55
+0000 120000      R     LCALL   Dtct_Card
+;---- Variable 'result' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 56
+0003 E4                CLR     A
+0004 900000      R     MOV     DPTR,#loop
+0007 F0                MOVX    @DPTR,A
+0008 A3                INC     DPTR
+0009 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 57
+000A A3                INC     DPTR
+000B F0                MOVX    @DPTR,A
+000C A3                INC     DPTR
+000D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 58
+000E EF                MOV     A,R7
+000F B40103            CJNE    A,#01H,REINIT
+0012 7F01              MOV     R7,#01H
+0014 22                RET     
+                                           ; SOURCE LINE # 59
+0015         REINIT:
+                                           ; SOURCE LINE # 60
+0015 D290              SETB    CF_RST
+0017         ?C0004:
+                                           ; SOURCE LINE # 61
+0017 120000      R     LCALL   L?0046
+001A 45F0              ORL     A,B
+001C 70F9              JNZ     ?C0004
+001E         ?C0005:
+                                           ; SOURCE LINE # 62
+001E 00                NOP     
+001F 00                NOP     
+0020 00                NOP     
+                                           ; SOURCE LINE # 63
+0021 00                NOP     
+0022 00                NOP     
+0023 00                NOP     
+                                           ; SOURCE LINE # 64
+0024 00                NOP     
+0025 00                NOP     
+0026 00                NOP     
+                                           ; SOURCE LINE # 65
+0027 00                NOP     
+0028 00                NOP     
+0029 00                NOP     
+                                           ; SOURCE LINE # 66
+002A C290              CLR     CF_RST
+002C         ?C0006:
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 27  
+
+                                           ; SOURCE LINE # 67
+002C 20940E            JB      CF_RDY,?C0009
+                                           ; SOURCE LINE # 68
+002F 120000      R     LCALL   L?0046
+0032 45F0              ORL     A,B
+0034 70F6              JNZ     ?C0006
+                                           ; SOURCE LINE # 69
+0036 7F01              MOV     R7,#01H
+0038 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+                                           ; SOURCE LINE # 70
+003B 80D8              SJMP    REINIT
+                                           ; SOURCE LINE # 71
+                                           ; SOURCE LINE # 72
+003D         ?C0009:
+                                           ; SOURCE LINE # 73
+003D 120000      R     LCALL   L?0047
+0040 45F0              ORL     A,B
+0042 70F9              JNZ     ?C0009
+0044         ?C0010:
+                                           ; SOURCE LINE # 74
+0044 7F01              MOV     R7,#01H
+0046 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+0049 EF                MOV     A,R7
+004A 54F0              ANL     A,#0F0H
+004C 70C7              JNZ     REINIT
+                                           ; SOURCE LINE # 75
+004E         ?C0011:
+                                           ; SOURCE LINE # 76
+004E 7F00              MOV     R7,#00H
+                                           ; SOURCE LINE # 77
+0050         ?C0002:
+0050 22                RET     
+             ; FUNCTION Init_CF (END)
+
+             ; FUNCTION Wait_Drq (BEGIN)
+                                           ; SOURCE LINE # 90
+                                           ; SOURCE LINE # 91
+                                           ; SOURCE LINE # 93
+0000 E4                CLR     A
+0001 900000      R     MOV     DPTR,#loopguard
+0004 F0                MOVX    @DPTR,A
+0005 A3                INC     DPTR
+0006 F0                MOVX    @DPTR,A
+0007         ?C0014:
+                                           ; SOURCE LINE # 94
+                                           ; SOURCE LINE # 96
+0007 7F07              MOV     R7,#07H
+0009 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+000C 900000      R     MOV     DPTR,#wait
+000F EF                MOV     A,R7
+0010 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 100
+0011 30E00B            JNB     ACC.0,?C0015
+                                           ; SOURCE LINE # 101
+0014 7F01              MOV     R7,#01H
+0016 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+0019 900000      R     MOV     DPTR,#wait_drq
+001C EF                MOV     A,R7
+001D F0                MOVX    @DPTR,A
+001E 22                RET     
+                                           ; SOURCE LINE # 103
+001F         ?C0015:
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 28  
+
+                                           ; SOURCE LINE # 104
+001F 900000      R     MOV     DPTR,#wait
+0022 E0                MOVX    A,@DPTR
+0023 5408              ANL     A,#08H
+0025 A3                INC     DPTR
+0026 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 105
+0027 60DE              JZ      ?C0014
+                                           ; SOURCE LINE # 106
+0029         ?C0016:
+0029 22                RET     
+             ; FUNCTION Wait_Drq (END)
+
+             ; FUNCTION Wait_Busy (BEGIN)
+                                           ; SOURCE LINE # 119
+                                           ; SOURCE LINE # 120
+0000         ?C0019:
+                                           ; SOURCE LINE # 122
+                                           ; SOURCE LINE # 124
+0000 7F07              MOV     R7,#07H
+0002 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+;---- Variable 'wait' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 128
+0005 EF                MOV     A,R7
+0006 5480              ANL     A,#080H
+0008 FE                MOV     R6,A
+;---- Variable 'wait_bsy' assigned to Register 'R6' ----
+                                           ; SOURCE LINE # 129
+0009 6480              XRL     A,#080H
+000B 60F3              JZ      ?C0019
+                                           ; SOURCE LINE # 130
+000D 22                RET     
+             ; FUNCTION Wait_Busy (END)
+
+             ; FUNCTION Dtct_Card (BEGIN)
+                                           ; SOURCE LINE # 143
+                                           ; SOURCE LINE # 144
+                                           ; SOURCE LINE # 146
+0000 A293              MOV     C,CF_CD1
+0002 E4                CLR     A
+0003 33                RLC     A
+0004 FF                MOV     R7,A
+;---- Variable 'card_detect' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 147
+                                           ; SOURCE LINE # 148
+0005         ?C0021:
+0005 22                RET     
+             ; FUNCTION Dtct_Card (END)
+
+             ; FUNCTION L?0051 (BEGIN)
+0000         L?0052:
+0000 7F07              MOV     R7,#07H
+0002 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+0005 7F01              MOV     R7,#01H
+             ; FUNCTION _CF_GET_REGISTER_VALUE (BEGIN)
+                                           ; SOURCE LINE # 162
+;---- Variable 'addr' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 163
+                                           ; SOURCE LINE # 164
+;---- Variable 'ret' assigned to Register 'R6' ----
+                                           ; SOURCE LINE # 165
+0007 120000      R     LCALL   L?0061
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 29  
+
+                                           ; SOURCE LINE # 166
+000A E4                CLR     A
+000B F5AE              MOV     P4MDOUT,A
+000D 75C7FF            MOV     P4,#0FFH
+0010 D296              SETB    CF_WE
+0012 C291              CLR     CF_OE
+                                           ; SOURCE LINE # 167
+0014 00                NOP     
+0015 00                NOP     
+0016 00                NOP     
+                                           ; SOURCE LINE # 168
+0017 AEC7              MOV     R6,P4
+                                           ; SOURCE LINE # 169
+0019 120000      R     LCALL   L?0063
+                                           ; SOURCE LINE # 170
+001C AF06              MOV     R7,AR6
+                                           ; SOURCE LINE # 171
+001E         ?C0022:
+001E 22                RET     
+             ; FUNCTION _CF_GET_REGISTER_VALUE (END)
+
+             ; FUNCTION L?0060 (BEGIN)
+0000 44E0              ORL     A,#0E0H
+0002 FD                MOV     R5,A
+0003 7F06              MOV     R7,#06H
+             ; FUNCTION _CF_SET_REGISTER_VALUE (BEGIN)
+                                           ; SOURCE LINE # 185
+;---- Variable 'value' assigned to Register 'R5' ----
+;---- Variable 'addr' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 186
+                                           ; SOURCE LINE # 187
+0005 120000      R     LCALL   L?0061
+                                           ; SOURCE LINE # 188
+0008 75AEFF            MOV     P4MDOUT,#0FFH
+000B AF05              MOV     R7,AR5
+000D 8FC7              MOV     P4,R7
+                                           ; SOURCE LINE # 189
+000F D291              SETB    CF_OE
+0011 C296              CLR     CF_WE
+                                           ; SOURCE LINE # 190
+0013 00                NOP     
+0014 00                NOP     
+0015 00                NOP     
+                                           ; SOURCE LINE # 191
+0016 E4                CLR     A
+0017 120000      R     LCALL   L?0063
+                                           ; SOURCE LINE # 192
+001A 22                RET     
+             ; FUNCTION _CF_SET_REGISTER_VALUE (END)
+
+             ; FUNCTION _Write_Sector (BEGIN)
+                                           ; SOURCE LINE # 206
+0000 900000      R     MOV     DPTR,#address
+0003 120000      E     LCALL   ?C?LSTXDATA
+0006 900000      R     MOV     DPTR,#buffer
+                                           ; SOURCE LINE # 207
+                                           ; SOURCE LINE # 211
+;---- Variable 'result' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 212
+0009 120000      R     LCALL   L?0058
+000C B40103            CJNE    A,#01H,?C0024
+000F 7F01              MOV     R7,#01H
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 30  
+
+0011 22                RET     
+0012         ?C0024:
+                                           ; SOURCE LINE # 214
+0012 D2A3              SETB    Led2
+                                           ; SOURCE LINE # 215
+0014 120000      R     LCALL   L?0050
+;---- Variable 'sector' assigned to Register 'R1' ----
+0017 A907              MOV     R1,AR7
+                                           ; SOURCE LINE # 216
+0019 120000      R     LCALL   L?0049
+001C 7808              MOV     R0,#08H
+001E 120000      E     LCALL   ?C?ULSHR
+;---- Variable 'cylinder_low' assigned to Register 'R3' ----
+0021 AB07              MOV     R3,AR7
+                                           ; SOURCE LINE # 217
+0023 120000      R     LCALL   L?0049
+0026 7810              MOV     R0,#010H
+0028 120000      E     LCALL   ?C?ULSHR
+002B E4                CLR     A
+;---- Variable 'cylinder_high' assigned to Register 'R2' ----
+002C AA07              MOV     R2,AR7
+                                           ; SOURCE LINE # 218
+002E 120000      R     LCALL   L?0050
+0031 120000      R     LCALL   L?0064
+;---- Variable 'head' assigned to Register 'R6' ----
+0034 AE07              MOV     R6,AR7
+                                           ; SOURCE LINE # 221
+0036 7D01              MOV     R5,#01H
+0038 7F02              MOV     R7,#02H
+003A 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 222
+003D AD01              MOV     R5,AR1
+003F 7F03              MOV     R7,#03H
+0041 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 223
+0044 AD03              MOV     R5,AR3
+0046 7F04              MOV     R7,#04H
+0048 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 224
+004B AD02              MOV     R5,AR2
+004D 7F05              MOV     R7,#05H
+004F 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 225
+0052 EE                MOV     A,R6
+0053 120000      R     LCALL   L?0060
+                                           ; SOURCE LINE # 226
+0056 7D30              MOV     R5,#030H
+                                           ; SOURCE LINE # 228
+0058 120000      R     LCALL   L?0051
+005B 900000      R     MOV     DPTR,#error
+005E EF                MOV     A,R7
+005F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 230
+0060 120000      R     LCALL   Wait_Drq
+                                           ; SOURCE LINE # 231
+0063 120000      R     LCALL   Wait_Busy
+                                           ; SOURCE LINE # 233
+0066 E4                CLR     A
+0067 900000      R     MOV     DPTR,#i
+006A F0                MOVX    @DPTR,A
+006B A3                INC     DPTR
+006C F0                MOVX    @DPTR,A
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 31  
+
+006D         ?C0026:
+006D 900000      R     MOV     DPTR,#i
+0070 E0                MOVX    A,@DPTR
+0071 FE                MOV     R6,A
+0072 A3                INC     DPTR
+0073 E0                MOVX    A,@DPTR
+0074 FF                MOV     R7,A
+0075 C3                CLR     C
+0076 EE                MOV     A,R6
+0077 6480              XRL     A,#080H
+0079 9482              SUBB    A,#082H
+007B 501B              JNC     ?C0027
+                                           ; SOURCE LINE # 234
+007D 900000      R     MOV     DPTR,#buffer
+0080 120000      E     LCALL   ?C?PLDXDATA
+0083 8F82              MOV     DPL,R7
+0085 8E83              MOV     DPH,R6
+0087 120000      E     LCALL   ?C?CLDOPTR
+008A FD                MOV     R5,A
+008B E4                CLR     A
+008C FF                MOV     R7,A
+008D 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 235
+0090 900000      R     MOV     DPTR,#i
+0093 120000      R     LCALL   L?0048
+0096 80D5              SJMP    ?C0026
+0098         ?C0027:
+                                           ; SOURCE LINE # 237
+0098 120000      R     LCALL   Wait_Busy
+                                           ; SOURCE LINE # 239
+009B 7F01              MOV     R7,#01H
+009D 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+00A0 900000      R     MOV     DPTR,#error
+00A3 EF                MOV     A,R7
+00A4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 243
+00A5 C2A3              CLR     Led2
+                                           ; SOURCE LINE # 244
+                                           ; SOURCE LINE # 245
+00A7         ?C0025:
+00A7 22                RET     
+             ; FUNCTION _Write_Sector (END)
+
+             ; FUNCTION _Read_Sector (BEGIN)
+                                           ; SOURCE LINE # 259
+0000 900000      R     MOV     DPTR,#address
+0003 120000      E     LCALL   ?C?LSTXDATA
+0006 900000      R     MOV     DPTR,#buffer
+                                           ; SOURCE LINE # 260
+                                           ; SOURCE LINE # 264
+;---- Variable 'result' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 265
+0009 120000      R     LCALL   L?0058
+000C B40103            CJNE    A,#01H,?C0029
+000F 7F01              MOV     R7,#01H
+0011 22                RET     
+0012         ?C0029:
+                                           ; SOURCE LINE # 266
+0012 D2A2              SETB    Led1
+                                           ; SOURCE LINE # 267
+0014 120000      R     LCALL   L?0056
+;---- Variable 'sector' assigned to Register 'R1' ----
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 32  
+
+0017 A907              MOV     R1,AR7
+                                           ; SOURCE LINE # 268
+0019 120000      R     LCALL   L?0055
+001C 7808              MOV     R0,#08H
+001E 120000      E     LCALL   ?C?ULSHR
+;---- Variable 'cylinder_low' assigned to Register 'R3' ----
+0021 AB07              MOV     R3,AR7
+                                           ; SOURCE LINE # 269
+0023 120000      R     LCALL   L?0055
+0026 7810              MOV     R0,#010H
+0028 120000      E     LCALL   ?C?ULSHR
+002B E4                CLR     A
+;---- Variable 'cylinder_high' assigned to Register 'R2' ----
+002C AA07              MOV     R2,AR7
+                                           ; SOURCE LINE # 270
+002E 120000      R     LCALL   L?0056
+0031 120000      R     LCALL   L?0064
+;---- Variable 'head' assigned to Register 'R4' ----
+0034 AC07              MOV     R4,AR7
+                                           ; SOURCE LINE # 272
+0036 120000      R     LCALL   L?0053
+                                           ; SOURCE LINE # 274
+0039 7D01              MOV     R5,#01H
+003B 7F02              MOV     R7,#02H
+003D 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 275
+0040 AF01              MOV     R7,AR1
+0042 AD07              MOV     R5,AR7
+0044 7F03              MOV     R7,#03H
+0046 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 276
+0049 AF03              MOV     R7,AR3
+004B AD07              MOV     R5,AR7
+004D 7F04              MOV     R7,#04H
+004F 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 277
+0052 AF02              MOV     R7,AR2
+0054 AD07              MOV     R5,AR7
+0056 7F05              MOV     R7,#05H
+0058 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 278
+005B AF04              MOV     R7,AR4
+005D EF                MOV     A,R7
+005E 120000      R     LCALL   L?0060
+                                           ; SOURCE LINE # 279
+0061 7D20              MOV     R5,#020H
+                                           ; SOURCE LINE # 281
+0063 120000      R     LCALL   L?0051
+0066 EF                MOV     A,R7
+0067 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 283
+0068 120000      R     LCALL   Wait_Drq
+                                           ; SOURCE LINE # 286
+006B 120000      R     LCALL   L?0053
+                                           ; SOURCE LINE # 293
+;---- Variable 'i' assigned to Register 'R4/R5' ----
+006E E4                CLR     A
+006F FD                MOV     R5,A
+0070 FC                MOV     R4,A
+0071         ?C0031:
+                                           ; SOURCE LINE # 295
+0071 E4                CLR     A
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 33  
+
+0072 FF                MOV     R7,A
+0073 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+0076 900000      R     MOV     DPTR,#buffer
+                                           ; SOURCE LINE # 299
+0079 120000      R     LCALL   L?0057
+007C BD0001            CJNE    R5,#00H,?C0041
+007F 0C                INC     R4
+0080         ?C0041:
+0080 E4                CLR     A
+0081 B505ED            CJNE    A,AR5,?C0031
+0084 EC                MOV     A,R4
+0085 B402E9            CJNE    A,#02H,?C0031
+0088         ?C0032:
+                                           ; SOURCE LINE # 300
+0088 120000      R     LCALL   Wait_Busy
+                                           ; SOURCE LINE # 302
+008B 120000      R     LCALL   L?0054
+                                           ; SOURCE LINE # 306
+008E C2A2              CLR     Led1
+                                           ; SOURCE LINE # 307
+                                           ; SOURCE LINE # 308
+0090         ?C0030:
+0090 22                RET     
+             ; FUNCTION _Read_Sector (END)
+
+             ; FUNCTION _Identify_Drive (BEGIN)
+                                           ; SOURCE LINE # 320
+0000 900000      R     MOV     DPTR,#buffer
+                                           ; SOURCE LINE # 321
+                                           ; SOURCE LINE # 325
+;---- Variable 'result' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 326
+0003 120000      R     LCALL   L?0059
+0006 B40103            CJNE    A,#01H,?C0036
+0009 7F01              MOV     R7,#01H
+000B 22                RET     
+000C         ?C0036:
+                                           ; SOURCE LINE # 328
+000C 120000      R     LCALL   L?0062
+000F EF                MOV     A,R7
+0010 54F0              ANL     A,#0F0H
+0012 70F8              JNZ     ?C0036
+0014         ?C0037:
+                                           ; SOURCE LINE # 331
+0014 E4                CLR     A
+0015 FD                MOV     R5,A
+0016 7F06              MOV     R7,#06H
+0018 120000      R     LCALL   _CF_SET_REGISTER_VALUE
+                                           ; SOURCE LINE # 332
+001B 7DEC              MOV     R5,#0ECH
+                                           ; SOURCE LINE # 334
+001D 120000      R     LCALL   L?0052
+0020 900000      R     MOV     DPTR,#error
+0023 EF                MOV     A,R7
+0024 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 337
+0025 120000      R     LCALL   Wait_Drq
+                                           ; SOURCE LINE # 338
+;---- Variable 'i' assigned to Register 'R4/R5' ----
+0028 E4                CLR     A
+0029 FD                MOV     R5,A
+002A FC                MOV     R4,A
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 34  
+
+002B         ?C0038:
+                                           ; SOURCE LINE # 340
+002B E4                CLR     A
+002C FF                MOV     R7,A
+002D 120000      R     LCALL   _CF_GET_REGISTER_VALUE
+0030 900000      R     MOV     DPTR,#buffer
+                                           ; SOURCE LINE # 344
+0033 120000      R     LCALL   L?0057
+0036 BD0001            CJNE    R5,#00H,?C0043
+0039 0C                INC     R4
+003A         ?C0043:
+003A E4                CLR     A
+003B B505ED            CJNE    A,AR5,?C0038
+003E EC                MOV     A,R4
+003F B402E9            CJNE    A,#02H,?C0038
+0042         ?C0039:
+                                           ; SOURCE LINE # 346
+0042 120000      R     LCALL   L?0062
+                                           ; SOURCE LINE # 350
+                                           ; SOURCE LINE # 351
+0045         ?C0035:
+0045 22                RET     
+             ; FUNCTION _Identify_Drive (END)
+
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 35  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+_Identify_Drive. . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  buffer . . . . . . . . . . . . . . .  AUTO     XDATA  PTR      0000H  3
+  error. . . . . . . . . . . . . . . .  AUTO     XDATA  CHAR     0003H  1
+  result . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0004H  2
+Init_CF. . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  result . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  loop . . . . . . . . . . . . . . . .  AUTO     XDATA  U_INT    0000H  2
+  reinit . . . . . . . . . . . . . . .  AUTO     XDATA  U_INT    0002H  2
+  REINIT . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+P0 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0080H  1
+P1 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0090H  1
+P2 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00A0H  1
+P3 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B0H  1
+P4 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00C7H  1
+CF_WE. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0096H  1
+P4MDOUT. . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00AEH  1
+size_t . . . . . . . . . . . . . . . .  TYPEDEF  -----  U_INT    -----  2
+Wait_Busy. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  wait . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  wait_bsy . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+Wait_Drq . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  wait . . . . . . . . . . . . . . . .  AUTO     XDATA  CHAR     0000H  1
+  wait_drq . . . . . . . . . . . . . .  AUTO     XDATA  CHAR     0001H  1
+  loopguard. . . . . . . . . . . . . .  AUTO     XDATA  INT      0002H  2
+CF_CD1 . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0093H  1
+_Read_Sector . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  address. . . . . . . . . . . . . . .  AUTO     XDATA  U_LONG   0000H  4
+  buffer . . . . . . . . . . . . . . .  AUTO     XDATA  PTR      0004H  3
+  cylinder_low . . . . . . . . . . . .  * REG *  DATA   CHAR     0003H  1
+  cylinder_high. . . . . . . . . . . .  * REG *  DATA   CHAR     0002H  1
+  sector . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0001H  1
+  head . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0004H  1
+  result . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  error. . . . . . . . . . . . . . . .  AUTO     XDATA  CHAR     0007H  1
+  i. . . . . . . . . . . . . . . . . .  * REG *  DATA   INT      0004H  2
+_Write_Sector. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  address. . . . . . . . . . . . . . .  AUTO     XDATA  U_LONG   0000H  4
+  buffer . . . . . . . . . . . . . . .  AUTO     XDATA  PTR      0004H  3
+  cylinder_low . . . . . . . . . . . .  * REG *  DATA   CHAR     0003H  1
+  cylinder_high. . . . . . . . . . . .  * REG *  DATA   CHAR     0002H  1
+  sector . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0001H  1
+  head . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+  result . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  error. . . . . . . . . . . . . . . .  AUTO     XDATA  CHAR     0007H  1
+  i. . . . . . . . . . . . . . . . . .  AUTO     XDATA  INT      0008H  2
+Led1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A2H  1
+Led2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A3H  1
+_CF_GET_REGISTER_VALUE . . . . . . . .  PUBLIC   CODE   PROC     0007H  -----
+  addr . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  ret. . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+CF_RDY . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0094H  1
+_CF_SET_REGISTER_VALUE . . . . . . . .  PUBLIC   CODE   PROC     0005H  -----
+  addr . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0005H  1
+CF_RST . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0090H  1
+Dtct_Card. . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+C51 COMPILER V8.02   F34X_MSD_CF_BASIC_FUNCTIONS   07/24/2007 22:07:36 PAGE 36  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+  card_detect. . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+CF_OE. . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0091H  1
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    682    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      30
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

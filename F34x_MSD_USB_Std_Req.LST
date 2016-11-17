@@ -1,0 +1,4027 @@
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE F34X_MSD_USB_STD_REQ
+OBJECT MODULE PLACED IN F34x_MSD_USB_Std_Req.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\c51.exe F34x_MSD_USB_Std_Req.c PW(80) SB LC
+                    - OT(9,SIZE) CD DB OE DF(__F340_VER__) LARGE
+
+line level    source
+
+   1          //----------------------------------------------------------------
+             --------------
+   2          // F34x_MSD_USB_Std_Req.c
+   3          //----------------------------------------------------------------
+             --------------
+   4          // Copyright 2006 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // This source file contains the subroutines used to handle incomi
+             -ng setup 
+  10          // packets. These are called by Handle_Setup in F34x_USB_ISR.c and
+             - used for
+  11          // USB chapter 9 compliance.
+  12          //
+  13          //
+  14          //
+  15          // How To Test:    See Readme.txt
+  16          //
+  17          //
+  18          // FID:            34X000066
+  19          // Target:         C8051F34x
+  20          // Tool chain:     Keil
+  21          // Command Line:   See Readme.txt
+  22          // Project Name:   F34x_USB_MSD
+  23          //
+  24          // Release 1.1
+  25          //    -All changes by PKC
+  26          //    -09 JUN 2006
+  27          //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  28          //
+  29          // Release 1.0
+  30          //    -Initial Release
+  31          //
+  32          
+  33          //----------------------------------------------------------------
+             --------------
+  34          // Includes
+  35          //----------------------------------------------------------------
+             --------------
+  36          
+  37          #include "c8051f340.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // C8051F340.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2005 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 2   
+
+   9      =1  // Register/bit definitions for the C8051F34x family.
+  10      =1  //
+  11      =1  //
+  12      =1  // FID:            34X000002
+  13      =1  // Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, '
+             -F346, 'F347
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   None
+  16      =1  //
+  17      =1  // Release 1.0
+  18      =1  //    -Initial Release (GP\PKC)
+  19      =1  //    -13 DEC 2005
+  20      =1  
+  21      =1  //----------------------------------------------------------------
+             --------------
+  22      =1  // Header File Preprocessor Directive
+  23      =1  //----------------------------------------------------------------
+             --------------
+  24      =1  
+  25      =1  #ifndef C8051F340_H
+  26      =1  #define C8051F340_H
+  27      =1  
+  28      =1  //----------------------------------------------------------------
+             --------------
+  29      =1  // Byte Registers
+  30      =1  //----------------------------------------------------------------
+             --------------
+  31      =1  
+  32      =1  sfr  P0           =  0x80;             // Port 0 Latch
+  33      =1  sfr  SP           =  0x81;             // Stack Pointer
+  34      =1  sfr  DPL          =  0x82;             // Data Pointer Low
+  35      =1  sfr  DPH          =  0x83;             // Data Pointer High
+  36      =1  sfr  EMI0TC       =  0x84;             // EMIF Timing
+  37      =1  sfr  EMI0CF       =  0x85;             // EMIF Configuration
+  38      =1  sfr  OSCLCN       =  0x86;             // Internal Low-Freq Oscill
+             -ator Control
+  39      =1  sfr  PCON         =  0x87;             // Power Control
+  40      =1  sfr  TCON         =  0x88;             // Timer/Counter Control
+  41      =1  sfr  TMOD         =  0x89;             // Timer/Counter Mode
+  42      =1  sfr  TL0          =  0x8A;             // Timer/Counter 0 Low
+  43      =1  sfr  TL1          =  0x8B;             // Timer/Counter 1 Low
+  44      =1  sfr  TH0          =  0x8C;             // Timer/Counter 0 High
+  45      =1  sfr  TH1          =  0x8D;             // Timer/Counter 1 High
+  46      =1  sfr  CKCON        =  0x8E;             // Clock Control
+  47      =1  sfr  PSCTL        =  0x8F;             // Program Store R/W Contro
+             -l
+  48      =1  sfr  P1           =  0x90;             // Port 1 Latch
+  49      =1  sfr  TMR3CN       =  0x91;             // Timer/Counter 3Control
+  50      =1  sfr  TMR3RLL      =  0x92;             // Timer/Counter 3 Reload L
+             -ow
+  51      =1  sfr  TMR3RLH      =  0x93;             // Timer/Counter 3 Reload H
+             -igh
+  52      =1  sfr  TMR3L        =  0x94;             // Timer/Counter 3Low
+  53      =1  sfr  TMR3H        =  0x95;             // Timer/Counter 3 High
+  54      =1  sfr  USB0ADR      =  0x96;             // USB0 Indirect Address Re
+             -gister
+  55      =1  sfr  USB0DAT      =  0x97;             // USB0 Data Register
+  56      =1  sfr  SCON0        =  0x98;             // UART0 Control
+  57      =1  sfr  SBUF0        =  0x99;             // UART0 Data Buffer
+  58      =1  sfr  CPT1CN       =  0x9A;             // Comparator1 Control
+  59      =1  sfr  CPT0CN       =  0x9B;             // Comparator0 Control
+  60      =1  sfr  CPT1MD       =  0x9C;             // Comparator1 Mode Selecti
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 3   
+
+             -on
+  61      =1  sfr  CPT0MD       =  0x9D;             // Comparator0 Mode Selecti
+             -on
+  62      =1  sfr  CPT1MX       =  0x9E;             // Comparator1 MUX Selectio
+             -n
+  63      =1  sfr  CPT0MX       =  0x9F;             // Comparator0 MUX Selectio
+             -n
+  64      =1  sfr  P2           =  0xA0;             // Port 2 Latch
+  65      =1  sfr  SPI0CFG      =  0xA1;             // SPI Configuration
+  66      =1  sfr  SPI0CKR      =  0xA2;             // SPI Clock Rate Control
+  67      =1  sfr  SPI0DAT      =  0xA3;             // SPI Data
+  68      =1  sfr  P0MDOUT      =  0xA4;             // Port 0 Output Mode Confi
+             -guration
+  69      =1  sfr  P1MDOUT      =  0xA5;             // Port 1 Output Mode Confi
+             -guration
+  70      =1  sfr  P2MDOUT      =  0xA6;             // Port 2 Output Mode Confi
+             -guration
+  71      =1  sfr  P3MDOUT      =  0xA7;             // Port 3 Output Mode Confi
+             -guration
+  72      =1  sfr  IE           =  0xA8;             // Interrupt Enable
+  73      =1  sfr  CLKSEL       =  0xA9;             // Clock Select
+  74      =1  sfr  EMI0CN       =  0xAA;             // External Memory Interfac
+             -e Control
+  75      =1  sfr  SBCON1       =  0xAC;             // UART1 Baud Rate Generato
+             -r Control
+  76      =1  sfr  P4MDOUT      =  0xAE;             // Port 4 Output Mode Confi
+             -guration
+  77      =1  sfr  PFE0CN       =  0xAF;             // Prefetch Engine Control
+  78      =1  sfr  P3           =  0xB0;             // Port 3 Latch
+  79      =1  sfr  OSCXCN       =  0xB1;             // External Oscillator Cont
+             -rol
+  80      =1  sfr  OSCICN       =  0xB2;             // Internal Oscillator Cont
+             -rol
+  81      =1  sfr  OSCICL       =  0xB3;             // Internal Oscillator Cali
+             -bration
+  82      =1  sfr  SBRLL1       =  0xB4;             // UART1 Baud Rate Generato
+             -r Low
+  83      =1  sfr  SBRLH1       =  0xB5;             // UART1 Baud Rate Generato
+             -r High
+  84      =1  sfr  FLSCL        =  0xB6;             // Flash Scale
+  85      =1  sfr  FLKEY        =  0xB7;             // Flash Lock and Key
+  86      =1  sfr  IP           =  0xB8;             // Interrupt Priority
+  87      =1  sfr  CLKMUL       =  0xB9;             // Clock Multiplier
+  88      =1  sfr  AMX0N        =  0xBA;             // AMUX0 Negative Channel S
+             -elect
+  89      =1  sfr  AMX0P        =  0xBB;             // AMUX0 Positive Channel S
+             -elect
+  90      =1  sfr  ADC0CF       =  0xBC;             // ADC0 Configuration
+  91      =1  sfr  ADC0L        =  0xBD;             // ADC0 Low
+  92      =1  sfr  ADC0H        =  0xBE;             // ADC0 High
+  93      =1  sfr  SMB0CN       =  0xC0;             // SMBus Control
+  94      =1  sfr  SMB0CF       =  0xC1;             // SMBus Configuration
+  95      =1  sfr  SMB0DAT      =  0xC2;             // SMBus Data
+  96      =1  sfr  ADC0GTL      =  0xC3;             // ADC0 Greater-Than Compar
+             -e Low
+  97      =1  sfr  ADC0GTH      =  0xC4;             // ADC0 Greater-Than Compar
+             -e High
+  98      =1  sfr  ADC0LTL      =  0xC5;             // ADC0 Less-Than Compare W
+             -ord Low
+  99      =1  sfr  ADC0LTH      =  0xC6;             // ADC0 Less-Than Compare W
+             -ord High
+ 100      =1  sfr  P4           =  0xC7;             // Port 4 Latch
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 4   
+
+ 101      =1  sfr  TMR2CN       =  0xC8;             // Timer/Counter 2 Control
+ 102      =1  sfr  REG0CN       =  0xC9;             // Voltage Regulator Contro
+             -l
+ 103      =1  sfr  TMR2RLL      =  0xCA;             // Timer/Counter 2 Reload L
+             -ow
+ 104      =1  sfr  TMR2RLH      =  0xCB;             // Timer/Counter 2 Reload H
+             -igh
+ 105      =1  sfr  TMR2L        =  0xCC;             // Timer/Counter 2 Low
+ 106      =1  sfr  TMR2H        =  0xCD;             // Timer/Counter 2 High
+ 107      =1  sfr  PSW          =  0xD0;             // Program Status Word
+ 108      =1  sfr  REF0CN       =  0xD1;             // Voltage Reference Contro
+             -l
+ 109      =1  sfr  SCON1        =  0xD2;             // UART1 Control
+ 110      =1  sfr  SBUF1        =  0xD3;             // UART1 Data Buffer
+ 111      =1  sfr  P0SKIP       =  0xD4;             // Port 0 Skip
+ 112      =1  sfr  P1SKIP       =  0xD5;             // Port 1 Skip
+ 113      =1  sfr  P2SKIP       =  0xD6;             // Port 2 Skip
+ 114      =1  sfr  USB0XCN      =  0xD7;             // USB0 Transceiver Control
+ 115      =1  sfr  PCA0CN       =  0xD8;             // PCA0 Control
+ 116      =1  sfr  PCA0MD       =  0xD9;             // PCA0 Mode
+ 117      =1  sfr  PCA0CPM0     =  0xDA;             // PCA0 Module 0 Mode Regis
+             -ter
+ 118      =1  sfr  PCA0CPM1     =  0xDB;             // PCA0 Module 1 Mode Regis
+             -ter
+ 119      =1  sfr  PCA0CPM2     =  0xDC;             // PCA0 Module 2 Mode Regis
+             -ter
+ 120      =1  sfr  PCA0CPM3     =  0xDD;             // PCA0 Module 3 Mode Regis
+             -ter
+ 121      =1  sfr  PCA0CPM4     =  0xDE;             // PCA0 Module 4 Mode Regis
+             -ter
+ 122      =1  sfr  P3SKIP       =  0xDF;             // Port 3 Skip
+ 123      =1  sfr  ACC          =  0xE0;             // Accumulator
+ 124      =1  sfr  XBR0         =  0xE1;             // Port I/O Crossbar Contro
+             -l 0
+ 125      =1  sfr  XBR1         =  0xE2;             // Port I/O Crossbar Contro
+             -l 1
+ 126      =1  sfr  XBR2         =  0xE3;             // Port I/O Crossbar Contro
+             -l 2
+ 127      =1  sfr  IT01CF       =  0xE4;             // INT0/INT1 Configuration
+ 128      =1  sfr  SMOD1        =  0xE5;             // UART1 Mode
+ 129      =1  sfr  EIE1         =  0xE6;             // Extended Interrupt Enabl
+             -e 1
+ 130      =1  sfr  EIE2         =  0xE7;             // Extended Interrupt Enabl
+             -e 2
+ 131      =1  sfr  ADC0CN       =  0xE8;             // ADC0 Control
+ 132      =1  sfr  PCA0CPL1     =  0xE9;             // PCA0 Capture 1 Low
+ 133      =1  sfr  PCA0CPH1     =  0xEA;             // PCA0 Capture 1 High
+ 134      =1  sfr  PCA0CPL2     =  0xEB;             // PCA0 Capture 2 Low
+ 135      =1  sfr  PCA0CPH2     =  0xEC;             // PCA0 Capture 2 High
+ 136      =1  sfr  PCA0CPL3     =  0xED;             // PCA0 Capture 3 Low
+ 137      =1  sfr  PCA0CPH3     =  0xEE;             // PCA0 Capture 3 High
+ 138      =1  sfr  RSTSRC       =  0xEF;             // Reset Source Configurati
+             -on/Status
+ 139      =1  sfr  B            =  0xF0;             // B Register
+ 140      =1  sfr  P0MDIN       =  0xF1;             // Port 0 Input Mode Config
+             -uration
+ 141      =1  sfr  P1MDIN       =  0xF2;             // Port 1 Input Mode Config
+             -uration
+ 142      =1  sfr  P2MDIN       =  0xF3;             // Port 2 Input Mode Config
+             -uration
+ 143      =1  sfr  P3MDIN       =  0xF4;             // Port 3 Input Mode Config
+             -uration
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 5   
+
+ 144      =1  sfr  P4MDIN       =  0xF5;             // Port 4 Input Mode Config
+             -uration
+ 145      =1  sfr  EIP1         =  0xF6;             // Extended Interrupt Prior
+             -ity 1
+ 146      =1  sfr  EIP2         =  0xF7;             // Extended Interrupt Prior
+             -ity 2
+ 147      =1  sfr  SPI0CN       =  0xF8;             // SPI0 Control
+ 148      =1  sfr  PCA0L        =  0xF9;             // PCA0 Counter Low
+ 149      =1  sfr  PCA0H        =  0xFA;             // PCA0 Counter High
+ 150      =1  sfr  PCA0CPL0     =  0xFB;             // PCA0 Capture 0 Low
+ 151      =1  sfr  PCA0CPH0     =  0xFC;             // PCA0 Capture 0 High
+ 152      =1  sfr  PCA0CPL4     =  0xFD;             // PCA0 Capture 4 Low
+ 153      =1  sfr  PCA0CPH4     =  0xFE;             // PCA0 Capture 4 High
+ 154      =1  sfr  VDM0CN       =  0xFF;             // VDD Monitor Control
+ 155      =1  
+ 156      =1  
+ 157      =1  //----------------------------------------------------------------
+             --------------
+ 158      =1  // Bit Definitions
+ 159      =1  //----------------------------------------------------------------
+             --------------
+ 160      =1  
+ 161      =1  // TCON 0x88
+ 162      =1  sbit TF1     = 0x8F;                   // Timer1 overflow flag
+ 163      =1  sbit TR1     = 0x8E;                   // Timer1 on/off control
+ 164      =1  sbit TF0     = 0x8D;                   // Timer0 overflow flag
+ 165      =1  sbit TR0     = 0x8C;                   // Timer0 on/off control
+ 166      =1  sbit IE1     = 0x8B;                   // Ext interrupt 1 edge fla
+             -g
+ 167      =1  sbit IT1     = 0x8A;                   // Ext interrupt 1 type
+ 168      =1  sbit IE0     = 0x89;                   // Ext interrupt 0 edge fla
+             -g
+ 169      =1  sbit IT0     = 0x88;                   // Ext interrupt 0 type
+ 170      =1  
+ 171      =1  // SCON0 0x98
+ 172      =1  sbit S0MODE  = 0x9F;                   // Serial mode control bit 
+             -0
+ 173      =1                                         // Bit6 UNUSED
+ 174      =1  sbit MCE0    = 0x9D;                   // Multiprocessor communica
+             -tion enable
+ 175      =1  sbit REN0    = 0x9C;                   // Receive enable
+ 176      =1  sbit TB80    = 0x9B;                   // Transmit bit 8
+ 177      =1  sbit RB80    = 0x9A;                   // Receive bit 8
+ 178      =1  sbit TI0     = 0x99;                   // Transmit interrupt flag
+ 179      =1  sbit RI0     = 0x98;                   // Receive interrupt flag
+ 180      =1  
+ 181      =1  // IE 0xA8
+ 182      =1  sbit EA      = 0xAF;                   // Global interrupt enable
+ 183      =1  sbit ESPI0   = 0xAE;                   // SPI0 interrupt enable
+ 184      =1  sbit ET2     = 0xAD;                   // Timer2 interrupt enable
+ 185      =1  sbit ES0     = 0xAC;                   // UART0 interrupt enable
+ 186      =1  sbit ET1     = 0xAB;                   // Timer1 interrupt enable
+ 187      =1  sbit EX1     = 0xAA;                   // External interrupt 1 ena
+             -ble
+ 188      =1  sbit ET0     = 0xA9;                   // Timer0 interrupt enable
+ 189      =1  sbit EX0     = 0xA8;                   // External interrupt 0 ena
+             -ble
+ 190      =1  
+ 191      =1  // IP 0xB8
+ 192      =1                                         // Bit7 UNUSED
+ 193      =1  sbit PSPI0   = 0xBE;                   // SPI0 interrupt priority
+ 194      =1  sbit PT2     = 0xBD;                   // Timer2 priority
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 6   
+
+ 195      =1  sbit PS0     = 0xBC;                   // UART0 priority
+ 196      =1  sbit PT1     = 0xBB;                   // Timer1 priority
+ 197      =1  sbit PX1     = 0xBA;                   // External interrupt 1 pri
+             -ority
+ 198      =1  sbit PT0     = 0xB9;                   // Timer0 priority
+ 199      =1  sbit PX0     = 0xB8;                   // External interrupt 0 pri
+             -ority
+ 200      =1  
+ 201      =1  // SMB0CN 0xC0
+ 202      =1  sbit MASTER  = 0xC7;                   // Master/slave indicator
+ 203      =1  sbit TXMODE  = 0xC6;                   // Transmit mode indicator
+ 204      =1  sbit STA     = 0xC5;                   // Start flag
+ 205      =1  sbit STO     = 0xC4;                   // Stop flag
+ 206      =1  sbit ACKRQ   = 0xC3;                   // Acknowledge request
+ 207      =1  sbit ARBLOST = 0xC2;                   // Arbitration lost indicat
+             -or
+ 208      =1  sbit ACK     = 0xC1;                   // Acknowledge flag
+ 209      =1  sbit SI      = 0xC0;                   // SMBus interrupt flag
+ 210      =1  
+ 211      =1  // TMR2CN 0xC8
+ 212      =1  sbit TF2H    = 0xCF;                   // Timer2 high byte overflo
+             -w flag
+ 213      =1  sbit TF2L    = 0xCE;                   // Timer2 low byte overflow
+             - flag
+ 214      =1  sbit TF2LEN  = 0xCD;                   // Timer2 low byte interrup
+             -t enable
+ 215      =1  sbit T2CE    = 0xCC;                   // Timer2 capture enable
+ 216      =1  sbit T2SPLIT = 0xCB;                   // Timer2 split mode enable
+ 217      =1  sbit TR2     = 0xCA;                   // Timer2 on/off control
+ 218      =1  sbit T2CSS   = 0xC9;                   // Timer 2 Capture Source s
+             -elect
+ 219      =1  sbit T2XCLK  = 0xC8;                   // Timer2 external clock se
+             -lect
+ 220      =1  
+ 221      =1  // PSW 0xD0
+ 222      =1  sbit CY      = 0xD7;                   // Carry flag
+ 223      =1  sbit AC      = 0xD6;                   // Auxiliary carry flag
+ 224      =1  sbit F0      = 0xD5;                   // User flag 0
+ 225      =1  sbit RS1     = 0xD4;                   // Register bank select 1
+ 226      =1  sbit RS0     = 0xD3;                   // Register bank select 0
+ 227      =1  sbit OV      = 0xD2;                   // Overflow flag
+ 228      =1  sbit F1      = 0xD1;                   // User flag 1
+ 229      =1  sbit P       = 0xD0;                   // Accumulator parity flag
+ 230      =1  
+ 231      =1  // PCA0CN 0xD8
+ 232      =1  sbit CF      = 0xDF;                   // PCA0 counter overflow fl
+             -ag
+ 233      =1  sbit CR      = 0xDE;                   // PCA0 counter run control
+ 234      =1                                         // Bit5 UNUSED
+ 235      =1  sbit CCF4    = 0xDC;                   // PCA0 module4 capture/com
+             -pare flag
+ 236      =1  sbit CCF3    = 0xDB;                   // PCA0 module3 capture/com
+             -pare flag
+ 237      =1  sbit CCF2    = 0xDA;                   // PCA0 module2 capture/com
+             -pare flag
+ 238      =1  sbit CCF1    = 0xD9;                   // PCA0 module1 capture/com
+             -pare flag
+ 239      =1  sbit CCF0    = 0xD8;                   // PCA0 module0 capture/com
+             -pare flag
+ 240      =1  
+ 241      =1  // ADC0CN 0xE8
+ 242      =1  sbit AD0EN   = 0xEF;                   // ADC0 enable
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 7   
+
+ 243      =1  sbit AD0TM   = 0xEE;                   // ADC0 track mode
+ 244      =1  sbit AD0INT  = 0xED;                   // ADC0 conversion complete
+             - interrupt flag
+ 245      =1  sbit AD0BUSY = 0xEC;                   // ADC0 busy flag
+ 246      =1  sbit AD0WINT = 0xEB;                   // ADC0 window compare inte
+             -rrupt flag
+ 247      =1  sbit AD0CM2  = 0xEA;                   // ADC0 conversion mode sel
+             -ect 2
+ 248      =1  sbit AD0CM1  = 0xE9;                   // ADC0 conversion mode sel
+             -ect 1
+ 249      =1  sbit AD0CM0  = 0xE8;                   // ADC0 conversion mode sel
+             -ect 0
+ 250      =1  
+ 251      =1  // SPI0CN 0xF8
+ 252      =1  sbit SPIF    = 0xFF;                   // SPI0 interrupt flag
+ 253      =1  sbit WCOL    = 0xFE;                   // SPI0 write collision fla
+             -g
+ 254      =1  sbit MODF    = 0xFD;                   // SPI0 mode fault flag
+ 255      =1  sbit RXOVRN  = 0xFC;                   // SPI0 rx overrun flag
+ 256      =1  sbit NSSMD1  = 0xFB;                   // SPI0 slave select mode 1
+ 257      =1  sbit NSSMD0  = 0xFA;                   // SPI0 slave select mode 0
+ 258      =1  sbit TXBMT   = 0xF9;                   // SPI0 transmit buffer emp
+             -ty
+ 259      =1  sbit SPIEN   = 0xF8;                   // SPI0 SPI enable
+ 260      =1  
+ 261      =1  
+ 262      =1  //----------------------------------------------------------------
+             --------------
+ 263      =1  // Interrupt Priorities
+ 264      =1  //----------------------------------------------------------------
+             --------------
+ 265      =1  
+ 266      =1  #define INTERRUPT_INT0             0   // External Interrupt 0
+ 267      =1  #define INTERRUPT_TIMER0           1   // Timer0 Overflow
+ 268      =1  #define INTERRUPT_INT1             2   // External Interrupt 1
+ 269      =1  #define INTERRUPT_TIMER1           3   // Timer1 Overflow
+ 270      =1  #define INTERRUPT_UART0            4   // Serial Port 0
+ 271      =1  #define INTERRUPT_TIMER2           5   // Timer2 Overflow
+ 272      =1  #define INTERRUPT_SPI0             6   // Serial Peripheral Interf
+             -ace 0
+ 273      =1  #define INTERRUPT_SMBUS0           7   // SMBus0 Interface
+ 274      =1  #define INTERRUPT_USB0             8   // USB Interface
+ 275      =1  #define INTERRUPT_ADC0_WINDOW      9   // ADC0 Window Comparison
+ 276      =1  #define INTERRUPT_ADC0_EOC         10  // ADC0 End Of Conversion
+ 277      =1  #define INTERRUPT_PCA0             11  // PCA0 Peripheral
+ 278      =1  #define INTERRUPT_COMPARATOR0      12  // Comparator0
+ 279      =1  #define INTERRUPT_COMPARATOR1      13  // Comparator1
+ 280      =1  #define INTERRUPT_TIMER3           14  // Timer3 Overflow
+ 281      =1  #define INTERRUPT_VBUS_LEVEL       15  // VBUS level-triggered int
+             -errupt
+ 282      =1  #define INTERRUPT_UART1            16  // Serial Port 1
+ 283      =1  
+ 284      =1  //----------------------------------------------------------------
+             --------------
+ 285      =1  // Header File PreProcessor Directive
+ 286      =1  //----------------------------------------------------------------
+             --------------
+ 287      =1  
+ 288      =1  #endif                                 // #define C8051F340_H
+ 289      =1  
+ 290      =1  //----------------------------------------------------------------
+             --------------
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 8   
+
+ 291      =1  // End Of File
+ 292      =1  //----------------------------------------------------------------
+             --------------
+  38          #include "F34x_MSD_USB_Register.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_USB_Register.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Header file for USB firmware. Includes all USB core register
+  10      =1  // addresses, register access macros, and register bit masks.
+  11      =1  //
+  12      =1  // FID:            34X000065
+  13      =1  // Target:         C8051F34x
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   See Readme.txt
+  16      =1  // Project Name:   F34x_USB_MSD
+  17      =1  //
+  18      =1  // Release 1.1
+  19      =1  //    -All changes by PKC
+  20      =1  //    -09 JUN 2006
+  21      =1  //    -No changes; incremented revision number to match project re
+             -vision
+  22      =1  //
+  23      =1  // Release 1.0
+  24      =1  //    -Initial Release
+  25      =1  //
+  26      =1  // 11/22/02 - DM: 1. Updated function prototypes and added constan
+             -ts
+  27      =1  //                to F34x_USB_Main.h with sample interrupt firmwar
+             -e.
+  28      =1  
+  29      =1  //----------------------------------------------------------------
+             --------------
+  30      =1  // Header File Preprocessor Directive
+  31      =1  //----------------------------------------------------------------
+             --------------
+  32      =1  
+  33      =1  #ifndef  _USB_REGS_H_
+  34      =1  #define  _USB_REGS_H_
+  35      =1  
+  36      =1  #include "F34x_MSD_Definitions.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // F34x_MSD_Definitions.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =2  // http://www.silabs.com
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Header file with all definitions.
+  10      =2  //
+  11      =2  //
+  12      =2  // FID:            34X000032
+  13      =2  // Target:         C8051F34x
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 9   
+
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   See Readme.txt
+  16      =2  // Project Name:   F34x_USB_MSD
+  17      =2  //
+  18      =2  // Release 1.1
+  19      =2  //    -All changes by PKC
+  20      =2  //    -09 JUN 2006
+  21      =2  //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  22      =2  //
+  23      =2  // Release 1.0
+  24      =2  //    -Initial Release
+  25      =2  //
+  26      =2  
+  27      =2  //----------------------------------------------------------------
+             --------------
+  28      =2  // Header File Preprocessor Directive
+  29      =2  //----------------------------------------------------------------
+             --------------
+  30      =2  
+  31      =2  #ifndef __DEFINITIONS_H__
+  32      =2  #define __DEFINITIONS_H__
+  33      =2  
+  34      =2  #define DEBUG_TIMEOUTS
+  35      =2  #include "c8051f340.h"
+   1      =3  //----------------------------------------------------------------
+             --------------
+   2      =3  // C8051F340.h
+   3      =3  //----------------------------------------------------------------
+             --------------
+   4      =3  // Copyright 2005 Silicon Laboratories, Inc.
+   5      =3  // http://www.silabs.com
+   6      =3  //
+   7      =3  // Program Description:
+   8      =3  //
+   9      =3  // Register/bit definitions for the C8051F34x family.
+  10      =3  //
+  11      =3  //
+  12      =3  // FID:            34X000002
+  13      =3  // Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, '
+             -F346, 'F347
+  14      =3  // Tool chain:     Keil
+  15      =3  // Command Line:   None
+  16      =3  //
+  17      =3  // Release 1.0
+  18      =3  //    -Initial Release (GP\PKC)
+  19      =3  //    -13 DEC 2005
+  20      =3  
+  21      =3  //----------------------------------------------------------------
+             --------------
+  22      =3  // Header File Preprocessor Directive
+  23      =3  //----------------------------------------------------------------
+             --------------
+  24      =3  
+  25      =3  #ifndef C8051F340_H
+           =3 #define C8051F340_H
+           =3 
+           =3 //----------------------------------------------------------------
+             --------------
+           =3 // Byte Registers
+           =3 //----------------------------------------------------------------
+             --------------
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 10  
+
+           =3 
+           =3 sfr  P0           =  0x80;             // Port 0 Latch
+           =3 sfr  SP           =  0x81;             // Stack Pointer
+           =3 sfr  DPL          =  0x82;             // Data Pointer Low
+           =3 sfr  DPH          =  0x83;             // Data Pointer High
+           =3 sfr  EMI0TC       =  0x84;             // EMIF Timing
+           =3 sfr  EMI0CF       =  0x85;             // EMIF Configuration
+           =3 sfr  OSCLCN       =  0x86;             // Internal Low-Freq Oscill
+             -ator Control
+           =3 sfr  PCON         =  0x87;             // Power Control
+           =3 sfr  TCON         =  0x88;             // Timer/Counter Control
+           =3 sfr  TMOD         =  0x89;             // Timer/Counter Mode
+           =3 sfr  TL0          =  0x8A;             // Timer/Counter 0 Low
+           =3 sfr  TL1          =  0x8B;             // Timer/Counter 1 Low
+           =3 sfr  TH0          =  0x8C;             // Timer/Counter 0 High
+           =3 sfr  TH1          =  0x8D;             // Timer/Counter 1 High
+           =3 sfr  CKCON        =  0x8E;             // Clock Control
+           =3 sfr  PSCTL        =  0x8F;             // Program Store R/W Contro
+             -l
+           =3 sfr  P1           =  0x90;             // Port 1 Latch
+           =3 sfr  TMR3CN       =  0x91;             // Timer/Counter 3Control
+           =3 sfr  TMR3RLL      =  0x92;             // Timer/Counter 3 Reload L
+             -ow
+           =3 sfr  TMR3RLH      =  0x93;             // Timer/Counter 3 Reload H
+             -igh
+           =3 sfr  TMR3L        =  0x94;             // Timer/Counter 3Low
+           =3 sfr  TMR3H        =  0x95;             // Timer/Counter 3 High
+           =3 sfr  USB0ADR      =  0x96;             // USB0 Indirect Address Re
+             -gister
+           =3 sfr  USB0DAT      =  0x97;             // USB0 Data Register
+           =3 sfr  SCON0        =  0x98;             // UART0 Control
+           =3 sfr  SBUF0        =  0x99;             // UART0 Data Buffer
+           =3 sfr  CPT1CN       =  0x9A;             // Comparator1 Control
+           =3 sfr  CPT0CN       =  0x9B;             // Comparator0 Control
+           =3 sfr  CPT1MD       =  0x9C;             // Comparator1 Mode Selecti
+             -on
+           =3 sfr  CPT0MD       =  0x9D;             // Comparator0 Mode Selecti
+             -on
+           =3 sfr  CPT1MX       =  0x9E;             // Comparator1 MUX Selectio
+             -n
+           =3 sfr  CPT0MX       =  0x9F;             // Comparator0 MUX Selectio
+             -n
+           =3 sfr  P2           =  0xA0;             // Port 2 Latch
+           =3 sfr  SPI0CFG      =  0xA1;             // SPI Configuration
+           =3 sfr  SPI0CKR      =  0xA2;             // SPI Clock Rate Control
+           =3 sfr  SPI0DAT      =  0xA3;             // SPI Data
+           =3 sfr  P0MDOUT      =  0xA4;             // Port 0 Output Mode Confi
+             -guration
+           =3 sfr  P1MDOUT      =  0xA5;             // Port 1 Output Mode Confi
+             -guration
+           =3 sfr  P2MDOUT      =  0xA6;             // Port 2 Output Mode Confi
+             -guration
+           =3 sfr  P3MDOUT      =  0xA7;             // Port 3 Output Mode Confi
+             -guration
+           =3 sfr  IE           =  0xA8;             // Interrupt Enable
+           =3 sfr  CLKSEL       =  0xA9;             // Clock Select
+           =3 sfr  EMI0CN       =  0xAA;             // External Memory Interfac
+             -e Control
+           =3 sfr  SBCON1       =  0xAC;             // UART1 Baud Rate Generato
+             -r Control
+           =3 sfr  P4MDOUT      =  0xAE;             // Port 4 Output Mode Confi
+             -guration
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 11  
+
+           =3 sfr  PFE0CN       =  0xAF;             // Prefetch Engine Control
+           =3 sfr  P3           =  0xB0;             // Port 3 Latch
+           =3 sfr  OSCXCN       =  0xB1;             // External Oscillator Cont
+             -rol
+           =3 sfr  OSCICN       =  0xB2;             // Internal Oscillator Cont
+             -rol
+           =3 sfr  OSCICL       =  0xB3;             // Internal Oscillator Cali
+             -bration
+           =3 sfr  SBRLL1       =  0xB4;             // UART1 Baud Rate Generato
+             -r Low
+           =3 sfr  SBRLH1       =  0xB5;             // UART1 Baud Rate Generato
+             -r High
+           =3 sfr  FLSCL        =  0xB6;             // Flash Scale
+           =3 sfr  FLKEY        =  0xB7;             // Flash Lock and Key
+           =3 sfr  IP           =  0xB8;             // Interrupt Priority
+           =3 sfr  CLKMUL       =  0xB9;             // Clock Multiplier
+           =3 sfr  AMX0N        =  0xBA;             // AMUX0 Negative Channel S
+             -elect
+           =3 sfr  AMX0P        =  0xBB;             // AMUX0 Positive Channel S
+             -elect
+           =3 sfr  ADC0CF       =  0xBC;             // ADC0 Configuration
+           =3 sfr  ADC0L        =  0xBD;             // ADC0 Low
+           =3 sfr  ADC0H        =  0xBE;             // ADC0 High
+           =3 sfr  SMB0CN       =  0xC0;             // SMBus Control
+           =3 sfr  SMB0CF       =  0xC1;             // SMBus Configuration
+           =3 sfr  SMB0DAT      =  0xC2;             // SMBus Data
+           =3 sfr  ADC0GTL      =  0xC3;             // ADC0 Greater-Than Compar
+             -e Low
+           =3 sfr  ADC0GTH      =  0xC4;             // ADC0 Greater-Than Compar
+             -e High
+           =3 sfr  ADC0LTL      =  0xC5;             // ADC0 Less-Than Compare W
+             -ord Low
+           =3 sfr  ADC0LTH      =  0xC6;             // ADC0 Less-Than Compare W
+             -ord High
+           =3 sfr  P4           =  0xC7;             // Port 4 Latch
+           =3 sfr  TMR2CN       =  0xC8;             // Timer/Counter 2 Control
+           =3 sfr  REG0CN       =  0xC9;             // Voltage Regulator Contro
+             -l
+           =3 sfr  TMR2RLL      =  0xCA;             // Timer/Counter 2 Reload L
+             -ow
+           =3 sfr  TMR2RLH      =  0xCB;             // Timer/Counter 2 Reload H
+             -igh
+           =3 sfr  TMR2L        =  0xCC;             // Timer/Counter 2 Low
+           =3 sfr  TMR2H        =  0xCD;             // Timer/Counter 2 High
+           =3 sfr  PSW          =  0xD0;             // Program Status Word
+           =3 sfr  REF0CN       =  0xD1;             // Voltage Reference Contro
+             -l
+           =3 sfr  SCON1        =  0xD2;             // UART1 Control
+           =3 sfr  SBUF1        =  0xD3;             // UART1 Data Buffer
+           =3 sfr  P0SKIP       =  0xD4;             // Port 0 Skip
+           =3 sfr  P1SKIP       =  0xD5;             // Port 1 Skip
+           =3 sfr  P2SKIP       =  0xD6;             // Port 2 Skip
+           =3 sfr  USB0XCN      =  0xD7;             // USB0 Transceiver Control
+           =3 sfr  PCA0CN       =  0xD8;             // PCA0 Control
+           =3 sfr  PCA0MD       =  0xD9;             // PCA0 Mode
+           =3 sfr  PCA0CPM0     =  0xDA;             // PCA0 Module 0 Mode Regis
+             -ter
+           =3 sfr  PCA0CPM1     =  0xDB;             // PCA0 Module 1 Mode Regis
+             -ter
+           =3 sfr  PCA0CPM2     =  0xDC;             // PCA0 Module 2 Mode Regis
+             -ter
+           =3 sfr  PCA0CPM3     =  0xDD;             // PCA0 Module 3 Mode Regis
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 12  
+
+             -ter
+           =3 sfr  PCA0CPM4     =  0xDE;             // PCA0 Module 4 Mode Regis
+             -ter
+           =3 sfr  P3SKIP       =  0xDF;             // Port 3 Skip
+           =3 sfr  ACC          =  0xE0;             // Accumulator
+           =3 sfr  XBR0         =  0xE1;             // Port I/O Crossbar Contro
+             -l 0
+           =3 sfr  XBR1         =  0xE2;             // Port I/O Crossbar Contro
+             -l 1
+           =3 sfr  XBR2         =  0xE3;             // Port I/O Crossbar Contro
+             -l 2
+           =3 sfr  IT01CF       =  0xE4;             // INT0/INT1 Configuration
+           =3 sfr  SMOD1        =  0xE5;             // UART1 Mode
+           =3 sfr  EIE1         =  0xE6;             // Extended Interrupt Enabl
+             -e 1
+           =3 sfr  EIE2         =  0xE7;             // Extended Interrupt Enabl
+             -e 2
+           =3 sfr  ADC0CN       =  0xE8;             // ADC0 Control
+           =3 sfr  PCA0CPL1     =  0xE9;             // PCA0 Capture 1 Low
+           =3 sfr  PCA0CPH1     =  0xEA;             // PCA0 Capture 1 High
+           =3 sfr  PCA0CPL2     =  0xEB;             // PCA0 Capture 2 Low
+           =3 sfr  PCA0CPH2     =  0xEC;             // PCA0 Capture 2 High
+           =3 sfr  PCA0CPL3     =  0xED;             // PCA0 Capture 3 Low
+           =3 sfr  PCA0CPH3     =  0xEE;             // PCA0 Capture 3 High
+           =3 sfr  RSTSRC       =  0xEF;             // Reset Source Configurati
+             -on/Status
+           =3 sfr  B            =  0xF0;             // B Register
+           =3 sfr  P0MDIN       =  0xF1;             // Port 0 Input Mode Config
+             -uration
+           =3 sfr  P1MDIN       =  0xF2;             // Port 1 Input Mode Config
+             -uration
+           =3 sfr  P2MDIN       =  0xF3;             // Port 2 Input Mode Config
+             -uration
+           =3 sfr  P3MDIN       =  0xF4;             // Port 3 Input Mode Config
+             -uration
+           =3 sfr  P4MDIN       =  0xF5;             // Port 4 Input Mode Config
+             -uration
+           =3 sfr  EIP1         =  0xF6;             // Extended Interrupt Prior
+             -ity 1
+           =3 sfr  EIP2         =  0xF7;             // Extended Interrupt Prior
+             -ity 2
+           =3 sfr  SPI0CN       =  0xF8;             // SPI0 Control
+           =3 sfr  PCA0L        =  0xF9;             // PCA0 Counter Low
+           =3 sfr  PCA0H        =  0xFA;             // PCA0 Counter High
+           =3 sfr  PCA0CPL0     =  0xFB;             // PCA0 Capture 0 Low
+           =3 sfr  PCA0CPH0     =  0xFC;             // PCA0 Capture 0 High
+           =3 sfr  PCA0CPL4     =  0xFD;             // PCA0 Capture 4 Low
+           =3 sfr  PCA0CPH4     =  0xFE;             // PCA0 Capture 4 High
+           =3 sfr  VDM0CN       =  0xFF;             // VDD Monitor Control
+           =3 
+           =3 
+           =3 //----------------------------------------------------------------
+             --------------
+           =3 // Bit Definitions
+           =3 //----------------------------------------------------------------
+             --------------
+           =3 
+           =3 // TCON 0x88
+           =3 sbit TF1     = 0x8F;                   // Timer1 overflow flag
+           =3 sbit TR1     = 0x8E;                   // Timer1 on/off control
+           =3 sbit TF0     = 0x8D;                   // Timer0 overflow flag
+           =3 sbit TR0     = 0x8C;                   // Timer0 on/off control
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 13  
+
+           =3 sbit IE1     = 0x8B;                   // Ext interrupt 1 edge fla
+             -g
+           =3 sbit IT1     = 0x8A;                   // Ext interrupt 1 type
+           =3 sbit IE0     = 0x89;                   // Ext interrupt 0 edge fla
+             -g
+           =3 sbit IT0     = 0x88;                   // Ext interrupt 0 type
+           =3 
+           =3 // SCON0 0x98
+           =3 sbit S0MODE  = 0x9F;                   // Serial mode control bit 
+             -0
+           =3                                        // Bit6 UNUSED
+           =3 sbit MCE0    = 0x9D;                   // Multiprocessor communica
+             -tion enable
+           =3 sbit REN0    = 0x9C;                   // Receive enable
+           =3 sbit TB80    = 0x9B;                   // Transmit bit 8
+           =3 sbit RB80    = 0x9A;                   // Receive bit 8
+           =3 sbit TI0     = 0x99;                   // Transmit interrupt flag
+           =3 sbit RI0     = 0x98;                   // Receive interrupt flag
+           =3 
+           =3 // IE 0xA8
+           =3 sbit EA      = 0xAF;                   // Global interrupt enable
+           =3 sbit ESPI0   = 0xAE;                   // SPI0 interrupt enable
+           =3 sbit ET2     = 0xAD;                   // Timer2 interrupt enable
+           =3 sbit ES0     = 0xAC;                   // UART0 interrupt enable
+           =3 sbit ET1     = 0xAB;                   // Timer1 interrupt enable
+           =3 sbit EX1     = 0xAA;                   // External interrupt 1 ena
+             -ble
+           =3 sbit ET0     = 0xA9;                   // Timer0 interrupt enable
+           =3 sbit EX0     = 0xA8;                   // External interrupt 0 ena
+             -ble
+           =3 
+           =3 // IP 0xB8
+           =3                                        // Bit7 UNUSED
+           =3 sbit PSPI0   = 0xBE;                   // SPI0 interrupt priority
+           =3 sbit PT2     = 0xBD;                   // Timer2 priority
+           =3 sbit PS0     = 0xBC;                   // UART0 priority
+           =3 sbit PT1     = 0xBB;                   // Timer1 priority
+           =3 sbit PX1     = 0xBA;                   // External interrupt 1 pri
+             -ority
+           =3 sbit PT0     = 0xB9;                   // Timer0 priority
+           =3 sbit PX0     = 0xB8;                   // External interrupt 0 pri
+             -ority
+           =3 
+           =3 // SMB0CN 0xC0
+           =3 sbit MASTER  = 0xC7;                   // Master/slave indicator
+           =3 sbit TXMODE  = 0xC6;                   // Transmit mode indicator
+           =3 sbit STA     = 0xC5;                   // Start flag
+           =3 sbit STO     = 0xC4;                   // Stop flag
+           =3 sbit ACKRQ   = 0xC3;                   // Acknowledge request
+           =3 sbit ARBLOST = 0xC2;                   // Arbitration lost indicat
+             -or
+           =3 sbit ACK     = 0xC1;                   // Acknowledge flag
+           =3 sbit SI      = 0xC0;                   // SMBus interrupt flag
+           =3 
+           =3 // TMR2CN 0xC8
+           =3 sbit TF2H    = 0xCF;                   // Timer2 high byte overflo
+             -w flag
+           =3 sbit TF2L    = 0xCE;                   // Timer2 low byte overflow
+             - flag
+           =3 sbit TF2LEN  = 0xCD;                   // Timer2 low byte interrup
+             -t enable
+           =3 sbit T2CE    = 0xCC;                   // Timer2 capture enable
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 14  
+
+           =3 sbit T2SPLIT = 0xCB;                   // Timer2 split mode enable
+           =3 sbit TR2     = 0xCA;                   // Timer2 on/off control
+           =3 sbit T2CSS   = 0xC9;                   // Timer 2 Capture Source s
+             -elect
+           =3 sbit T2XCLK  = 0xC8;                   // Timer2 external clock se
+             -lect
+           =3 
+           =3 // PSW 0xD0
+           =3 sbit CY      = 0xD7;                   // Carry flag
+           =3 sbit AC      = 0xD6;                   // Auxiliary carry flag
+           =3 sbit F0      = 0xD5;                   // User flag 0
+           =3 sbit RS1     = 0xD4;                   // Register bank select 1
+           =3 sbit RS0     = 0xD3;                   // Register bank select 0
+           =3 sbit OV      = 0xD2;                   // Overflow flag
+           =3 sbit F1      = 0xD1;                   // User flag 1
+           =3 sbit P       = 0xD0;                   // Accumulator parity flag
+           =3 
+           =3 // PCA0CN 0xD8
+           =3 sbit CF      = 0xDF;                   // PCA0 counter overflow fl
+             -ag
+           =3 sbit CR      = 0xDE;                   // PCA0 counter run control
+           =3                                        // Bit5 UNUSED
+           =3 sbit CCF4    = 0xDC;                   // PCA0 module4 capture/com
+             -pare flag
+           =3 sbit CCF3    = 0xDB;                   // PCA0 module3 capture/com
+             -pare flag
+           =3 sbit CCF2    = 0xDA;                   // PCA0 module2 capture/com
+             -pare flag
+           =3 sbit CCF1    = 0xD9;                   // PCA0 module1 capture/com
+             -pare flag
+           =3 sbit CCF0    = 0xD8;                   // PCA0 module0 capture/com
+             -pare flag
+           =3 
+           =3 // ADC0CN 0xE8
+           =3 sbit AD0EN   = 0xEF;                   // ADC0 enable
+           =3 sbit AD0TM   = 0xEE;                   // ADC0 track mode
+           =3 sbit AD0INT  = 0xED;                   // ADC0 conversion complete
+             - interrupt flag
+           =3 sbit AD0BUSY = 0xEC;                   // ADC0 busy flag
+           =3 sbit AD0WINT = 0xEB;                   // ADC0 window compare inte
+             -rrupt flag
+           =3 sbit AD0CM2  = 0xEA;                   // ADC0 conversion mode sel
+             -ect 2
+           =3 sbit AD0CM1  = 0xE9;                   // ADC0 conversion mode sel
+             -ect 1
+           =3 sbit AD0CM0  = 0xE8;                   // ADC0 conversion mode sel
+             -ect 0
+           =3 
+           =3 // SPI0CN 0xF8
+           =3 sbit SPIF    = 0xFF;                   // SPI0 interrupt flag
+           =3 sbit WCOL    = 0xFE;                   // SPI0 write collision fla
+             -g
+           =3 sbit MODF    = 0xFD;                   // SPI0 mode fault flag
+           =3 sbit RXOVRN  = 0xFC;                   // SPI0 rx overrun flag
+           =3 sbit NSSMD1  = 0xFB;                   // SPI0 slave select mode 1
+           =3 sbit NSSMD0  = 0xFA;                   // SPI0 slave select mode 0
+           =3 sbit TXBMT   = 0xF9;                   // SPI0 transmit buffer emp
+             -ty
+           =3 sbit SPIEN   = 0xF8;                   // SPI0 SPI enable
+           =3 
+           =3 
+           =3 //----------------------------------------------------------------
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 15  
+
+             --------------
+           =3 // Interrupt Priorities
+           =3 //----------------------------------------------------------------
+             --------------
+           =3 
+           =3 #define INTERRUPT_INT0             0   // External Interrupt 0
+           =3 #define INTERRUPT_TIMER0           1   // Timer0 Overflow
+           =3 #define INTERRUPT_INT1             2   // External Interrupt 1
+           =3 #define INTERRUPT_TIMER1           3   // Timer1 Overflow
+           =3 #define INTERRUPT_UART0            4   // Serial Port 0
+           =3 #define INTERRUPT_TIMER2           5   // Timer2 Overflow
+           =3 #define INTERRUPT_SPI0             6   // Serial Peripheral Interf
+             -ace 0
+           =3 #define INTERRUPT_SMBUS0           7   // SMBus0 Interface
+           =3 #define INTERRUPT_USB0             8   // USB Interface
+           =3 #define INTERRUPT_ADC0_WINDOW      9   // ADC0 Window Comparison
+           =3 #define INTERRUPT_ADC0_EOC         10  // ADC0 End Of Conversion
+           =3 #define INTERRUPT_PCA0             11  // PCA0 Peripheral
+           =3 #define INTERRUPT_COMPARATOR0      12  // Comparator0
+           =3 #define INTERRUPT_COMPARATOR1      13  // Comparator1
+           =3 #define INTERRUPT_TIMER3           14  // Timer3 Overflow
+           =3 #define INTERRUPT_VBUS_LEVEL       15  // VBUS level-triggered int
+             -errupt
+           =3 #define INTERRUPT_UART1            16  // Serial Port 1
+           =3 
+           =3 //----------------------------------------------------------------
+             --------------
+           =3 // Header File PreProcessor Directive
+           =3 //----------------------------------------------------------------
+             --------------
+           =3 
+           =3 #endif                                 // #define C8051F340_H
+ 289      =3  
+ 290      =3  //----------------------------------------------------------------
+             --------------
+ 291      =3  // End Of File
+ 292      =3  //----------------------------------------------------------------
+             --------------
+  36      =2  #ifdef DEBUG_TIMEOUTS
+  37      =2  sbit START_STOP_SPI = P3^0 ;
+  38      =2  sbit START_STOP_READ_TO = P3^1;
+  39      =2  sbit START_STOP_WRITE_TO = P3^2;
+  40      =2  
+  41      =2  #define START_SPI_TIMEOUT (START_STOP_SPI = 1)
+  42      =2  #define STOP_SPI_TIME_OUT (START_STOP_SPI = 0)
+  43      =2  #define START_READ_COPY (START_STOP_READ_TO = 1)
+  44      =2  #define STOP_READ_COPY (START_STOP_READ_TO = 0)
+  45      =2  #define START_WRITE_COPY (START_STOP_WRITE_TO = 1)
+  46      =2  #define STOP_WRITE_COPY (START_STOP_WRITE_TO = 0)
+  47      =2  #else
+           =2 
+           =2 #define START_SPI_TIMEOUT /\
+           =2 /
+           =2 #define STOP_SPI_TIME_OUT /\
+           =2 /
+           =2 #define START_READ_COPY /\
+           =2 /
+           =2 #define STOP_READ_COPY /\
+           =2 /
+           =2 #define START_WRITE_COPY /\
+           =2 /
+           =2 #define STOP_WRITE_COPY /\
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 16  
+
+           =2 /
+           =2 
+           =2 #endif
+  63      =2  
+  64      =2  #define ENDLINE         "\r\n"
+  65      =2  #define ENDLINE_SGN '\r'
+  66      =2  
+  67      =2  #endif
+  37      =1  // BYTE type definition
+  38      =1  #ifndef _BYTE_DEF_
+  39      =1  #define _BYTE_DEF_
+  40      =1  typedef unsigned char BYTE;
+  41      =1  #endif   /* _BYTE_DEF_ */
+  42      =1  
+  43      =1  // USB Core Registers
+  44      =1  #define  BASE     0x00
+  45      =1  #define  FADDR    BASE
+  46      =1  #define  POWER    BASE + 0x01
+  47      =1  #define  IN1INT   BASE + 0x02
+  48      =1  #define  OUT1INT  BASE + 0x04
+  49      =1  #define  CMINT    BASE + 0x06
+  50      =1  #define  IN1IE    BASE + 0x07
+  51      =1  #define  OUT1IE   BASE + 0x09
+  52      =1  #define  CMIE     BASE + 0x0B
+  53      =1  #define  FRAMEL   BASE + 0x0C
+  54      =1  #define  FRAMEH   BASE + 0x0D
+  55      =1  #define  INDEX    BASE + 0x0E
+  56      =1  #define  CLKREC   BASE + 0x0F
+  57      =1  #define  E0CSR    BASE + 0x11
+  58      =1  #define  EINCSR1  BASE + 0x11
+  59      =1  #define  EINCSR2  BASE + 0x12
+  60      =1  #define  EOUTCSR1 BASE + 0x14
+  61      =1  #define  EOUTCSR2 BASE + 0x15
+  62      =1  #define  E0CNT    BASE + 0x16
+  63      =1  #define  EOUTCNTL BASE + 0x16
+  64      =1  #define  EOUTCNTH BASE + 0x17
+  65      =1  #define  FIFO_EP0 BASE + 0x20
+  66      =1  #define  FIFO_EP1 BASE + 0x21
+  67      =1  #ifdef __F326_VER__
+           =1 #define  FIFO_EP2 BASE + 0x21
+           =1 #else
+  70      =1  #define  FIFO_EP2 BASE + 0x22
+  71      =1  #endif
+  72      =1  #define  FIFO_EP3 BASE + 0x23
+  73      =1  
+  74      =1  // USB Core Register Bits
+  75      =1  
+  76      =1  // POWER
+  77      =1  #define  rbISOUD        0x80
+  78      =1  #define  rbSPEED        0x40
+  79      =1  #define  rbUSBRST       0x08
+  80      =1  #define  rbRESUME       0x04
+  81      =1  #define  rbSUSMD        0x02
+  82      =1  #define  rbSUSEN        0x01
+  83      =1  
+  84      =1  // IN1INT
+  85      =1  #define  rbIN3          0x08
+  86      =1  #define  rbIN2          0x04
+  87      =1  #define  rbIN1          0x02
+  88      =1  #define  rbEP0          0x01
+  89      =1  
+  90      =1  // OUT1INT
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 17  
+
+  91      =1  #define  rbOUT3         0x08
+  92      =1  #ifdef __F326_VER__
+           =1 #define  rbOUT2         0x02
+           =1 #else
+  95      =1  #define  rbOUT2         0x04
+  96      =1  #endif
+  97      =1  #define  rbOUT1         0x02
+  98      =1  
+  99      =1  // CMINT
+ 100      =1  #define  rbSOF          0x08
+ 101      =1  #define  rbRSTINT       0x04
+ 102      =1  #define  rbRSUINT       0x02
+ 103      =1  #define  rbSUSINT       0x01
+ 104      =1  
+ 105      =1  // IN1IE
+ 106      =1  #define  rbIN3E         0x08
+ 107      =1  #define  rbIN2E         0x04
+ 108      =1  #define  rbIN1E         0x02
+ 109      =1  #define  rbEP0E         0x01
+ 110      =1  
+ 111      =1  // OUT1IE
+ 112      =1  #define  rbOUT3E        0x08
+ 113      =1  #define  rbOUT2E        0x04
+ 114      =1  #define  rbOUT1E        0x02
+ 115      =1  
+ 116      =1  // CMIE
+ 117      =1  #define  rbSOFE         0x08
+ 118      =1  #define  rbRSTINTE      0x04
+ 119      =1  #define  rbRSUINTE      0x02
+ 120      =1  #define  rbSUSINTE      0x01
+ 121      =1  
+ 122      =1  // E0CSR
+ 123      =1  #define  rbSSUEND       0x80
+ 124      =1  #define  rbSOPRDY       0x40
+ 125      =1  #define  rbSDSTL        0x20
+ 126      =1  #define  rbSUEND        0x10
+ 127      =1  #define  rbDATAEND      0x08
+ 128      =1  #define  rbSTSTL        0x04
+ 129      =1  #define  rbINPRDY       0x02
+ 130      =1  #define  rbOPRDY        0x01
+ 131      =1  
+ 132      =1  // EINCSR1
+ 133      =1  #define  rbInCLRDT      0x40
+ 134      =1  #define  rbInSTSTL      0x20
+ 135      =1  #define  rbInSDSTL      0x10
+ 136      =1  #define  rbInFLUSH      0x08
+ 137      =1  #define  rbInUNDRUN     0x04
+ 138      =1  #define  rbInFIFONE     0x02
+ 139      =1  #define  rbInINPRDY     0x01
+ 140      =1  
+ 141      =1  // EINCSR2
+ 142      =1  #define  rbInDBIEN      0x80
+ 143      =1  #define  rbInISO        0x40
+ 144      =1  #define  rbInDIRSEL     0x20
+ 145      =1  #define  rbInFCDT       0x08
+ 146      =1  #define  rbInSPLIT      0x04  
+ 147      =1  
+ 148      =1  // EOUTCSR1
+ 149      =1  #define  rbOutCLRDT     0x80
+ 150      =1  #define  rbOutSTSTL     0x40
+ 151      =1  #define  rbOutSDSTL     0x20
+ 152      =1  #define  rbOutFLUSH     0x10
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 18  
+
+ 153      =1  #define  rbOutDATERR    0x08
+ 154      =1  #define  rbOutOVRUN     0x04
+ 155      =1  #define  rbOutFIFOFUL   0x02
+ 156      =1  #define  rbOutOPRDY     0x01
+ 157      =1  
+ 158      =1  // EOUTCSR2
+ 159      =1  #define  rbOutDBOEN     0x80
+ 160      =1  #define  rbOutISO       0x40 
+ 161      =1  
+ 162      =1  // INDEX IDENTIFIERS
+ 163      =1  #define  EP0_IDX                0x00
+ 164      =1  #ifdef __F326_VER__
+           =1 #define  EP2_OUT_IDX    0x01
+           =1 #else
+ 167      =1  #define   EP2_OUT_IDX   0x02
+ 168      =1  #endif
+ 169      =1  #define  EP1_IN_IDX             0x01
+ 170      =1  
+ 171      =1  // Register read/write macros
+ 172      =1  
+ 173      =1  // These first two macros do not poll for busy, and can be used to
+             - increase program speed where
+ 174      =1  // neccessary, but should never be used for successive reads or wr
+             -ites.
+ 175      =1  #define READ_BYTE(addr, target) USB0ADR = (0x80 | addr); while(USB
+             -0ADR & 0x80); target = USB0DAT
+ 176      =1  #define WRITE_BYTE(addr, data) USB0ADR = (addr); USB0DAT = data
+ 177      =1  
+ 178      =1  // These two macros are polling versions of the above macros, and 
+             -can be used for successive reads/
+ 179      =1  // writes without taking the chance that the Interface Engine is b
+             -usy from the last register access.
+ 180      =1  #define POLL_READ_BYTE(addr, target) while(USB0ADR & 0x80); READ_B
+             -YTE(addr, target);
+ 181      =1  #define POLL_WRITE_BYTE(addr, data) while(USB0ADR & 0x80); WRITE_B
+             -YTE(addr, data);
+ 182      =1  
+ 183      =1  #endif /* _USB_REGS_H_ */
+  39          #include "F34x_MSD_USB_Main.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_USB_Main.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Main header file for USB firmware. Includes function prototypes
+             -,
+  10      =1  // standard constants, and configuration constants.//
+  11      =1  //
+  12      =1  // FID:            34X000063
+  13      =1  // Target:         C8051F34x
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   See Readme.txt
+  16      =1  // Project Name:   F34x_USB_MSD
+  17      =1  //
+  18      =1  // Release 1.1
+  19      =1  //    -All changes by PKC
+  20      =1  //    -09 JUN 2006
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 19  
+
+  21      =1  //    -No changes; incremented revision number to match project re
+             -vision
+  22      =1  //
+  23      =1  // Release 1.0
+  24      =1  //    -Initial Release
+  25      =1  //
+  26      =1  // 11/22/02 - DM: 1. Updated function prototypes and added constan
+             -ts
+  27      =1  //                to F34x_USB_Main.h with sample interrupt firmwar
+             -e.
+  28      =1  
+  29      =1  //----------------------------------------------------------------
+             --------------
+  30      =1  // Header File Preprocessor Directive
+  31      =1  //----------------------------------------------------------------
+             --------------
+  32      =1  
+  33      =1  #ifndef _USB_MAIN_H_
+  34      =1  #define _USB_MAIN_H_
+  35      =1  
+  36      =1  #include "F34x_MSD_Definitions.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // F34x_MSD_Definitions.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =2  // http://www.silabs.com
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Header file with all definitions.
+  10      =2  //
+  11      =2  //
+  12      =2  // FID:            34X000032
+  13      =2  // Target:         C8051F34x
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   See Readme.txt
+  16      =2  // Project Name:   F34x_USB_MSD
+  17      =2  //
+  18      =2  // Release 1.1
+  19      =2  //    -All changes by PKC
+  20      =2  //    -09 JUN 2006
+  21      =2  //    -Replaced SFR definitions file "c8051f320.h" with "c8051f340
+             -.h"
+  22      =2  //
+  23      =2  // Release 1.0
+  24      =2  //    -Initial Release
+  25      =2  //
+  26      =2  
+  27      =2  //----------------------------------------------------------------
+             --------------
+  28      =2  // Header File Preprocessor Directive
+  29      =2  //----------------------------------------------------------------
+             --------------
+  30      =2  
+  31      =2  #ifndef __DEFINITIONS_H__
+           =2 #define __DEFINITIONS_H__
+           =2 
+           =2 #define DEBUG_TIMEOUTS
+           =2 #include "c8051f340.h"
+           =2 #ifdef DEBUG_TIMEOUTS
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 20  
+
+           =2 sbit START_STOP_SPI = P3^0 ;
+           =2 sbit START_STOP_READ_TO = P3^1;
+           =2 sbit START_STOP_WRITE_TO = P3^2;
+           =2 
+           =2 #define START_SPI_TIMEOUT (START_STOP_SPI = 1)
+           =2 #define STOP_SPI_TIME_OUT (START_STOP_SPI = 0)
+           =2 #define START_READ_COPY (START_STOP_READ_TO = 1)
+           =2 #define STOP_READ_COPY (START_STOP_READ_TO = 0)
+           =2 #define START_WRITE_COPY (START_STOP_WRITE_TO = 1)
+           =2 #define STOP_WRITE_COPY (START_STOP_WRITE_TO = 0)
+           =2 #else
+           =2 
+           =2 #define START_SPI_TIMEOUT /\
+           =2 /
+           =2 #define STOP_SPI_TIME_OUT /\
+           =2 /
+           =2 #define START_READ_COPY /\
+           =2 /
+           =2 #define STOP_READ_COPY /\
+           =2 /
+           =2 #define START_WRITE_COPY /\
+           =2 /
+           =2 #define STOP_WRITE_COPY /\
+           =2 /
+           =2 
+           =2 #endif
+           =2 
+           =2 #define ENDLINE         "\r\n"
+           =2 #define ENDLINE_SGN '\r'
+           =2 
+           =2 #endif
+  37      =1  //#define _USB_LOW_SPEED_                      // Change this comm
+             -ent to make Full/Low speed
+  38      =1  
+  39      =1  #define SYSCLK                   12000000    // SYSCLK frequency i
+             -n Hz
+  40      =1  
+  41      =1  // USB clock selections (SFR CLKSEL)
+  42      =1  #define USB_4X_CLOCK             0x00        // Select 4x clock mu
+             -ltiplier, for USB Full Speed
+  43      =1  #define USB_INT_OSC_DIV_2        0x10        // See Data Sheet sec
+             -tion 13. Oscillators
+  44      =1  #define USB_EXT_OSC              0x20
+  45      =1  #define USB_EXT_OSC_DIV_2        0x30
+  46      =1  #define USB_EXT_OSC_DIV_3        0x40
+  47      =1  #define USB_EXT_OSC_DIV_4        0x50
+  48      =1  
+  49      =1  // System clock selections (SFR CLKSEL)
+  50      =1  #define SYS_INT_OSC              0x00        // Select to use inte
+             -rnal oscillator
+  51      =1  #define SYS_4X_MUL               0x03        // Select to use inte
+             -rnal oscillator
+  52      =1  #define SYS_EXT_OSC              0x01        // Select to use an e
+             -xternal oscillator
+  53      =1  #define SYS_4X_DIV_2             0x02
+  54      =1  
+  55      =1  // BYTE type definition
+  56      =1  #ifndef _BYTE_DEF_
+           =1 #define _BYTE_DEF_
+           =1 typedef unsigned char BYTE;
+           =1 #endif   /* _BYTE_DEF_ */
+  60      =1  
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 21  
+
+  61      =1  // WORD type definition, for KEIL Compiler
+  62      =1  #ifndef _WORD_DEF_                           // Compiler Specific,
+             - written for Little Endian
+  63      =1  #define _WORD_DEF_
+  64      =1  typedef union {unsigned int i; unsigned char c[2];} WORD;
+  65      =1  #define LSB 1                                // All words sent to 
+             -and received from the host are
+  66      =1  #define MSB 0                                // little endian, thi
+             -s is switched by software when
+  67      =1                                               // neccessary.  These
+             - sections of code have been marked
+  68      =1                                                                                           // with "Compiler Specific" as above for easier modifi
+             -cation
+  69      =1  #endif   /* _WORD_DEF_ */
+  70      =1  
+  71      =1  // DWORD type definition
+  72      =1  #ifndef _DWORD_DEF_
+  73      =1  #define _DWORD_DEF_
+  74      =1  typedef unsigned long DWORD;
+  75      =1  #endif /* _DWORD_DEF_ */
+  76      =1  
+  77      =1  extern volatile DWORD xdata tickcount;
+  78      =1  
+  79      =1  // Define Endpoint Packet Sizes
+  80      =1  #ifdef _USB_LOW_SPEED_
+           =1 #define  EP0_PACKET_SIZE         0x40        // This value can be 
+             -8,16,32,64 depending on device speed, see USB spec
+           =1 #else
+  83      =1  #define  EP0_PACKET_SIZE         0x40
+  84      =1  #endif /* _USB_LOW_SPEED_ */ 
+  85      =1  
+  86      =1  #define  EP1_PACKET_SIZE         0x0040      // Can range 0 - 1024
+             - depending on data and transfer type  
+  87      =1  #define  EP1_PACKET_SIZE_LE      0x4000      // IMPORTANT- this sh
+             -ould be Little-Endian version of EP1_PACKET_SIZE
+  88      =1  #define  EP2_PACKET_SIZE         0x0040      // Can range 0 - 1024
+             - depending on data and transfer type
+  89      =1  #define  EP2_PACKET_SIZE_LE      0x4000      // IMPORTANT- this sh
+             -ould be Little-Endian version of EP2_PACKET_SIZE
+  90      =1  
+  91      =1  // Standard Descriptor Types
+  92      =1  #define  DSC_DEVICE              0x01        // Device Descriptor
+  93      =1  #define  DSC_CONFIG              0x02        // Configuration Desc
+             -riptor
+  94      =1  #define  DSC_STRING              0x03        // String Descriptor
+  95      =1  #define  DSC_INTERFACE           0x04        // Interface Descript
+             -or
+  96      =1  #define  DSC_ENDPOINT            0x05        // Endpoint Descripto
+             -r
+  97      =1  
+  98      =1  // HID Descriptor Types
+  99      =1  #define DSC_HID                                 0x21            // HID Class Descriptor
+ 100      =1  #define DSC_HID_REPORT                  0x22            // HID Report Descriptor
+ 101      =1  
+ 102      =1  // Standard Request Codes
+ 103      =1  #define  GET_STATUS             0x00        // Code for Get Status
+ 104      =1  #define  CLEAR_FEATURE          0x01        // Code for Clear Feat
+             -ure
+ 105      =1  #define  SET_FEATURE            0x03        // Code for Set Featur
+             -e
+ 106      =1  #define  SET_ADDRESS            0x05        // Code for Set Addres
+             -s
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 22  
+
+ 107      =1  #define  GET_DESCRIPTOR         0x06        // Code for Get Descri
+             -ptor
+ 108      =1  #define  SET_DESCRIPTOR         0x07        // Code for Set Descri
+             -ptor(not used)
+ 109      =1  #define  GET_CONFIGURATION      0x08        // Code for Get Config
+             -uration
+ 110      =1  #define  SET_CONFIGURATION      0x09        // Code for Set Config
+             -uration
+ 111      =1  #define  GET_INTERFACE          0x0A        // Code for Get Interf
+             -ace
+ 112      =1  #define  SET_INTERFACE          0x0B        // Code for Set Interf
+             -ace
+ 113      =1  #define  SYNCH_FRAME            0x0C        // Code for Synch Fram
+             -e(not used)
+ 114      =1  #define  MSD_RESET                              0xFF            // Mass-storage device Reset
+ 115      =1  #define  MSD_GET_MAX_LUN                0xFE            // Mass-storage device Get Max LU
+             -N
+ 116      =1  
+ 117      =1  // HID Request Codes
+ 118      =1  #define GET_REPORT                              0x01            // Code for Get Report
+ 119      =1  #define GET_IDLE                                0x02            // Code for Get Idle
+ 120      =1  #define GET_PROTOCOL                    0x03            // Code for Get Protocol
+ 121      =1  #define SET_REPORT                              0x09            // Code for Set Report
+ 122      =1  #define SET_IDLE                                0x0A            // Code for Set Idle
+ 123      =1  #define SET_PROTOCOL                    0x0B            // Code for Set Protocol
+ 124      =1  
+ 125      =1  // Define device states
+ 126      =1  #define  DEV_ATTACHED            0x00        // Device is in Attac
+             -hed State
+ 127      =1  #define  DEV_POWERED             0x01        // Device is in Power
+             -ed State
+ 128      =1  #define  DEV_DEFAULT             0x02        // Device is in Defau
+             -lt State
+ 129      =1  #define  DEV_ADDRESS             0x03        // Device is in Addre
+             -ssed State
+ 130      =1  #define  DEV_CONFIGURED          0x04        // Device is in Confi
+             -gured State
+ 131      =1  #define  DEV_SUSPENDED           0x05        // Device is in Suspe
+             -nded State
+ 132      =1  
+ 133      =1  // Define bmRequestType bitmaps
+ 134      =1  #define  IN_DEVICE               0x00        // Request made to de
+             -vice, direction is IN 
+ 135      =1  #define  OUT_DEVICE              0x80        // Request made to de
+             -vice, direction is OUT
+ 136      =1  #define  IN_INTERFACE            0x01        // Request made to in
+             -terface, direction is IN
+ 137      =1  #define  OUT_INTERFACE           0x81        // Request made to in
+             -terface, direction is OUT
+ 138      =1  #define  IN_ENDPOINT             0x02        // Request made to en
+             -dpoint, direction is IN
+ 139      =1  #define  OUT_ENDPOINT            0x82        // Request made to en
+             -dpoint, direction is OUT
+ 140      =1  
+ 141      =1  // Define wIndex bitmaps
+ 142      =1  #define  IN_EP1                  0x81        // Index values used 
+             -by Set and Clear feature
+ 143      =1  #define  OUT_EP1                 0x01        // commands for Endpo
+             -int_Halt
+ 144      =1  #define  IN_EP2                  0x82
+ 145      =1  #ifdef __F326_VER__
+           =1 #define  OUT_EP2                                 0x01           
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 23  
+
+           =1 #else
+ 148      =1  #define  OUT_EP2                                 0x01           
+ 149      =1  #endif
+ 150      =1  
+ 151      =1  // Define wValue bitmaps for Standard Feature Selectors
+ 152      =1  #define  DEVICE_REMOTE_WAKEUP    0x01        // Remote wakeup feat
+             -ure(not used)
+ 153      =1  #define  ENDPOINT_HALT           0x00        // Endpoint_Halt feat
+             -ure selector
+ 154      =1  
+ 155      =1  // Define Endpoint States
+ 156      =1  #define  EP_IDLE                 0x00        // This signifies End
+             -point Idle State
+ 157      =1  #define  EP_TX                   0x01        // Endpoint Transmit 
+             -State
+ 158      =1  #define  EP_RX                   0x02        // Endpoint Receive S
+             -tate
+ 159      =1  #define  EP_HALT                 0x03        // Endpoint Halt Stat
+             -e (return stalls)
+ 160      =1  #define  EP_STALL                0x04        // Endpoint Stall (se
+             -nd procedural stall next status phase)
+ 161      =1  #define  EP_ADDRESS              0x05        // Endpoint Address (
+             -change FADDR during next status phase)
+ 162      =1  
+ 163      =1  // Function prototypes
+ 164      =1  // USB Routines
+ 165      =1  void USB_Resume(void);                       // This routine resum
+             -es USB operation
+ 166      =1  void USB_Reset(void);                        // Called after USB b
+             -us reset
+ 167      =1  void Handle_Setup(void);                     // Handle setup packe
+             -t on Endpoint 0
+ 168      =1  void Handle_In1(BYTE* ptr_buf);                       // Handle in
+             - packet on Endpoint 1
+ 169      =1  void Handle_Out2(void);                      // Handle out packet 
+             -on Endpoint 2
+ 170      =1  void USB_Suspend(void);                      // This routine calle
+             -d when suspend signalling on bus
+ 171      =1  void Out2_Get_Data(BYTE* ptr_buf);                               // Copies from FIFO to ptr_
+             -buf, clears FIFO-full flag.
+ 172      =1  void Out2_Done(void);                                            // Call this when finished with the d
+             -ata
+ 173      =1  
+ 174      =1  // Standard Requests
+ 175      =1  void Get_Status(void);                       // These are called f
+             -or each specific standard request
+ 176      =1  void Clear_Feature(void);
+ 177      =1  void Set_Feature(void);
+ 178      =1  void Set_Address(void);
+ 179      =1  void Get_Descriptor(void);
+ 180      =1  void Get_Configuration(void);
+ 181      =1  void Set_Configuration(void);
+ 182      =1  void Get_Interface(void);
+ 183      =1  void Set_Interface(void);
+ 184      =1  
+ 185      =1  // MSD Specific Requests
+ 186      =1  // void Reset_Msd(void);
+ 187      =1  // void Get_MaxLUN(void);
+ 188      =1  
+ 189      =1  // Initialization Routines
+ 190      =1  void Sys_Clk_Init(void);                      // Initialize the sy
+             -stem clock(depends on Full/Low speed)
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 24  
+
+ 191      =1  void Port_Init(void);                        // Configure ports fo
+             -r this specific application
+ 192      =1  void USB0_Init(void);                        // Configure USB core
+             - for either Full/Low speed
+ 193      =1  void Timer_Init(void);                       // Start timer 2 for 
+             -use by ADC and to check switches
+ 194      =1  void Adc_Init(void);                         // Configure ADC for 
+             -continuous conversion, low-power mode
+ 195      =1  
+ 196      =1  // Other Routines
+ 197      =1  void Timer2_ISR(void);                       // Called when Timer 
+             -2 overflows, see if switches are pressed
+ 198      =1  void Adc_ConvComple_ISR(void);               // When a conversion 
+             -completes, switch ADC multiplexor
+ 199      =1  void USB_ISR(void);                          // Called to determin
+             -e type of USB interrupt
+ 200      =1  void Fifo_ReadC(BYTE, unsigned int, BYTE *) ;
+ 201      =1  extern void Fifo_Read (BYTE, unsigned int, BYTE *) ; // Used for m
+             -ultiple byte reads of Endpoint fifos
+ 202      =1  extern void Fifo_Write (BYTE, unsigned int, BYTE *) reentrant;// U
+             -sed for multiple byte writes of Endpoint fifos
+ 203      =1  void Force_Stall(void);                      // Forces a procedura
+             -l stall on Endpoint 0
+ 204      =1  void Delay(void);                            // Approximately 80 u
+             -s/1 ms on Full/Low Speed
+ 205      =1  
+ 206      =1  void USB_In(BYTE* ptr_buf,unsigned count);
+ 207      =1  
+ 208      =1  void USB_Bulk_Init(void);
+ 209      =1  
+ 210      =1  extern unsigned xdata Out_Count;
+ 211      =1  extern BYTE xdata Out_Packet[EP2_PACKET_SIZE];
+ 212      =1  extern BYTE xdata In_count;
+ 213      =1  extern BYTE xdata In_Packet[EP1_PACKET_SIZE];
+ 214      =1  //extern BYTE xdata In_Overrun;
+ 215      =1  
+ 216      =1  #endif      /* _USB_MAIN_H_ */
+ 217      =1  
+  40          #include "F34x_MSD_USB_Descriptor.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_USB_Descriptor.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Header file for USB firmware.  Defines standard
+  10      =1  // descriptor structures.
+  11      =1  //
+  12      =1  //
+  13      =1  // FID:            34X000060
+  14      =1  // Target:         C8051F34x
+  15      =1  // Tool chain:     Keil
+  16      =1  // Command Line:   See Readme.txt
+  17      =1  // Project Name:   F34x_USB_MSD
+  18      =1  //
+  19      =1  // Release 1.1
+  20      =1  //    -All changes by PKC
+  21      =1  //    -09 JUN 2006
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 25  
+
+  22      =1  //    -No changes; incremented revision number to match project re
+             -vision
+  23      =1  //
+  24      =1  // Release 1.0
+  25      =1  //    -Initial Release
+  26      =1  //
+  27      =1  
+  28      =1  //----------------------------------------------------------------
+             --------------
+  29      =1  // Header File Preprocessor Directive
+  30      =1  //----------------------------------------------------------------
+             --------------
+  31      =1  
+  32      =1  #ifndef  _USB_DESC_H_
+  33      =1  #define  _USB_DESC_H_
+  34      =1  
+  35      =1  // BYTE type definition
+  36      =1  #ifndef _BYTE_DEF_
+           =1 #define _BYTE_DEF_
+           =1 typedef unsigned char BYTE;
+           =1 #endif   /* _BYTE_DEF_ */
+  40      =1  
+  41      =1  // WORD type definition, for KEIL Compiler
+  42      =1  #ifndef _WORD_DEF_              // Compiler Specific, written for 
+             -Little Endian
+           =1 #define _WORD_DEF_
+           =1 typedef union {unsigned int i; unsigned char c[2];} WORD;
+           =1 #define LSB 1                   // All words sent to and received 
+             -from the host are
+           =1 #define MSB 0                   // little endian, this is switched
+             - by software when
+           =1                                 // neccessary.  These sections of 
+             -code have been marked
+           =1                                 // with "Compiler Specific" as abo
+             -ve for easier modification
+           =1 #endif   /* _WORD_DEF_ */
+  50      =1  
+  51      =1  //------------------------------------------
+  52      =1  // Standard Device Descriptor Type Defintion
+  53      =1  //------------------------------------------
+  54      =1  typedef code struct
+  55      =1  {
+  56      =1     BYTE bLength;                // Size of this Descriptor in Byte
+             -s
+  57      =1     BYTE bDescriptorType;        // Descriptor Type (=1)
+  58      =1     WORD bcdUSB;                 // USB Spec Release Number in BCD
+  59      =1     BYTE bDeviceClass;           // Device Class Code
+  60      =1     BYTE bDeviceSubClass;        // Device Subclass Code 
+  61      =1     BYTE bDeviceProtocol;        // Device Protocol Code
+  62      =1     BYTE bMaxPacketSize0;        // Maximum Packet Size for EP0 
+  63      =1     WORD idVendor;               // Vendor ID 
+  64      =1     WORD idProduct;              // Product ID
+  65      =1     WORD bcdDevice;              // Device Release Number in BCD
+  66      =1     BYTE iManufacturer;          // Index of String Desc for Manufa
+             -cturer
+  67      =1     BYTE iProduct;               // Index of String Desc for Produc
+             -t
+  68      =1     BYTE iSerialNumber;          // Index of String Desc for SerNo
+  69      =1     BYTE bNumConfigurations;     // Number of possible Configuratio
+             -ns
+  70      =1  } device_descriptor;            // End of Device Descriptor Type
+  71      =1  
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 26  
+
+  72      =1  //--------------------------------------------------
+  73      =1  // Standard Configuration Descriptor Type Definition
+  74      =1  //--------------------------------------------------
+  75      =1  typedef code struct 
+  76      =1  {
+  77      =1     BYTE bLength;                // Size of this Descriptor in Byte
+             -s
+  78      =1     BYTE bDescriptorType;        // Descriptor Type (=2)
+  79      =1     WORD wTotalLength;           // Total Length of Data for this C
+             -onf
+  80      =1     BYTE bNumInterfaces;         // No of Interfaces supported by t
+             -his Conf
+  81      =1     BYTE bConfigurationValue;    // Designator Value for *this* Con
+             -figuration
+  82      =1     BYTE iConfiguration;         // Index of String Desc for this C
+             -onf
+  83      =1     BYTE bmAttributes;           // Configuration Characteristics (
+             -see below)
+  84      =1     BYTE bMaxPower;              // Max. Power Consumption in this 
+             -Conf (*2mA)
+  85      =1  } configuration_descriptor;     // End of Configuration Descriptor
+             - Type
+  86      =1  
+  87      =1  //----------------------------------------------
+  88      =1  // Standard Interface Descriptor Type Definition
+  89      =1  //----------------------------------------------
+  90      =1  typedef code struct 
+  91      =1  {
+  92      =1     BYTE bLength;                // Size of this Descriptor in Byte
+             -s
+  93      =1     BYTE bDescriptorType;        // Descriptor Type (=4)
+  94      =1     BYTE bInterfaceNumber;       // Number of *this* Interface (0..
+             -)
+  95      =1     BYTE bAlternateSetting;      // Alternative for this Interface 
+             -(if any)
+  96      =1     BYTE bNumEndpoints;          // No of EPs used by this IF (excl
+             -. EP0)
+  97      =1     BYTE bInterfaceClass;        // Interface Class Code
+  98      =1     BYTE bInterfaceSubClass;     // Interface Subclass Code
+  99      =1     BYTE bInterfaceProtocol;     // Interface Protocol Code
+ 100      =1     BYTE iInterface;             // Index of String Desc for this I
+             -nterface
+ 101      =1  } interface_descriptor;         // End of Interface Descriptor Typ
+             -e
+ 102      =1  
+ 103      =1  //---------------------------------------------
+ 104      =1  // Standard Endpoint Descriptor Type Definition
+ 105      =1  //---------------------------------------------
+ 106      =1  typedef code struct 
+ 107      =1  {
+ 108      =1     BYTE bLength;                // Size of this Descriptor in Byte
+             -s
+ 109      =1     BYTE bDescriptorType;        // Descriptor Type (=5)
+ 110      =1     BYTE bEndpointAddress;       // Endpoint Address (Number + Dire
+             -ction)
+ 111      =1     BYTE bmAttributes;           // Endpoint Attributes (Transfer T
+             -ype)
+ 112      =1     WORD wMaxPacketSize;         // Max. Endpoint Packet Size
+ 113      =1     BYTE bInterval;              // Polling Interval (Interrupt) ms
+ 114      =1  } endpoint_descriptor;          // End of Endpoint Descriptor Type
+ 115      =1  
+ 116      =1  
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 27  
+
+ 117      =1  //-----------------------------
+ 118      =1  // Setup Packet Type Definition
+ 119      =1  //-----------------------------
+ 120      =1  typedef struct 
+ 121      =1  {
+ 122      =1     BYTE bmRequestType;          // Request recipient, type, and di
+             -rection
+ 123      =1     BYTE bRequest;               // Specific standard request numbe
+             -r
+ 124      =1     WORD wValue;                 // varies according to request
+ 125      =1     WORD wIndex;                 // varies according to request
+ 126      =1     WORD wLength;                // Number of bytes to transfer
+ 127      =1  } setup_buffer;                 // End of Setup Packet Type
+ 128      =1  
+ 129      =1  #endif  /* _USB_DESC_H_ */
+  41          #include "F34x_MSD_Msd.h"
+   1      =1  //----------------------------------------------------------------
+             --------------
+   2      =1  // F34x_MSD_MMC.h
+   3      =1  //----------------------------------------------------------------
+             --------------
+   4      =1  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =1  // http://www.silabs.com
+   6      =1  //
+   7      =1  // Program Description:
+   8      =1  //
+   9      =1  // Header file with function prototypes relevant to F34x_MMC.c
+  10      =1  //
+  11      =1  //
+  12      =1  // FID:            34X000047
+  13      =1  // Target:         C8051F34x
+  14      =1  // Tool chain:     Keil
+  15      =1  // Command Line:   See Readme.txt
+  16      =1  // Project Name:   F34x_USB_MSD
+  17      =1  //
+  18      =1  // Release 1.1
+  19      =1  //    -All changes by PKC
+  20      =1  //    -09 JUN 2006
+  21      =1  //    -No changes; incremented revision number to match project re
+             -vision
+  22      =1  //
+  23      =1  // Release 1.0
+  24      =1  //    -Initial Release
+  25      =1  //
+  26      =1  
+  27      =1  //----------------------------------------------------------------
+             --------------
+  28      =1  // Header File Preprocessor Directive
+  29      =1  //----------------------------------------------------------------
+             --------------
+  30      =1  
+  31      =1  #ifndef _MSD_H_
+  32      =1  #define _MSD_H_
+  33      =1  
+  34      =1  #include "F34x_MSD_USB_Main.h"
+   1      =2  //----------------------------------------------------------------
+             --------------
+   2      =2  // F34x_MSD_USB_Main.h
+   3      =2  //----------------------------------------------------------------
+             --------------
+   4      =2  // Copyright 2006 Silicon Laboratories, Inc.
+   5      =2  // http://www.silabs.com
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 28  
+
+   6      =2  //
+   7      =2  // Program Description:
+   8      =2  //
+   9      =2  // Main header file for USB firmware. Includes function prototypes
+             -,
+  10      =2  // standard constants, and configuration constants.//
+  11      =2  //
+  12      =2  // FID:            34X000063
+  13      =2  // Target:         C8051F34x
+  14      =2  // Tool chain:     Keil
+  15      =2  // Command Line:   See Readme.txt
+  16      =2  // Project Name:   F34x_USB_MSD
+  17      =2  //
+  18      =2  // Release 1.1
+  19      =2  //    -All changes by PKC
+  20      =2  //    -09 JUN 2006
+  21      =2  //    -No changes; incremented revision number to match project re
+             -vision
+  22      =2  //
+  23      =2  // Release 1.0
+  24      =2  //    -Initial Release
+  25      =2  //
+  26      =2  // 11/22/02 - DM: 1. Updated function prototypes and added constan
+             -ts
+  27      =2  //                to F34x_USB_Main.h with sample interrupt firmwar
+             -e.
+  28      =2  
+  29      =2  //----------------------------------------------------------------
+             --------------
+  30      =2  // Header File Preprocessor Directive
+  31      =2  //----------------------------------------------------------------
+             --------------
+  32      =2  
+  33      =2  #ifndef _USB_MAIN_H_
+           =2 #define _USB_MAIN_H_
+           =2 
+           =2 #include "F34x_MSD_Definitions.h"
+           =2 //#define _USB_LOW_SPEED_                      // Change this comm
+             -ent to make Full/Low speed
+           =2 
+           =2 #define SYSCLK                   12000000    // SYSCLK frequency i
+             -n Hz
+           =2 
+           =2 // USB clock selections (SFR CLKSEL)
+           =2 #define USB_4X_CLOCK             0x00        // Select 4x clock mu
+             -ltiplier, for USB Full Speed
+           =2 #define USB_INT_OSC_DIV_2        0x10        // See Data Sheet sec
+             -tion 13. Oscillators
+           =2 #define USB_EXT_OSC              0x20
+           =2 #define USB_EXT_OSC_DIV_2        0x30
+           =2 #define USB_EXT_OSC_DIV_3        0x40
+           =2 #define USB_EXT_OSC_DIV_4        0x50
+           =2 
+           =2 // System clock selections (SFR CLKSEL)
+           =2 #define SYS_INT_OSC              0x00        // Select to use inte
+             -rnal oscillator
+           =2 #define SYS_4X_MUL               0x03        // Select to use inte
+             -rnal oscillator
+           =2 #define SYS_EXT_OSC              0x01        // Select to use an e
+             -xternal oscillator
+           =2 #define SYS_4X_DIV_2             0x02
+           =2 
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 29  
+
+           =2 // BYTE type definition
+           =2 #ifndef _BYTE_DEF_
+           =2 #define _BYTE_DEF_
+           =2 typedef unsigned char BYTE;
+           =2 #endif   /* _BYTE_DEF_ */
+           =2 
+           =2 // WORD type definition, for KEIL Compiler
+           =2 #ifndef _WORD_DEF_                           // Compiler Specific,
+             - written for Little Endian
+           =2 #define _WORD_DEF_
+           =2 typedef union {unsigned int i; unsigned char c[2];} WORD;
+           =2 #define LSB 1                                // All words sent to 
+             -and received from the host are
+           =2 #define MSB 0                                // little endian, thi
+             -s is switched by software when
+           =2                                              // neccessary.  These
+             - sections of code have been marked
+           =2                                                                                          // with "Compiler Specific" as above for easier modifi
+             -cation
+           =2 #endif   /* _WORD_DEF_ */
+           =2 
+           =2 // DWORD type definition
+           =2 #ifndef _DWORD_DEF_
+           =2 #define _DWORD_DEF_
+           =2 typedef unsigned long DWORD;
+           =2 #endif /* _DWORD_DEF_ */
+           =2 
+           =2 extern volatile DWORD xdata tickcount;
+           =2 
+           =2 // Define Endpoint Packet Sizes
+           =2 #ifdef _USB_LOW_SPEED_
+           =2 #define  EP0_PACKET_SIZE         0x40        // This value can be 
+             -8,16,32,64 depending on device speed, see USB spec
+           =2 #else
+           =2 #define  EP0_PACKET_SIZE         0x40
+           =2 #endif /* _USB_LOW_SPEED_ */ 
+           =2 
+           =2 #define  EP1_PACKET_SIZE         0x0040      // Can range 0 - 1024
+             - depending on data and transfer type  
+           =2 #define  EP1_PACKET_SIZE_LE      0x4000      // IMPORTANT- this sh
+             -ould be Little-Endian version of EP1_PACKET_SIZE
+           =2 #define  EP2_PACKET_SIZE         0x0040      // Can range 0 - 1024
+             - depending on data and transfer type
+           =2 #define  EP2_PACKET_SIZE_LE      0x4000      // IMPORTANT- this sh
+             -ould be Little-Endian version of EP2_PACKET_SIZE
+           =2 
+           =2 // Standard Descriptor Types
+           =2 #define  DSC_DEVICE              0x01        // Device Descriptor
+           =2 #define  DSC_CONFIG              0x02        // Configuration Desc
+             -riptor
+           =2 #define  DSC_STRING              0x03        // String Descriptor
+           =2 #define  DSC_INTERFACE           0x04        // Interface Descript
+             -or
+           =2 #define  DSC_ENDPOINT            0x05        // Endpoint Descripto
+             -r
+           =2 
+           =2 // HID Descriptor Types
+           =2 #define DSC_HID                                 0x21            // HID Class Descriptor
+           =2 #define DSC_HID_REPORT                  0x22            // HID Report Descriptor
+           =2 
+           =2 // Standard Request Codes
+           =2 #define  GET_STATUS             0x00        // Code for Get Status
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 30  
+
+           =2 #define  CLEAR_FEATURE          0x01        // Code for Clear Feat
+             -ure
+           =2 #define  SET_FEATURE            0x03        // Code for Set Featur
+             -e
+           =2 #define  SET_ADDRESS            0x05        // Code for Set Addres
+             -s
+           =2 #define  GET_DESCRIPTOR         0x06        // Code for Get Descri
+             -ptor
+           =2 #define  SET_DESCRIPTOR         0x07        // Code for Set Descri
+             -ptor(not used)
+           =2 #define  GET_CONFIGURATION      0x08        // Code for Get Config
+             -uration
+           =2 #define  SET_CONFIGURATION      0x09        // Code for Set Config
+             -uration
+           =2 #define  GET_INTERFACE          0x0A        // Code for Get Interf
+             -ace
+           =2 #define  SET_INTERFACE          0x0B        // Code for Set Interf
+             -ace
+           =2 #define  SYNCH_FRAME            0x0C        // Code for Synch Fram
+             -e(not used)
+           =2 #define  MSD_RESET                              0xFF            // Mass-storage device Reset
+           =2 #define  MSD_GET_MAX_LUN                0xFE            // Mass-storage device Get Max LU
+             -N
+           =2 
+           =2 // HID Request Codes
+           =2 #define GET_REPORT                              0x01            // Code for Get Report
+           =2 #define GET_IDLE                                0x02            // Code for Get Idle
+           =2 #define GET_PROTOCOL                    0x03            // Code for Get Protocol
+           =2 #define SET_REPORT                              0x09            // Code for Set Report
+           =2 #define SET_IDLE                                0x0A            // Code for Set Idle
+           =2 #define SET_PROTOCOL                    0x0B            // Code for Set Protocol
+           =2 
+           =2 // Define device states
+           =2 #define  DEV_ATTACHED            0x00        // Device is in Attac
+             -hed State
+           =2 #define  DEV_POWERED             0x01        // Device is in Power
+             -ed State
+           =2 #define  DEV_DEFAULT             0x02        // Device is in Defau
+             -lt State
+           =2 #define  DEV_ADDRESS             0x03        // Device is in Addre
+             -ssed State
+           =2 #define  DEV_CONFIGURED          0x04        // Device is in Confi
+             -gured State
+           =2 #define  DEV_SUSPENDED           0x05        // Device is in Suspe
+             -nded State
+           =2 
+           =2 // Define bmRequestType bitmaps
+           =2 #define  IN_DEVICE               0x00        // Request made to de
+             -vice, direction is IN 
+           =2 #define  OUT_DEVICE              0x80        // Request made to de
+             -vice, direction is OUT
+           =2 #define  IN_INTERFACE            0x01        // Request made to in
+             -terface, direction is IN
+           =2 #define  OUT_INTERFACE           0x81        // Request made to in
+             -terface, direction is OUT
+           =2 #define  IN_ENDPOINT             0x02        // Request made to en
+             -dpoint, direction is IN
+           =2 #define  OUT_ENDPOINT            0x82        // Request made to en
+             -dpoint, direction is OUT
+           =2 
+           =2 // Define wIndex bitmaps
+           =2 #define  IN_EP1                  0x81        // Index values used 
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 31  
+
+             -by Set and Clear feature
+           =2 #define  OUT_EP1                 0x01        // commands for Endpo
+             -int_Halt
+           =2 #define  IN_EP2                  0x82
+           =2 #ifdef __F326_VER__
+           =2 #define  OUT_EP2                                 0x01           
+           =2 #else
+           =2 #define  OUT_EP2                                 0x01           
+           =2 #endif
+           =2 
+           =2 // Define wValue bitmaps for Standard Feature Selectors
+           =2 #define  DEVICE_REMOTE_WAKEUP    0x01        // Remote wakeup feat
+             -ure(not used)
+           =2 #define  ENDPOINT_HALT           0x00        // Endpoint_Halt feat
+             -ure selector
+           =2 
+           =2 // Define Endpoint States
+           =2 #define  EP_IDLE                 0x00        // This signifies End
+             -point Idle State
+           =2 #define  EP_TX                   0x01        // Endpoint Transmit 
+             -State
+           =2 #define  EP_RX                   0x02        // Endpoint Receive S
+             -tate
+           =2 #define  EP_HALT                 0x03        // Endpoint Halt Stat
+             -e (return stalls)
+           =2 #define  EP_STALL                0x04        // Endpoint Stall (se
+             -nd procedural stall next status phase)
+           =2 #define  EP_ADDRESS              0x05        // Endpoint Address (
+             -change FADDR during next status phase)
+           =2 
+           =2 // Function prototypes
+           =2 // USB Routines
+           =2 void USB_Resume(void);                       // This routine resum
+             -es USB operation
+           =2 void USB_Reset(void);                        // Called after USB b
+             -us reset
+           =2 void Handle_Setup(void);                     // Handle setup packe
+             -t on Endpoint 0
+           =2 void Handle_In1(BYTE* ptr_buf);                       // Handle in
+             - packet on Endpoint 1
+           =2 void Handle_Out2(void);                      // Handle out packet 
+             -on Endpoint 2
+           =2 void USB_Suspend(void);                      // This routine calle
+             -d when suspend signalling on bus
+           =2 void Out2_Get_Data(BYTE* ptr_buf);                               // Copies from FIFO to ptr_
+             -buf, clears FIFO-full flag.
+           =2 void Out2_Done(void);                                            // Call this when finished with the d
+             -ata
+           =2 
+           =2 // Standard Requests
+           =2 void Get_Status(void);                       // These are called f
+             -or each specific standard request
+           =2 void Clear_Feature(void);
+           =2 void Set_Feature(void);
+           =2 void Set_Address(void);
+           =2 void Get_Descriptor(void);
+           =2 void Get_Configuration(void);
+           =2 void Set_Configuration(void);
+           =2 void Get_Interface(void);
+           =2 void Set_Interface(void);
+           =2 
+           =2 // MSD Specific Requests
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 32  
+
+           =2 // void Reset_Msd(void);
+           =2 // void Get_MaxLUN(void);
+           =2 
+           =2 // Initialization Routines
+           =2 void Sys_Clk_Init(void);                      // Initialize the sy
+             -stem clock(depends on Full/Low speed)
+           =2 void Port_Init(void);                        // Configure ports fo
+             -r this specific application
+           =2 void USB0_Init(void);                        // Configure USB core
+             - for either Full/Low speed
+           =2 void Timer_Init(void);                       // Start timer 2 for 
+             -use by ADC and to check switches
+           =2 void Adc_Init(void);                         // Configure ADC for 
+             -continuous conversion, low-power mode
+           =2 
+           =2 // Other Routines
+           =2 void Timer2_ISR(void);                       // Called when Timer 
+             -2 overflows, see if switches are pressed
+           =2 void Adc_ConvComple_ISR(void);               // When a conversion 
+             -completes, switch ADC multiplexor
+           =2 void USB_ISR(void);                          // Called to determin
+             -e type of USB interrupt
+           =2 void Fifo_ReadC(BYTE, unsigned int, BYTE *) ;
+           =2 extern void Fifo_Read (BYTE, unsigned int, BYTE *) ; // Used for m
+             -ultiple byte reads of Endpoint fifos
+           =2 extern void Fifo_Write (BYTE, unsigned int, BYTE *) reentrant;// U
+             -sed for multiple byte writes of Endpoint fifos
+           =2 void Force_Stall(void);                      // Forces a procedura
+             -l stall on Endpoint 0
+           =2 void Delay(void);                            // Approximately 80 u
+             -s/1 ms on Full/Low Speed
+           =2 
+           =2 void USB_In(BYTE* ptr_buf,unsigned count);
+           =2 
+           =2 void USB_Bulk_Init(void);
+           =2 
+           =2 extern unsigned xdata Out_Count;
+           =2 extern BYTE xdata Out_Packet[EP2_PACKET_SIZE];
+           =2 extern BYTE xdata In_count;
+           =2 extern BYTE xdata In_Packet[EP1_PACKET_SIZE];
+           =2 //extern BYTE xdata In_Overrun;
+           =2 
+           =2 #endif      /* _USB_MAIN_H_ */
+ 217      =2  
+  35      =1  
+  36      =1  //----------------------------------------------------------------
+             --------------
+  37      =1  // Structure Prototypes
+  38      =1  //----------------------------------------------------------------
+             --------------
+  39      =1  
+  40      =1  typedef struct _CBW {
+  41      =1          DWORD dCBWSignature;
+  42      =1          DWORD dCBWTag;
+  43      =1          DWORD dCBWDataTransferLength;
+  44      =1          BYTE  bmCBWFlags;
+  45      =1          BYTE  bCBWLUN;
+  46      =1          BYTE  bCBWCBLength;
+  47      =1          BYTE  CBWCB[16];
+  48      =1  } CBW;
+  49      =1  
+  50      =1  typedef struct _CSW {
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 33  
+
+  51      =1          DWORD dCSWSignature;
+  52      =1          DWORD dCSWTag;
+  53      =1          DWORD dCSWDataResidue;
+  54      =1          BYTE  bCSWStatus;
+  55      =1  } CSW;
+  56      =1  
+  57      =1  extern CBW xdata cbw;
+  58      =1  extern CSW xdata csw;
+  59      =1  
+  60      =1  //----------------------------------------------------------------
+             --------------
+  61      =1  // Function Prototypes
+  62      =1  //----------------------------------------------------------------
+             --------------
+  63      =1  
+  64      =1  void Msd_Step(void);
+  65      =1  
+  66      =1  #endif
+  42          
+  43          extern device_descriptor Device_Desc;            // These are crea
+             -ted in F34x_USB_Descriptor.h
+  44          extern configuration_descriptor Config_Desc;
+  45          extern interface_descriptor Interface_Desc;
+  46          extern endpoint_descriptor Endpoint1_Desc;
+  47          extern endpoint_descriptor Endpoint2_Desc;
+  48          extern BYTE* String_Desc_Table[];
+  49          
+  50          extern setup_buffer Setup;                      // Buffer for curr
+             -ent device request information
+  51          extern xdata unsigned int Data_Size; 
+  52          extern xdata unsigned int Data_Sent;                         
+  53          extern BYTE* Data_Ptr;
+  54          
+  55          extern BYTE Ep_Status[];                        // This array cont
+             -ains status bytes for EP 0-2
+  56          
+  57          code BYTE ONES_PACKET[2] = {0x01, 0x00};        // These are respo
+             -nse packets used for
+  58          code BYTE ZERO_PACKET[2] = {0x00, 0x00};        // communication w
+             -ith host
+  59          
+  60          extern xdata BYTE USB_State;                          // Determine
+             -s current USB device state
+  61          
+  62          
+  63          //----------------------------------------------------------------
+             -------------
+  64          // Get_Status
+  65          //----------------------------------------------------------------
+             -------------
+  66          //
+  67          // This routine returns a two byte status packet
+  68          // to the host
+  69          //
+  70          // Parameters   :
+  71          // Return Value :
+  72          //----------------------------------------------------------------
+             -------------
+  73          
+  74          void Get_Status(void)
+  75          {
+  76   1                                             
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 34  
+
+  77   1         if (Setup.wValue.c[MSB] || Setup.wValue.c[LSB] || 
+  78   1                                                      // If non-zero ret
+             -urn length or data length not
+  79   1         Setup.wLength.c[MSB]    || (Setup.wLength.c[LSB] != 2))  
+  80   1                                                      // equal to 2 then
+             - send a stall 
+  81   1         {                                            // indicating inva
+             -lid request
+  82   2            Force_Stall();
+  83   2         }
+  84   1      
+  85   1         switch(Setup.bmRequestType)                  // Determine if re
+             -cipient was device, interface, or EP
+  86   1         {
+  87   2            case OUT_DEVICE:                          // If recipient wa
+             -s device
+  88   2               if (Setup.wIndex.c[MSB] || Setup.wIndex.c[LSB])
+  89   2               {
+  90   3                  Force_Stall();                      // Send stall if r
+             -equest is invalid
+  91   3               }
+  92   2               else
+  93   2               {
+  94   3                  Data_Ptr = (BYTE*)&ZERO_PACKET;      // Otherwise send
+             - 0x00, indicating bus power and no
+  95   3                  Data_Size = 2;                       // remote wake-up
+             - supported
+  96   3               }
+  97   2               break;
+  98   2            
+  99   2            case OUT_INTERFACE:                       // See if recipien
+             -t was interface
+ 100   2               if ((USB_State != DEV_CONFIGURED) ||  
+ 101   2               Setup.wIndex.c[MSB] || Setup.wIndex.c[LSB]) 
+ 102   2                                                      // Only valid if d
+             -evice is configured and non-zero index 
+ 103   2               {
+ 104   3                  Force_Stall();                      // Otherwise send 
+             -stall to host
+ 105   3               }
+ 106   2               else
+ 107   2               {
+ 108   3                  Data_Ptr = (BYTE*)&ZERO_PACKET;      // Status packet 
+             -always returns 0x00
+ 109   3                  Data_Size = 2;
+ 110   3               }
+ 111   2               break;
+ 112   2        
+ 113   2            case OUT_ENDPOINT:                        // See if recipien
+             -t was an endpoint
+ 114   2               if ((USB_State != DEV_CONFIGURED) ||
+ 115   2               Setup.wIndex.c[MSB])                   // Make sure devic
+             -e is configured and index msb = 0x00
+ 116   2               {                                      // otherwise retur
+             -n stall to host
+ 117   3                  Force_Stall();                      
+ 118   3               }
+ 119   2               else
+ 120   2               {
+ 121   3                  if (Setup.wIndex.c[LSB] == IN_EP1)  // Handle case if 
+             -request is directed to EP 1
+ 122   3                  {
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 35  
+
+ 123   4                     if (Ep_Status[1] == EP_HALT)
+ 124   4                     {                                // If endpoint is 
+             -halted, return 0x01,0x00
+ 125   5                        Data_Ptr = (BYTE*)&ONES_PACKET;
+ 126   5                        Data_Size = 2;
+ 127   5                     }
+ 128   4                     else
+ 129   4                     {
+ 130   5                        Data_Ptr = (BYTE*)&ZERO_PACKET;// Otherwise retu
+             -rn 0x00,0x00 to indicate endpoint active
+ 131   5                        Data_Size = 2;
+ 132   5                     }
+ 133   4                  }
+ 134   3                  else
+ 135   3                  {
+ 136   4                     if (Setup.wIndex.c[LSB] == OUT_EP2)
+ 137   4                                                      // If request is d
+             -irected to endpoint 2, send either
+ 138   4                     {                                // 0x01,0x00 if en
+             -dpoint halted or 0x00,0x00 if 
+ 139   5                        if (Ep_Status[2] == EP_HALT)  // endpoint is act
+             -ive
+ 140   5                        {
+ 141   6                           Data_Ptr = (BYTE*)&ONES_PACKET;
+ 142   6                           Data_Size = 2;
+ 143   6                        }
+ 144   5                        else
+ 145   5                        {
+ 146   6                           Data_Ptr = (BYTE*)&ZERO_PACKET;
+ 147   6                           Data_Size = 2;
+ 148   6                        }
+ 149   5                     }
+ 150   4                     else
+ 151   4                     {
+ 152   5                        Force_Stall();                // Send stall if u
+             -nexpected data encountered
+ 153   5                     }
+ 154   4                  }
+ 155   3               }
+ 156   2               break;
+ 157   2      
+ 158   2            default:
+ 159   2               Force_Stall();
+ 160   2               break;
+ 161   2         }
+ 162   1         if (Ep_Status[0] != EP_STALL)
+ 163   1         {                            
+ 164   2            POLL_WRITE_BYTE(E0CSR, rbSOPRDY);         // Set serviced Se
+             -tup Packet, Endpoint 0 in                   
+ 165   2            Ep_Status[0] = EP_TX;                     // transmit mode, 
+             -and reset Data_Sent counter
+ 166   2            Data_Sent = 0;
+ 167   2         }
+ 168   1      }
+ 169          
+ 170          //----------------------------------------------------------------
+             -------------
+ 171          // Clear_Feature
+ 172          //----------------------------------------------------------------
+             -------------
+ 173          //
+ 174          // This routine can clear Halt Endpoint features
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 36  
+
+ 175          // on endpoint 1 and 2.
+ 176          //
+ 177          // Parameters   :
+ 178          // Return Value :
+ 179          //----------------------------------------------------------------
+             -------------
+ 180          
+ 181          void Clear_Feature()
+ 182          {
+ 183   1      
+ 184   1         if ((USB_State != DEV_CONFIGURED)          ||// Send procedural
+             - stall if device isn't configured
+ 185   1         (Setup.bmRequestType == IN_DEVICE)         ||// or request is m
+             -ade to host(remote wakeup not supported)
+ 186   1         (Setup.bmRequestType == IN_INTERFACE)      ||// or request is m
+             -ade to interface
+ 187   1         Setup.wValue.c[MSB]  || Setup.wIndex.c[MSB]||// or msbs of valu
+             -e or index set to non-zero value
+ 188   1         Setup.wLength.c[MSB] || Setup.wLength.c[LSB])// or data length 
+             -set to non-zero.
+ 189   1         {
+ 190   2            Force_Stall();
+ 191   2         }
+ 192   1      
+ 193   1         else
+ 194   1         {             
+ 195   2            if ((Setup.bmRequestType == IN_ENDPOINT)&&// Verify that pac
+             -ket was directed at an endpoint
+ 196   2            (Setup.wValue.c[LSB] == ENDPOINT_HALT)  &&// the feature sel
+             -ected was HALT_ENDPOINT
+ 197   2            ((Setup.wIndex.c[LSB] == IN_EP1) ||       // and that the re
+             -quest was directed at EP 1 in
+ 198   2            (Setup.wIndex.c[LSB] == OUT_EP2)))        // or EP 2 out
+ 199   2            {
+ 200   3               if (Setup.wIndex.c[LSB] == IN_EP1) 
+ 201   3               {
+ 202   4                  POLL_WRITE_BYTE (INDEX, EP1_IN_IDX);         // Clear 
+             -feature endpoint 1 halt
+ 203   4                  POLL_WRITE_BYTE (EINCSR1, rbInCLRDT);       
+ 204   4                  Ep_Status[1] = EP_IDLE;             // Set endpoint 1 
+             -status back to idle                    
+ 205   4               }
+ 206   3               else
+ 207   3               {
+ 208   4                  POLL_WRITE_BYTE (INDEX, EP2_OUT_IDX);         // Clear
+             - feature endpoint 2 halt
+ 209   4                  POLL_WRITE_BYTE (EOUTCSR1, rbOutCLRDT);         
+ 210   4                  Ep_Status[2] = EP_IDLE;             // Set endpoint 2 
+             -status back to idle
+ 211   4               }
+ 212   3            }
+ 213   2            else
+ 214   2            { 
+ 215   3               Force_Stall();                         // Send procedural
+             - stall
+ 216   3            }
+ 217   2         }
+ 218   1         POLL_WRITE_BYTE(INDEX, EP0_IDX);                   // Reset Ind
+             -ex to 0
+ 219   1         if (Ep_Status[0] != EP_STALL)
+ 220   1         {
+ 221   2            POLL_WRITE_BYTE(E0CSR, (rbSOPRDY | rbDATAEND));
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 37  
+
+ 222   2                                                          // Set Serviced Out p
+             -acket ready and data end to 
+ 223   2                                                      // indicate transa
+             -ction is over
+ 224   2         }
+ 225   1      }
+ 226          
+ 227          //----------------------------------------------------------------
+             -------------
+ 228          // Set_Feature
+ 229          //----------------------------------------------------------------
+             -------------
+ 230          //
+ 231          // This routine will set the EP Halt feature for
+ 232          // endpoints 1 and 2
+ 233          //
+ 234          // Parameters   :
+ 235          // Return Value :
+ 236          //----------------------------------------------------------------
+             -------------
+ 237          
+ 238          void Set_Feature(void)
+ 239          {
+ 240   1      
+ 241   1         if ((USB_State != DEV_CONFIGURED)          ||// Make sure devic
+             -e is configured, setup data
+ 242   1         (Setup.bmRequestType == IN_DEVICE)         ||// is all valid an
+             -d that request is directed at
+ 243   1         (Setup.bmRequestType == IN_INTERFACE)      ||// an endpoint
+ 244   1         Setup.wValue.c[MSB]  || Setup.wIndex.c[MSB]|| 
+ 245   1         Setup.wLength.c[MSB] || Setup.wLength.c[LSB])
+ 246   1         {
+ 247   2            Force_Stall();                            // Otherwise send 
+             -stall to host
+ 248   2         }
+ 249   1      
+ 250   1         else
+ 251   1         {             
+ 252   2            if ((Setup.bmRequestType == IN_ENDPOINT)&&// Make sure endpo
+             -int exists and that halt
+ 253   2            (Setup.wValue.c[LSB] == ENDPOINT_HALT)  &&// endpoint featur
+             -e is selected
+ 254   2            ((Setup.wIndex.c[LSB] == IN_EP1)        || 
+ 255   2            (Setup.wIndex.c[LSB] == OUT_EP2)))
+ 256   2            {
+ 257   3               if (Setup.wIndex.c[LSB] == IN_EP1) 
+ 258   3               {
+ 259   4                  POLL_WRITE_BYTE (INDEX, EP1_IN_IDX);         // Set fe
+             -ature endpoint 1 halt
+ 260   4                  POLL_WRITE_BYTE (EINCSR1, rbInSDSTL);       
+ 261   4                  Ep_Status[1] = EP_HALT;                               
+             -   
+ 262   4               }
+ 263   3               else
+ 264   3               {
+ 265   4                  POLL_WRITE_BYTE (INDEX, EP2_OUT_IDX);         // Set f
+             -eature Ep2 halt
+ 266   4                  POLL_WRITE_BYTE (EOUTCSR1, rbOutSDSTL);         
+ 267   4                  Ep_Status[2] = EP_HALT;                 
+ 268   4               }
+ 269   3            }
+ 270   2            else
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 38  
+
+ 271   2            { 
+ 272   3               Force_Stall();                         // Send procedural
+             - stall
+ 273   3            }
+ 274   2         }   
+ 275   1         POLL_WRITE_BYTE(INDEX, EP0_IDX);
+ 276   1         if (Ep_Status[0] != EP_STALL)
+ 277   1         {
+ 278   2            POLL_WRITE_BYTE(E0CSR, (rbSOPRDY | rbDATAEND)); 
+ 279   2                                                      // Indicate setup 
+             -packet has been serviced
+ 280   2         }
+ 281   1      }
+ 282          
+ 283          //----------------------------------------------------------------
+             -------------
+ 284          // Set_Address
+ 285          //----------------------------------------------------------------
+             -------------
+ 286          //
+ 287          // Set new function address
+ 288          //
+ 289          // Parameters   :
+ 290          // Return Value :
+ 291          //----------------------------------------------------------------
+             -------------
+ 292          
+ 293          void Set_Address(void)
+ 294          {  
+ 295   1         if ((Setup.bmRequestType != IN_DEVICE)     ||// Request must be
+             - directed to device
+ 296   1         Setup.wIndex.c[MSB]  || Setup.wIndex.c[LSB]||// with index and 
+             -length set to zero.
+ 297   1         Setup.wLength.c[MSB] || Setup.wLength.c[LSB]|| 
+ 298   1         Setup.wValue.c[MSB]  || (Setup.wValue.c[LSB] & 0x80))
+ 299   1         {
+ 300   2           Force_Stall();                             // Send stall if s
+             -etup data invalid
+ 301   2         }
+ 302   1      
+ 303   1         Ep_Status[0] = EP_ADDRESS;                   // Set endpoint ze
+             -ro to update address next status phase
+ 304   1         if (Setup.wValue.c[LSB] != 0) 
+ 305   1         {
+ 306   2            USB_State = DEV_ADDRESS;                  // Indicate that d
+             -evice state is now address
+ 307   2         }
+ 308   1         else 
+ 309   1         {
+ 310   2            USB_State = DEV_DEFAULT;                  // If new address 
+             -was 0x00, return device to default
+ 311   2         }                                            // state
+ 312   1         if (Ep_Status[0] != EP_STALL)
+ 313   1         {    
+ 314   2            POLL_WRITE_BYTE(E0CSR, (rbSOPRDY | rbDATAEND)); 
+ 315   2                                                      // Indicate setup 
+             -packet has been serviced
+ 316   2         }
+ 317   1      }
+ 318          
+ 319          //----------------------------------------------------------------
+             -------------
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 39  
+
+ 320          // Get_Descriptor
+ 321          //----------------------------------------------------------------
+             -------------
+ 322          //
+ 323          // This routine sets the data pointer and size to correct
+ 324          // descriptor and sets the endpoint status to transmit
+ 325          //
+ 326          // Parameters   :
+ 327          // Return Value :
+ 328          //----------------------------------------------------------------
+             -------------
+ 329          
+ 330          void Get_Descriptor(void)
+ 331          {
+ 332   1      
+ 333   1         switch(Setup.wValue.c[MSB])                  // Determine which
+             - type of descriptor
+ 334   1         {                                            // was requested, 
+             -and set data ptr and 
+ 335   2            case DSC_DEVICE:                          // size accordingl
+             -y
+ 336   2               Data_Ptr = (BYTE*) &Device_Desc;
+ 337   2               Data_Size = Device_Desc.bLength;
+ 338   2               break;
+ 339   2            
+ 340   2            case DSC_CONFIG:
+ 341   2               Data_Ptr = (BYTE*) &Config_Desc;
+ 342   2                                                      // Compiler Specif
+             -ic - The next statement reverses the
+ 343   2                                                      // bytes in the co
+             -nfiguration descriptor for the compiler
+ 344   2               Data_Size = Config_Desc.wTotalLength.c[MSB] + 256*Config_
+             -Desc.wTotalLength.c[LSB];
+ 345   2               break;
+ 346   2            
+ 347   2                case DSC_STRING:
+ 348   2               Data_Ptr = String_Desc_Table[Setup.wValue.c[LSB]];
+ 349   2                                                              // Can have a maximum of
+             - 255 strings
+ 350   2               Data_Size = *Data_Ptr;
+ 351   2               break;
+ 352   2            
+ 353   2            case DSC_INTERFACE:
+ 354   2               Data_Ptr = (BYTE*) &Interface_Desc;
+ 355   2               Data_Size = Interface_Desc.bLength;
+ 356   2               break;
+ 357   2            
+ 358   2            case DSC_ENDPOINT:
+ 359   2               if ((Setup.wValue.c[LSB] == IN_EP1) || 
+ 360   2               (Setup.wValue.c[LSB] == OUT_EP2))
+ 361   2               {
+ 362   3                  if (Setup.wValue.c[LSB] == IN_EP1)
+ 363   3                  {
+ 364   4                     Data_Ptr = (BYTE*) &Endpoint1_Desc;
+ 365   4                     Data_Size = Endpoint1_Desc.bLength;
+ 366   4                  }
+ 367   3                  else
+ 368   3                  {
+ 369   4                     Data_Ptr = (BYTE*) &Endpoint2_Desc;
+ 370   4                     Data_Size = Endpoint2_Desc.bLength;
+ 371   4                  }
+ 372   3               }
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 40  
+
+ 373   2               else
+ 374   2               {
+ 375   3                  Force_Stall();
+ 376   3               }
+ 377   2               break;
+ 378   2            
+ 379   2            default:
+ 380   2               Force_Stall();                         // Send Stall if u
+             -nsupported request
+ 381   2               break;
+ 382   2         }
+ 383   1         
+ 384   1         if (Setup.wValue.c[MSB] == DSC_DEVICE ||     // Verify that the
+             - requested descriptor is 
+ 385   1         Setup.wValue.c[MSB] == DSC_CONFIG     ||     // valid
+ 386   1         Setup.wValue.c[MSB] == DSC_STRING     ||
+ 387   1         Setup.wValue.c[MSB] == DSC_INTERFACE  ||
+ 388   1         Setup.wValue.c[MSB] == DSC_ENDPOINT)
+ 389   1         {
+ 390   2            if ((Setup.wLength.c[LSB] < Data_Size) && 
+ 391   2            (Setup.wLength.c[MSB] == 0))
+ 392   2            {
+ 393   3               Data_Size = Setup.wLength.i;       // Send only requested
+             - amount of data
+ 394   3            }
+ 395   2         }
+ 396   1         if (Ep_Status[0] != EP_STALL)                // Make sure endpo
+             -int not in stall mode
+ 397   1         {
+ 398   2           POLL_WRITE_BYTE(E0CSR, rbSOPRDY);          // Service Setup P
+             -acket
+ 399   2           Ep_Status[0] = EP_TX;                      // Put endpoint in
+             - transmit mode
+ 400   2           Data_Sent = 0;                              // Reset Data Sen
+             -t counter
+ 401   2         }
+ 402   1      }
+ 403          
+ 404          
+ 405          //----------------------------------------------------------------
+             -------------
+ 406          // Get_Configuration
+ 407          //----------------------------------------------------------------
+             -------------
+ 408          //
+ 409          // This routine returns current configuration value
+ 410          //
+ 411          // Parameters   :
+ 412          // Return Value :
+ 413          //----------------------------------------------------------------
+             -------------
+ 414          
+ 415          void Get_Configuration(void)
+ 416          {
+ 417   1         if ((Setup.bmRequestType != OUT_DEVICE)    ||// This request mu
+             -st be directed to the device
+ 418   1         Setup.wValue.c[MSB]  || Setup.wValue.c[LSB]||// with value word
+             - set to zero
+ 419   1         Setup.wIndex.c[MSB]  || Setup.wIndex.c[LSB]||// and index set t
+             -o zero
+ 420   1         Setup.wLength.c[MSB] || (Setup.wLength.c[LSB] != 1))// and setu
+             -p length set to one
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 41  
+
+ 421   1         {
+ 422   2            Force_Stall();                            // Otherwise send 
+             -a stall to host
+ 423   2         }
+ 424   1      
+ 425   1         else 
+ 426   1         {
+ 427   2            if (USB_State == DEV_CONFIGURED)          // If the device i
+             -s configured, then return value 0x01
+ 428   2            {                                         // since this soft
+             -ware only supports one configuration
+ 429   3               Data_Ptr = (BYTE*)&ONES_PACKET;
+ 430   3               Data_Size = 1;
+ 431   3            }
+ 432   2            if (USB_State == DEV_ADDRESS)             // If the device i
+             -s in address state, it is not
+ 433   2            {                                         // configured, so 
+             -return 0x00
+ 434   3               Data_Ptr = (BYTE*)&ZERO_PACKET;
+ 435   3               Data_Size = 1;
+ 436   3            }
+ 437   2         }
+ 438   1         if (Ep_Status[0] != EP_STALL)
+ 439   1         {
+ 440   2            POLL_WRITE_BYTE(E0CSR, rbSOPRDY);         // Set Serviced Ou
+             -t Packet bit
+ 441   2            Ep_Status[0] = EP_TX;                     // Put endpoint in
+             -to transmit mode
+ 442   2            Data_Sent = 0;                             // Reset Data Sen
+             -t counter to zero
+ 443   2         }
+ 444   1      }
+ 445          
+ 446          //----------------------------------------------------------------
+             -------------
+ 447          // Set_Configuration
+ 448          //----------------------------------------------------------------
+             -------------
+ 449          //
+ 450          // This routine allows host to change current
+ 451          // device configuration value
+ 452          //
+ 453          // Parameters   :
+ 454          // Return Value :
+ 455          //----------------------------------------------------------------
+             -------------
+ 456          
+ 457          void Set_Configuration(void)
+ 458          {
+ 459   1      
+ 460   1         if ((USB_State == DEV_DEFAULT)             ||// Device must be 
+             -addressed before configured
+ 461   1         (Setup.bmRequestType != IN_DEVICE)         ||// and request rec
+             -ipient must be the device
+ 462   1         Setup.wIndex.c[MSB]  || Setup.wIndex.c[LSB]||// the index and l
+             -ength words must be zero
+ 463   1         Setup.wLength.c[MSB] || Setup.wLength.c[LSB] || 
+ 464   1         Setup.wValue.c[MSB]  || (Setup.wValue.c[LSB] > 1))// This softw
+             -are only supports config = 0,1
+ 465   1         {
+ 466   2            Force_Stall();                            // Send stall if s
+             -etup data is invalid
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 42  
+
+ 467   2         }
+ 468   1      
+ 469   1         else
+ 470   1         {
+ 471   2            if (Setup.wValue.c[LSB] > 0)              // Any positive co
+             -nfiguration request
+ 472   2            {                                         // results in conf
+             -iguration being set to 1
+ 473   3               USB_State = DEV_CONFIGURED;
+ 474   3               Ep_Status[1] = EP_IDLE;                // Set endpoint st
+             -atus to idle (enabled)
+ 475   3               Ep_Status[2] = EP_IDLE;
+ 476   3               POLL_WRITE_BYTE(INDEX, EP1_IN_IDX);             // Change
+             - index to endpoint 1
+ 477   3               POLL_WRITE_BYTE(EINCSR2, rbInDIRSEL);  // Set DIRSEL to i
+             -ndicate endpoint 1 is IN
+ 478   3      //      Not necessary for Mass Storage Device (bulk data)
+ 479   3      //         Handle_In1();                          // Put first dat
+             -a packet on fifo
+ 480   3      //
+ 481   3               POLL_WRITE_BYTE(INDEX, EP0_IDX);             // Set index
+             - back to endpoint 0
+ 482   3            }
+ 483   2            else
+ 484   2            {
+ 485   3               USB_State = DEV_ADDRESS;               // Unconfigures de
+             -vice by setting state to 
+ 486   3               Ep_Status[1] = EP_HALT;                // address, and ch
+             -anging endpoint 1 and 2 
+ 487   3               Ep_Status[2] = EP_HALT;                // status to halt
+ 488   3            }
+ 489   2         }     
+ 490   1         if (Ep_Status[0] != EP_STALL)
+ 491   1         {
+ 492   2            POLL_WRITE_BYTE(E0CSR, (rbSOPRDY | rbDATAEND)); 
+ 493   2                                                      // Indicate setup 
+             -packet has been serviced
+ 494   2         }
+ 495   1      }
+ 496          
+ 497          //----------------------------------------------------------------
+             -------------
+ 498          // Get_Interface
+ 499          //----------------------------------------------------------------
+             -------------
+ 500          //
+ 501          // This routine returns 0x00, since only one interface
+ 502          // is supported by this firmware
+ 503          //
+ 504          // Parameters   :
+ 505          // Return Value :
+ 506          //----------------------------------------------------------------
+             -------------
+ 507          
+ 508          void Get_Interface(void)
+ 509          {
+ 510   1      
+ 511   1         if ((USB_State != DEV_CONFIGURED)      ||    // If device is no
+             -t configured
+ 512   1         (Setup.bmRequestType != OUT_INTERFACE) ||    // or recipient is
+             - not an interface
+ 513   1         Setup.wValue.c[MSB]  ||Setup.wValue.c[LSB] ||// or non-zero val
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 43  
+
+             -ue or index fields
+ 514   1         Setup.wIndex.c[MSB]  ||Setup.wIndex.c[LSB] ||// or data length 
+             -not equal to one
+ 515   1         Setup.wLength.c[MSB] ||(Setup.wLength.c[LSB] != 1))    
+ 516   1         {
+ 517   2            Force_Stall();                            // Then return sta
+             -ll due to invalid request
+ 518   2         }
+ 519   1      
+ 520   1         else
+ 521   1         {
+ 522   2            Data_Ptr = (BYTE*)&ZERO_PACKET;            // Otherwise, ret
+             -urn 0x00 to host
+ 523   2            Data_Size = 1;
+ 524   2         }
+ 525   1         if (Ep_Status[0] != EP_STALL)
+ 526   1         {                       
+ 527   2            POLL_WRITE_BYTE(E0CSR, rbSOPRDY);         // Set Serviced Se
+             -tup packet, put endpoint in transmit
+ 528   2            Ep_Status[0] = EP_TX;                     // mode and reset 
+             -Data sent counter
+ 529   2            Data_Sent = 0;
+ 530   2         }
+ 531   1      }
+ 532          
+ 533          //----------------------------------------------------------------
+             -------------
+ 534          // Set_Interface
+ 535          //----------------------------------------------------------------
+             -------------
+ 536          //
+ 537          // This function sets interface if it's supported
+ 538          //
+ 539          // Parameters   :
+ 540          // Return Value :
+ 541          //----------------------------------------------------------------
+             -------------
+ 542          
+ 543          void Set_Interface(void)
+ 544          {
+ 545   1         if ((Setup.bmRequestType != IN_INTERFACE)  ||// Make sure reque
+             -st is directed at interface
+ 546   1         Setup.wLength.c[MSB] ||Setup.wLength.c[LSB]||// and all other p
+             -acket values are set to zero
+ 547   1         Setup.wValue.c[MSB]  ||Setup.wValue.c[LSB] || 
+ 548   1         Setup.wIndex.c[MSB]  ||Setup.wIndex.c[LSB])
+ 549   1         {
+ 550   2            Force_Stall();                            // Othewise send a
+             - stall to host
+ 551   2         }
+ 552   1         if (Ep_Status[0] != EP_STALL)
+ 553   1         {
+ 554   2            POLL_WRITE_BYTE(E0CSR, (rbSOPRDY | rbDATAEND)); 
+ 555   2                                                      // Indicate setup 
+             -packet has been serviced
+ 556   2         }
+ 557   1      }
+ 558          
+ 559          /*
+ 560          /* Removed these to safe memory (not called on Windows platforms a
+             -nyway).
+ 561          /*
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 44  
+
+ 562          void Reset_Msd(void) {
+ 563                  // Parse this class-specific request
+ 564                  if((Setup.bmRequestType==0x21) && (Setup.wValue.i==0x00) && (Setu
+             -p.wLength.i==0x00)) {
+ 565                          Msd_Reset_(Setup.wIndex.i);
+ 566                  } else {
+ 567                          Force_Stall(); // Not what we expected.
+ 568                  }
+ 569          }
+ 570          
+ 571          void Get_MaxLUN(void) {
+ 572                  unsigned char maxlun;
+ 573                  // Parse this class-specific request
+ 574                  if((Setup.bmRequestType==0xA1) && (Setup.wValue.i==0x00) && (Setu
+             -p.wLength.i==0x01)) {
+ 575                          // Return max lun to host:
+ 576                          maxlun = Msd_GetMaxLUN(Setup.wIndex.i);
+ 577                          Data_Ptr = (BYTE*)&maxlun;
+ 578                          Data_Size = 1;
+ 579                          if (Ep_Status[0] != EP_STALL) {                       
+ 580                                  POLL_WRITE_BYTE(E0CSR, rbSOPRDY);         // Set Serviced Setup
+             - packet, put endpoint in transmit
+ 581                              Ep_Status[0] = EP_TX;                     // mode and reset 
+             -Data sent counter
+ 582                              Data_Sent = 0;
+ 583                          }               
+ 584                  } else {
+ 585                          Force_Stall(); // Not what we expected.
+ 586                  }
+ 587          }
+ 588          */
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 45  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION Com009B (BEGIN)
+0000         L?0156:
+0000         L?0157:
+0000 759611            MOV     USB0ADR,#011H
+0003 759740            MOV     USB0DAT,#040H
+0006 900000      E     MOV     DPTR,#Ep_Status
+0009 7401              MOV     A,#01H
+000B F0                MOVX    @DPTR,A
+000C E4                CLR     A
+000D 900000      E     MOV     DPTR,#Data_Sent
+0010 F0                MOVX    @DPTR,A
+0011 A3                INC     DPTR
+0012 F0                MOVX    @DPTR,A
+0013 22                RET     
+0014         L?0158:
+0014 7A00        R     MOV     R2,#HIGH ZERO_PACKET
+0016 7900        R     MOV     R1,#LOW ZERO_PACKET
+0018         L?0159:
+0018 7BFF              MOV     R3,#0FFH
+001A         L?0160:
+001A 900000      E     MOV     DPTR,#Data_Ptr
+001D 020000      E     LJMP    ?C?PSTXDATA
+0020         L?0161:
+0020 75960E            MOV     USB0ADR,#0EH
+0023 E4                CLR     A
+0024 F597              MOV     USB0DAT,A
+0026         L?0162:
+0026 900000      E     MOV     DPTR,#Ep_Status
+0029 E0                MOVX    A,@DPTR
+002A 6404              XRL     A,#04H
+002C 22                RET     
+002D         L?0163:
+002D         L?0164:
+002D 759611            MOV     USB0ADR,#011H
+0030 759748            MOV     USB0DAT,#048H
+0033 22                RET     
+0034         L?0165:
+0034         L?0166:
+0034 900000      E     MOV     DPTR,#Data_Size
+0037 E4                CLR     A
+0038 F0                MOVX    @DPTR,A
+0039 A3                INC     DPTR
+003A 04                INC     A
+003B F0                MOVX    @DPTR,A
+003C 22                RET     
+003D         L?0167:
+003D         L?0168:
+003D 900000      E     MOV     DPTR,#USB_State
+0040 E0                MOVX    A,@DPTR
+0041 6404              XRL     A,#04H
+0043 22                RET     
+0044         L?0169:
+0044         L?0170:
+0044 75960E            MOV     USB0ADR,#0EH
+0047 759701            MOV     USB0DAT,#01H
+004A 22                RET     
+             ; FUNCTION Com009B (END)
+
+             ; FUNCTION Get_Status (BEGIN)
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 46  
+
+                                           ; SOURCE LINE # 74
+                                           ; SOURCE LINE # 75
+                                           ; SOURCE LINE # 77
+0000 900000      E     MOV     DPTR,#Setup+02H
+0003 E0                MOVX    A,@DPTR
+0004 7010              JNZ     ?C0002
+0006 A3                INC     DPTR
+0007 E0                MOVX    A,@DPTR
+0008 700C              JNZ     ?C0002
+000A 900000      E     MOV     DPTR,#Setup+06H
+000D E0                MOVX    A,@DPTR
+000E 7006              JNZ     ?C0002
+0010 A3                INC     DPTR
+0011 E0                MOVX    A,@DPTR
+0012 6402              XRL     A,#02H
+0014 6003              JZ      ?C0001
+0016         ?C0002:
+                                           ; SOURCE LINE # 81
+                                           ; SOURCE LINE # 82
+0016 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 83
+0019         ?C0001:
+                                           ; SOURCE LINE # 85
+0019 900000      E     MOV     DPTR,#Setup
+001C E0                MOVX    A,@DPTR
+001D 247F              ADD     A,#07FH
+001F 6013              JZ      ?C0008
+0021 14                DEC     A
+0022 602B              JZ      ?C0012
+0024 2402              ADD     A,#02H
+0026 707A              JNZ     ?C0024
+                                           ; SOURCE LINE # 86
+                                           ; SOURCE LINE # 87
+0028         ?C0004:
+                                           ; SOURCE LINE # 88
+0028 900000      E     MOV     DPTR,#Setup+04H
+002B E0                MOVX    A,@DPTR
+002C 7074              JNZ     ?C0145
+002E A3                INC     DPTR
+002F E0                MOVX    A,@DPTR
+0030 6015              JZ      ?C0140
+0032         ?C0006:
+                                           ; SOURCE LINE # 89
+                                           ; SOURCE LINE # 90
+                                           ; SOURCE LINE # 91
+0032 806E              SJMP    ?C0145
+                                           ; SOURCE LINE # 99
+0034         ?C0008:
+                                           ; SOURCE LINE # 100
+0034 900000      E     MOV     DPTR,#USB_State
+0037 E0                MOVX    A,@DPTR
+0038 B4040A            CJNE    A,#04H,?C0010
+003B 900000      E     MOV     DPTR,#Setup+04H
+003E E0                MOVX    A,@DPTR
+003F 7004              JNZ     ?C0010
+0041 A3                INC     DPTR
+0042 E0                MOVX    A,@DPTR
+0043 6002              JZ      ?C0009
+0045         ?C0010:
+                                           ; SOURCE LINE # 103
+                                           ; SOURCE LINE # 104
+0045         ?C0139:
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 47  
+
+                                           ; SOURCE LINE # 105
+0045 805B              SJMP    ?C0145
+0047         ?C0009:
+                                           ; SOURCE LINE # 107
+                                           ; SOURCE LINE # 108
+0047         ?C0140:
+0047 7BFF              MOV     R3,#0FFH
+0049 7A00        R     MOV     R2,#HIGH ZERO_PACKET
+004B 7900        R     MOV     R1,#LOW ZERO_PACKET
+                                           ; SOURCE LINE # 109
+                                           ; SOURCE LINE # 110
+                                           ; SOURCE LINE # 111
+004D 8043              SJMP    ?C0144
+                                           ; SOURCE LINE # 113
+004F         ?C0012:
+                                           ; SOURCE LINE # 114
+004F 900000      E     MOV     DPTR,#USB_State
+0052 E0                MOVX    A,@DPTR
+0053 B40406            CJNE    A,#04H,?C0014
+0056 900000      E     MOV     DPTR,#Setup+04H
+0059 E0                MOVX    A,@DPTR
+005A 6002              JZ      ?C0013
+005C         ?C0014:
+                                           ; SOURCE LINE # 116
+                                           ; SOURCE LINE # 117
+005C         ?C0141:
+                                           ; SOURCE LINE # 118
+005C 8044              SJMP    ?C0145
+005E         ?C0013:
+                                           ; SOURCE LINE # 120
+                                           ; SOURCE LINE # 121
+005E 900000      E     MOV     DPTR,#Setup+05H
+0061 E0                MOVX    A,@DPTR
+0062 FF                MOV     R7,A
+0063 B48115            CJNE    A,#081H,?C0016
+                                           ; SOURCE LINE # 122
+                                           ; SOURCE LINE # 123
+0066 900000      E     MOV     DPTR,#Ep_Status+01H
+0069 E0                MOVX    A,@DPTR
+006A 7BFF              MOV     R3,#0FFH
+006C B40306            CJNE    A,#03H,?C0017
+                                           ; SOURCE LINE # 124
+                                           ; SOURCE LINE # 125
+006F 7A00        R     MOV     R2,#HIGH ONES_PACKET
+0071 7900        R     MOV     R1,#LOW ONES_PACKET
+                                           ; SOURCE LINE # 126
+                                           ; SOURCE LINE # 127
+0073 8004              SJMP    ?C0137
+0075         ?C0017:
+                                           ; SOURCE LINE # 129
+                                           ; SOURCE LINE # 130
+0075 7A00        R     MOV     R2,#HIGH ZERO_PACKET
+0077 7900        R     MOV     R1,#LOW ZERO_PACKET
+0079         ?C0137:
+0079         ?C0142:
+                                           ; SOURCE LINE # 131
+                                           ; SOURCE LINE # 132
+                                           ; SOURCE LINE # 133
+0079 8017              SJMP    ?C0144
+007B         ?C0016:
+                                           ; SOURCE LINE # 135
+                                           ; SOURCE LINE # 136
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 48  
+
+007B EF                MOV     A,R7
+007C B40121            CJNE    A,#01H,?C0020
+                                           ; SOURCE LINE # 138
+                                           ; SOURCE LINE # 139
+007F 900000      E     MOV     DPTR,#Ep_Status+02H
+0082 E0                MOVX    A,@DPTR
+0083 7BFF              MOV     R3,#0FFH
+0085 B40306            CJNE    A,#03H,?C0021
+                                           ; SOURCE LINE # 140
+                                           ; SOURCE LINE # 141
+0088 7A00        R     MOV     R2,#HIGH ONES_PACKET
+008A 7900        R     MOV     R1,#LOW ONES_PACKET
+                                           ; SOURCE LINE # 142
+                                           ; SOURCE LINE # 143
+008C 8004              SJMP    ?C0138
+008E         ?C0021:
+                                           ; SOURCE LINE # 145
+                                           ; SOURCE LINE # 146
+008E 7A00        R     MOV     R2,#HIGH ZERO_PACKET
+0090 7900        R     MOV     R1,#LOW ZERO_PACKET
+0092         ?C0138:
+0092         ?C0144:
+0092 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 147
+0095 900000      E     MOV     DPTR,#Data_Size
+0098 E4                CLR     A
+0099 F0                MOVX    @DPTR,A
+009A A3                INC     DPTR
+009B 7402              MOV     A,#02H
+009D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 148
+                                           ; SOURCE LINE # 149
+009E 8005              SJMP    ?C0003
+00A0         ?C0020:
+                                           ; SOURCE LINE # 151
+                                           ; SOURCE LINE # 152
+00A0         ?C0143:
+                                           ; SOURCE LINE # 153
+                                           ; SOURCE LINE # 154
+                                           ; SOURCE LINE # 155
+                                           ; SOURCE LINE # 156
+00A0 8000              SJMP    ?C0145
+                                           ; SOURCE LINE # 158
+00A2         ?C0024:
+                                           ; SOURCE LINE # 159
+00A2         ?C0145:
+00A2 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 160
+                                           ; SOURCE LINE # 161
+00A5         ?C0003:
+                                           ; SOURCE LINE # 162
+00A5 120000      R     LCALL   L?0162
+00A8 6008              JZ      ?C0028
+                                           ; SOURCE LINE # 163
+00AA         ?C0026:
+                                           ; SOURCE LINE # 164
+00AA E596              MOV     A,USB0ADR
+00AC 20E7FB            JB      ACC.7,?C0026
+00AF         ?C0027:
+                                           ; SOURCE LINE # 165
+                                           ; SOURCE LINE # 166
+00AF 120000      R     LCALL   L?0156
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 49  
+
+                                           ; SOURCE LINE # 167
+                                           ; SOURCE LINE # 168
+00B2         ?C0028:
+00B2 22                RET     
+             ; FUNCTION Get_Status (END)
+
+             ; FUNCTION Clear_Feature (BEGIN)
+                                           ; SOURCE LINE # 181
+                                           ; SOURCE LINE # 182
+                                           ; SOURCE LINE # 184
+0000 120000      R     LCALL   L?0167
+0003 707A              JNZ     ?C0146
+0005 900000      E     MOV     DPTR,#Setup
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A 6073              JZ      ?C0146
+000C 6401              XRL     A,#01H
+000E 606F              JZ      ?C0146
+0010 900000      E     MOV     DPTR,#Setup+02H
+0013 E0                MOVX    A,@DPTR
+0014 7069              JNZ     ?C0146
+0016 900000      E     MOV     DPTR,#Setup+04H
+0019 E0                MOVX    A,@DPTR
+001A 7063              JNZ     ?C0146
+001C 900000      E     MOV     DPTR,#Setup+06H
+001F E0                MOVX    A,@DPTR
+0020 705D              JNZ     ?C0146
+0022 A3                INC     DPTR
+0023 E0                MOVX    A,@DPTR
+0024 6002              JZ      ?C0029
+0026         ?C0030:
+                                           ; SOURCE LINE # 189
+                                           ; SOURCE LINE # 190
+                                           ; SOURCE LINE # 191
+0026 8057              SJMP    ?C0146
+0028         ?C0029:
+                                           ; SOURCE LINE # 194
+                                           ; SOURCE LINE # 195
+0028 900000      E     MOV     DPTR,#Setup
+002B E0                MOVX    A,@DPTR
+002C 6402              XRL     A,#02H
+002E 704F              JNZ     ?C0032
+0030 900000      E     MOV     DPTR,#Setup+03H
+0033 E0                MOVX    A,@DPTR
+0034 7049              JNZ     ?C0032
+0036 900000      E     MOV     DPTR,#Setup+05H
+0039 E0                MOVX    A,@DPTR
+003A FF                MOV     R7,A
+003B 6481              XRL     A,#081H
+003D 6005              JZ      ?C0033
+003F EF                MOV     A,R7
+0040 6401              XRL     A,#01H
+0042 703B              JNZ     ?C0032
+0044         ?C0033:
+                                           ; SOURCE LINE # 199
+                                           ; SOURCE LINE # 200
+0044 EF                MOV     A,R7
+0045 B4811A            CJNE    A,#081H,?C0040
+                                           ; SOURCE LINE # 201
+0048         ?C0035:
+                                           ; SOURCE LINE # 202
+0048 E596              MOV     A,USB0ADR
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 50  
+
+004A 20E7FB            JB      ACC.7,?C0035
+004D         ?C0036:
+004D 120000      R     LCALL   L?0169
+0050         ?C0037:
+                                           ; SOURCE LINE # 203
+0050 E596              MOV     A,USB0ADR
+0052 20E7FB            JB      ACC.7,?C0037
+0055         ?C0038:
+0055 759611            MOV     USB0ADR,#011H
+0058 759740            MOV     USB0DAT,#040H
+                                           ; SOURCE LINE # 204
+005B E4                CLR     A
+005C 900000      E     MOV     DPTR,#Ep_Status+01H
+005F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 205
+0060 8020              SJMP    ?C0045
+                                           ; SOURCE LINE # 207
+0062         ?C0040:
+                                           ; SOURCE LINE # 208
+0062 E596              MOV     A,USB0ADR
+0064 20E7FB            JB      ACC.7,?C0040
+0067         ?C0041:
+0067 75960E            MOV     USB0ADR,#0EH
+006A 759702            MOV     USB0DAT,#02H
+006D         ?C0042:
+                                           ; SOURCE LINE # 209
+006D E596              MOV     A,USB0ADR
+006F 20E7FB            JB      ACC.7,?C0042
+0072         ?C0043:
+0072 759614            MOV     USB0ADR,#014H
+0075 759780            MOV     USB0DAT,#080H
+                                           ; SOURCE LINE # 210
+0078 E4                CLR     A
+0079 900000      E     MOV     DPTR,#Ep_Status+02H
+007C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 211
+                                           ; SOURCE LINE # 212
+007D 8003              SJMP    ?C0045
+007F         ?C0032:
+                                           ; SOURCE LINE # 214
+                                           ; SOURCE LINE # 215
+007F         ?C0146:
+007F 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 216
+                                           ; SOURCE LINE # 217
+0082         ?C0045:
+                                           ; SOURCE LINE # 218
+0082 E596              MOV     A,USB0ADR
+0084 20E7FB            JB      ACC.7,?C0045
+0087         ?C0046:
+                                           ; SOURCE LINE # 219
+0087 120000      R     LCALL   L?0161
+008A 6008              JZ      ?C0050
+                                           ; SOURCE LINE # 220
+008C         ?C0048:
+                                           ; SOURCE LINE # 221
+008C E596              MOV     A,USB0ADR
+008E 20E7FB            JB      ACC.7,?C0048
+0091         ?C0049:
+0091 120000      R     LCALL   L?0163
+                                           ; SOURCE LINE # 224
+                                           ; SOURCE LINE # 225
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 51  
+
+0094         ?C0050:
+0094 22                RET     
+             ; FUNCTION Clear_Feature (END)
+
+             ; FUNCTION Set_Feature (BEGIN)
+                                           ; SOURCE LINE # 238
+                                           ; SOURCE LINE # 239
+                                           ; SOURCE LINE # 241
+0000 120000      R     LCALL   L?0167
+0003 7079              JNZ     ?C0147
+0005 900000      E     MOV     DPTR,#Setup
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A 6072              JZ      ?C0147
+000C 6401              XRL     A,#01H
+000E 606E              JZ      ?C0147
+0010 900000      E     MOV     DPTR,#Setup+02H
+0013 E0                MOVX    A,@DPTR
+0014 7068              JNZ     ?C0147
+0016 900000      E     MOV     DPTR,#Setup+04H
+0019 E0                MOVX    A,@DPTR
+001A 7062              JNZ     ?C0147
+001C 900000      E     MOV     DPTR,#Setup+06H
+001F E0                MOVX    A,@DPTR
+0020 705C              JNZ     ?C0147
+0022 A3                INC     DPTR
+0023 E0                MOVX    A,@DPTR
+0024 6002              JZ      ?C0051
+0026         ?C0052:
+                                           ; SOURCE LINE # 246
+                                           ; SOURCE LINE # 247
+                                           ; SOURCE LINE # 248
+0026 8056              SJMP    ?C0147
+0028         ?C0051:
+                                           ; SOURCE LINE # 251
+                                           ; SOURCE LINE # 252
+0028 900000      E     MOV     DPTR,#Setup
+002B E0                MOVX    A,@DPTR
+002C 6402              XRL     A,#02H
+002E 704E              JNZ     ?C0054
+0030 900000      E     MOV     DPTR,#Setup+03H
+0033 E0                MOVX    A,@DPTR
+0034 7048              JNZ     ?C0054
+0036 900000      E     MOV     DPTR,#Setup+05H
+0039 E0                MOVX    A,@DPTR
+003A FF                MOV     R7,A
+003B 6481              XRL     A,#081H
+003D 6005              JZ      ?C0055
+003F EF                MOV     A,R7
+0040 6401              XRL     A,#01H
+0042 703A              JNZ     ?C0054
+0044         ?C0055:
+                                           ; SOURCE LINE # 256
+                                           ; SOURCE LINE # 257
+0044 EF                MOV     A,R7
+0045 B48118            CJNE    A,#081H,?C0062
+                                           ; SOURCE LINE # 258
+0048         ?C0057:
+                                           ; SOURCE LINE # 259
+0048 E596              MOV     A,USB0ADR
+004A 20E7FB            JB      ACC.7,?C0057
+004D         ?C0058:
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 52  
+
+004D 120000      R     LCALL   L?0169
+0050         ?C0059:
+                                           ; SOURCE LINE # 260
+0050 E596              MOV     A,USB0ADR
+0052 20E7FB            JB      ACC.7,?C0059
+0055         ?C0060:
+0055 759611            MOV     USB0ADR,#011H
+0058 759710            MOV     USB0DAT,#010H
+                                           ; SOURCE LINE # 261
+005B 900000      E     MOV     DPTR,#Ep_Status+01H
+                                           ; SOURCE LINE # 262
+005E 8019              SJMP    ?C0148
+                                           ; SOURCE LINE # 264
+0060         ?C0062:
+                                           ; SOURCE LINE # 265
+0060 E596              MOV     A,USB0ADR
+0062 20E7FB            JB      ACC.7,?C0062
+0065         ?C0063:
+0065 75960E            MOV     USB0ADR,#0EH
+0068 759702            MOV     USB0DAT,#02H
+006B         ?C0064:
+                                           ; SOURCE LINE # 266
+006B E596              MOV     A,USB0ADR
+006D 20E7FB            JB      ACC.7,?C0064
+0070         ?C0065:
+0070 759614            MOV     USB0ADR,#014H
+0073 759720            MOV     USB0DAT,#020H
+                                           ; SOURCE LINE # 267
+0076 900000      E     MOV     DPTR,#Ep_Status+02H
+0079         ?C0148:
+0079 7403              MOV     A,#03H
+007B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 268
+                                           ; SOURCE LINE # 269
+007C 8003              SJMP    ?C0067
+007E         ?C0054:
+                                           ; SOURCE LINE # 271
+                                           ; SOURCE LINE # 272
+007E         ?C0147:
+007E 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 273
+                                           ; SOURCE LINE # 274
+0081         ?C0067:
+                                           ; SOURCE LINE # 275
+0081 E596              MOV     A,USB0ADR
+0083 20E7FB            JB      ACC.7,?C0067
+0086         ?C0068:
+                                           ; SOURCE LINE # 276
+0086 120000      R     LCALL   L?0161
+0089 6008              JZ      ?C0072
+                                           ; SOURCE LINE # 277
+008B         ?C0070:
+                                           ; SOURCE LINE # 278
+008B E596              MOV     A,USB0ADR
+008D 20E7FB            JB      ACC.7,?C0070
+0090         ?C0071:
+0090 120000      R     LCALL   L?0163
+                                           ; SOURCE LINE # 280
+                                           ; SOURCE LINE # 281
+0093         ?C0072:
+0093 22                RET     
+             ; FUNCTION Set_Feature (END)
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 53  
+
+
+             ; FUNCTION Set_Address (BEGIN)
+                                           ; SOURCE LINE # 293
+                                           ; SOURCE LINE # 294
+                                           ; SOURCE LINE # 295
+0000 900000      E     MOV     DPTR,#Setup
+0003 E0                MOVX    A,@DPTR
+0004 701D              JNZ     ?C0074
+0006 900000      E     MOV     DPTR,#Setup+04H
+0009 E0                MOVX    A,@DPTR
+000A 7017              JNZ     ?C0074
+000C A3                INC     DPTR
+000D E0                MOVX    A,@DPTR
+000E 7013              JNZ     ?C0074
+0010 A3                INC     DPTR
+0011 E0                MOVX    A,@DPTR
+0012 700F              JNZ     ?C0074
+0014 A3                INC     DPTR
+0015 E0                MOVX    A,@DPTR
+0016 700B              JNZ     ?C0074
+0018 900000      E     MOV     DPTR,#Setup+02H
+001B E0                MOVX    A,@DPTR
+001C 7005              JNZ     ?C0074
+001E A3                INC     DPTR
+001F E0                MOVX    A,@DPTR
+0020 30E703            JNB     ACC.7,?C0073
+0023         ?C0074:
+                                           ; SOURCE LINE # 299
+                                           ; SOURCE LINE # 300
+0023 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 301
+0026         ?C0073:
+                                           ; SOURCE LINE # 303
+0026 900000      E     MOV     DPTR,#Ep_Status
+0029 7405              MOV     A,#05H
+002B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 304
+002C 900000      E     MOV     DPTR,#Setup+03H
+002F E0                MOVX    A,@DPTR
+0030 900000      E     MOV     DPTR,#USB_State
+0033 6005              JZ      ?C0075
+                                           ; SOURCE LINE # 305
+                                           ; SOURCE LINE # 306
+0035 7403              MOV     A,#03H
+0037 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 307
+0038 8003              SJMP    ?C0076
+003A         ?C0075:
+                                           ; SOURCE LINE # 309
+                                           ; SOURCE LINE # 310
+003A 7402              MOV     A,#02H
+003C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 311
+003D         ?C0076:
+                                           ; SOURCE LINE # 312
+003D 120000      R     LCALL   L?0162
+0040 6008              JZ      ?C0080
+                                           ; SOURCE LINE # 313
+0042         ?C0078:
+                                           ; SOURCE LINE # 314
+0042 E596              MOV     A,USB0ADR
+0044 20E7FB            JB      ACC.7,?C0078
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 54  
+
+0047         ?C0079:
+0047 120000      R     LCALL   L?0164
+                                           ; SOURCE LINE # 316
+                                           ; SOURCE LINE # 317
+004A         ?C0080:
+004A 22                RET     
+             ; FUNCTION Set_Address (END)
+
+             ; FUNCTION Get_Descriptor (BEGIN)
+                                           ; SOURCE LINE # 330
+                                           ; SOURCE LINE # 331
+                                           ; SOURCE LINE # 333
+0000 900000      E     MOV     DPTR,#Setup+02H
+0003 E0                MOVX    A,@DPTR
+0004 24FE              ADD     A,#0FEH
+0006 601C              JZ      ?C0083
+0008 14                DEC     A
+0009 6039              JZ      ?C0084
+000B 14                DEC     A
+000C 6053              JZ      ?C0085
+000E 14                DEC     A
+000F 6065              JZ      ?C0086
+0011 2404              ADD     A,#04H
+0013 6003              JZ      $ + 5H
+0015 020000      R     LJMP    ?C0092
+                                           ; SOURCE LINE # 334
+                                           ; SOURCE LINE # 335
+0018         ?C0082:
+                                           ; SOURCE LINE # 336
+0018 7A00        E     MOV     R2,#HIGH Device_Desc
+001A 7900        E     MOV     R1,#LOW Device_Desc
+001C 120000      R     LCALL   L?0159
+                                           ; SOURCE LINE # 337
+001F 900000      E     MOV     DPTR,#Device_Desc
+                                           ; SOURCE LINE # 338
+0022 8049              SJMP    ?C0150
+                                           ; SOURCE LINE # 340
+0024         ?C0083:
+                                           ; SOURCE LINE # 341
+0024 7BFF              MOV     R3,#0FFH
+0026 7A00        E     MOV     R2,#HIGH Config_Desc
+0028 7900        E     MOV     R1,#LOW Config_Desc
+002A 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 344
+002D 900000      E     MOV     DPTR,#Config_Desc+03H
+0030 E4                CLR     A
+0031 93                MOVC    A,@A+DPTR
+0032 FE                MOV     R6,A
+0033 900000      E     MOV     DPTR,#Config_Desc+02H
+0036 E4                CLR     A
+0037 93                MOVC    A,@A+DPTR
+0038 7C00              MOV     R4,#00H
+003A 2400              ADD     A,#00H
+003C FF                MOV     R7,A
+003D EC                MOV     A,R4
+003E 3E                ADDC    A,R6
+003F 900000      E     MOV     DPTR,#Data_Size
+                                           ; SOURCE LINE # 345
+0042 8063              SJMP    ?C0153
+                                           ; SOURCE LINE # 347
+0044         ?C0084:
+                                           ; SOURCE LINE # 348
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 55  
+
+0044 900000      E     MOV     DPTR,#Setup+03H
+0047 E0                MOVX    A,@DPTR
+0048 75F003            MOV     B,#03H
+004B 900000      E     MOV     DPTR,#String_Desc_Table
+004E 120000      E     LCALL   ?C?OFFXADD
+0051 120000      E     LCALL   ?C?PLDXDATA
+0054 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 350
+0057 120000      E     LCALL   ?C?CLDPTR
+005A FF                MOV     R7,A
+005B 900000      E     MOV     DPTR,#Data_Size
+005E E4                CLR     A
+005F         ?C0151:
+                                           ; SOURCE LINE # 351
+005F 8046              SJMP    ?C0153
+                                           ; SOURCE LINE # 353
+0061         ?C0085:
+                                           ; SOURCE LINE # 354
+0061 7BFF              MOV     R3,#0FFH
+0063 7A00        E     MOV     R2,#HIGH Interface_Desc
+0065 7900        E     MOV     R1,#LOW Interface_Desc
+0067 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 355
+006A 900000      E     MOV     DPTR,#Interface_Desc
+006D         ?C0150:
+006D E4                CLR     A
+006E 93                MOVC    A,@A+DPTR
+006F FF                MOV     R7,A
+0070 900000      E     MOV     DPTR,#Data_Size
+0073 E4                CLR     A
+0074         ?C0152:
+                                           ; SOURCE LINE # 356
+0074 8031              SJMP    ?C0153
+                                           ; SOURCE LINE # 358
+0076         ?C0086:
+                                           ; SOURCE LINE # 359
+0076 900000      E     MOV     DPTR,#Setup+03H
+0079 E0                MOVX    A,@DPTR
+007A FF                MOV     R7,A
+007B 6481              XRL     A,#081H
+007D 6005              JZ      ?C0088
+007F EF                MOV     A,R7
+0080 6401              XRL     A,#01H
+0082 7029              JNZ     ?C0154
+0084         ?C0088:
+                                           ; SOURCE LINE # 361
+                                           ; SOURCE LINE # 362
+0084 EF                MOV     A,R7
+0085 7BFF              MOV     R3,#0FFH
+0087 B4810C            CJNE    A,#081H,?C0089
+                                           ; SOURCE LINE # 363
+                                           ; SOURCE LINE # 364
+008A 7A00        E     MOV     R2,#HIGH Endpoint1_Desc
+008C 7900        E     MOV     R1,#LOW Endpoint1_Desc
+008E 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 365
+0091 900000      E     MOV     DPTR,#Endpoint1_Desc
+                                           ; SOURCE LINE # 366
+0094 800A              SJMP    ?C0149
+0096         ?C0089:
+                                           ; SOURCE LINE # 368
+                                           ; SOURCE LINE # 369
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 56  
+
+0096 7A00        E     MOV     R2,#HIGH Endpoint2_Desc
+0098 7900        E     MOV     R1,#LOW Endpoint2_Desc
+009A 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 370
+009D 900000      E     MOV     DPTR,#Endpoint2_Desc
+00A0         ?C0149:
+00A0 E4                CLR     A
+00A1 93                MOVC    A,@A+DPTR
+00A2 FF                MOV     R7,A
+00A3 900000      E     MOV     DPTR,#Data_Size
+00A6 E4                CLR     A
+00A7         ?C0153:
+00A7 F0                MOVX    @DPTR,A
+00A8 A3                INC     DPTR
+00A9 EF                MOV     A,R7
+00AA F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 371
+                                           ; SOURCE LINE # 372
+00AB 8003              SJMP    ?C0081
+                                           ; SOURCE LINE # 379
+00AD         ?C0092:
+                                           ; SOURCE LINE # 380
+00AD         ?C0154:
+00AD 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 381
+                                           ; SOURCE LINE # 382
+00B0         ?C0081:
+                                           ; SOURCE LINE # 384
+00B0 900000      E     MOV     DPTR,#Setup+02H
+00B3 E0                MOVX    A,@DPTR
+00B4 FF                MOV     R7,A
+00B5 6401              XRL     A,#01H
+00B7 6013              JZ      ?C0094
+00B9 EF                MOV     A,R7
+00BA 6402              XRL     A,#02H
+00BC 600E              JZ      ?C0094
+00BE EF                MOV     A,R7
+00BF 6403              XRL     A,#03H
+00C1 6009              JZ      ?C0094
+00C3 EF                MOV     A,R7
+00C4 6404              XRL     A,#04H
+00C6 6004              JZ      ?C0094
+00C8 EF                MOV     A,R7
+00C9 B40523            CJNE    A,#05H,?C0093
+00CC         ?C0094:
+                                           ; SOURCE LINE # 389
+                                           ; SOURCE LINE # 390
+00CC 900000      E     MOV     DPTR,#Setup+07H
+00CF E0                MOVX    A,@DPTR
+00D0 FF                MOV     R7,A
+00D1 D3                SETB    C
+00D2 900000      E     MOV     DPTR,#Data_Size+01H
+00D5 E0                MOVX    A,@DPTR
+00D6 9F                SUBB    A,R7
+00D7 900000      E     MOV     DPTR,#Data_Size
+00DA E0                MOVX    A,@DPTR
+00DB 9400              SUBB    A,#00H
+00DD 4010              JC      ?C0093
+00DF 900000      E     MOV     DPTR,#Setup+06H
+00E2 E0                MOVX    A,@DPTR
+00E3 700A              JNZ     ?C0093
+                                           ; SOURCE LINE # 392
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 57  
+
+                                           ; SOURCE LINE # 393
+00E5 E0                MOVX    A,@DPTR
+00E6 FE                MOV     R6,A
+00E7 900000      E     MOV     DPTR,#Data_Size
+00EA EE                MOV     A,R6
+00EB F0                MOVX    @DPTR,A
+00EC A3                INC     DPTR
+00ED EF                MOV     A,R7
+00EE F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 394
+                                           ; SOURCE LINE # 395
+00EF         ?C0093:
+                                           ; SOURCE LINE # 396
+00EF 120000      R     LCALL   L?0162
+00F2 6008              JZ      ?C0099
+                                           ; SOURCE LINE # 397
+00F4         ?C0097:
+                                           ; SOURCE LINE # 398
+00F4 E596              MOV     A,USB0ADR
+00F6 20E7FB            JB      ACC.7,?C0097
+00F9         ?C0098:
+                                           ; SOURCE LINE # 399
+                                           ; SOURCE LINE # 400
+00F9 120000      R     LCALL   L?0156
+                                           ; SOURCE LINE # 401
+                                           ; SOURCE LINE # 402
+00FC         ?C0099:
+00FC 22                RET     
+             ; FUNCTION Get_Descriptor (END)
+
+             ; FUNCTION Get_Configuration (BEGIN)
+                                           ; SOURCE LINE # 415
+                                           ; SOURCE LINE # 416
+                                           ; SOURCE LINE # 417
+0000 900000      E     MOV     DPTR,#Setup
+0003 E0                MOVX    A,@DPTR
+0004 6480              XRL     A,#080H
+0006 701C              JNZ     ?C0101
+0008 900000      E     MOV     DPTR,#Setup+02H
+000B E0                MOVX    A,@DPTR
+000C 7016              JNZ     ?C0101
+000E A3                INC     DPTR
+000F E0                MOVX    A,@DPTR
+0010 7012              JNZ     ?C0101
+0012 A3                INC     DPTR
+0013 E0                MOVX    A,@DPTR
+0014 700E              JNZ     ?C0101
+0016 A3                INC     DPTR
+0017 E0                MOVX    A,@DPTR
+0018 700A              JNZ     ?C0101
+001A A3                INC     DPTR
+001B E0                MOVX    A,@DPTR
+001C 7006              JNZ     ?C0101
+001E A3                INC     DPTR
+001F E0                MOVX    A,@DPTR
+0020 6401              XRL     A,#01H
+0022 6005              JZ      ?C0100
+0024         ?C0101:
+                                           ; SOURCE LINE # 421
+                                           ; SOURCE LINE # 422
+0024 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 423
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 58  
+
+0027 801E              SJMP    ?C0102
+0029         ?C0100:
+                                           ; SOURCE LINE # 426
+                                           ; SOURCE LINE # 427
+0029 900000      E     MOV     DPTR,#USB_State
+002C E0                MOVX    A,@DPTR
+002D FF                MOV     R7,A
+002E B4040C            CJNE    A,#04H,?C0103
+                                           ; SOURCE LINE # 428
+                                           ; SOURCE LINE # 429
+0031 7BFF              MOV     R3,#0FFH
+0033 7A00        R     MOV     R2,#HIGH ONES_PACKET
+0035 7900        R     MOV     R1,#LOW ONES_PACKET
+0037 120000      R     LCALL   L?0160
+                                           ; SOURCE LINE # 430
+003A 120000      R     LCALL   L?0165
+                                           ; SOURCE LINE # 431
+003D         ?C0103:
+                                           ; SOURCE LINE # 432
+003D EF                MOV     A,R7
+003E B40306            CJNE    A,#03H,?C0102
+                                           ; SOURCE LINE # 433
+                                           ; SOURCE LINE # 434
+0041 120000      R     LCALL   L?0158
+                                           ; SOURCE LINE # 435
+0044 120000      R     LCALL   L?0165
+                                           ; SOURCE LINE # 436
+                                           ; SOURCE LINE # 437
+0047         ?C0102:
+                                           ; SOURCE LINE # 438
+0047 120000      R     LCALL   L?0162
+004A 6008              JZ      ?C0108
+                                           ; SOURCE LINE # 439
+004C         ?C0106:
+                                           ; SOURCE LINE # 440
+004C E596              MOV     A,USB0ADR
+004E 20E7FB            JB      ACC.7,?C0106
+0051         ?C0107:
+                                           ; SOURCE LINE # 441
+                                           ; SOURCE LINE # 442
+0051 120000      R     LCALL   L?0157
+                                           ; SOURCE LINE # 443
+                                           ; SOURCE LINE # 444
+0054         ?C0108:
+0054 22                RET     
+             ; FUNCTION Get_Configuration (END)
+
+             ; FUNCTION Set_Configuration (BEGIN)
+                                           ; SOURCE LINE # 457
+                                           ; SOURCE LINE # 458
+                                           ; SOURCE LINE # 460
+0000 900000      E     MOV     DPTR,#USB_State
+0003 E0                MOVX    A,@DPTR
+0004 6402              XRL     A,#02H
+0006 6025              JZ      ?C0110
+0008 900000      E     MOV     DPTR,#Setup
+000B E0                MOVX    A,@DPTR
+000C 701F              JNZ     ?C0110
+000E 900000      E     MOV     DPTR,#Setup+04H
+0011 E0                MOVX    A,@DPTR
+0012 7019              JNZ     ?C0110
+0014 A3                INC     DPTR
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 59  
+
+0015 E0                MOVX    A,@DPTR
+0016 7015              JNZ     ?C0110
+0018 A3                INC     DPTR
+0019 E0                MOVX    A,@DPTR
+001A 7011              JNZ     ?C0110
+001C A3                INC     DPTR
+001D E0                MOVX    A,@DPTR
+001E 700D              JNZ     ?C0110
+0020 900000      E     MOV     DPTR,#Setup+02H
+0023 E0                MOVX    A,@DPTR
+0024 7007              JNZ     ?C0110
+0026 A3                INC     DPTR
+0027 E0                MOVX    A,@DPTR
+0028 D3                SETB    C
+0029 9401              SUBB    A,#01H
+002B 4005              JC      ?C0109
+002D         ?C0110:
+                                           ; SOURCE LINE # 465
+                                           ; SOURCE LINE # 466
+002D 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 467
+0030 8042              SJMP    ?C0111
+0032         ?C0109:
+                                           ; SOURCE LINE # 470
+                                           ; SOURCE LINE # 471
+0032 900000      E     MOV     DPTR,#Setup+03H
+0035 E0                MOVX    A,@DPTR
+0036 D3                SETB    C
+0037 9400              SUBB    A,#00H
+0039 402D              JC      ?C0112
+                                           ; SOURCE LINE # 472
+                                           ; SOURCE LINE # 473
+003B 900000      E     MOV     DPTR,#USB_State
+003E 7404              MOV     A,#04H
+0040 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 474
+0041 E4                CLR     A
+0042 900000      E     MOV     DPTR,#Ep_Status+01H
+0045 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 475
+0046 A3                INC     DPTR
+0047 F0                MOVX    @DPTR,A
+0048         ?C0113:
+                                           ; SOURCE LINE # 476
+0048 E596              MOV     A,USB0ADR
+004A 20E7FB            JB      ACC.7,?C0113
+004D         ?C0114:
+004D 120000      R     LCALL   L?0170
+0050         ?C0115:
+                                           ; SOURCE LINE # 477
+0050 E596              MOV     A,USB0ADR
+0052 20E7FB            JB      ACC.7,?C0115
+0055         ?C0116:
+0055 759612            MOV     USB0ADR,#012H
+0058 759720            MOV     USB0DAT,#020H
+005B         ?C0117:
+                                           ; SOURCE LINE # 481
+005B E596              MOV     A,USB0ADR
+005D 20E7FB            JB      ACC.7,?C0117
+0060         ?C0118:
+0060 75960E            MOV     USB0ADR,#0EH
+0063 E4                CLR     A
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 60  
+
+0064 F597              MOV     USB0DAT,A
+                                           ; SOURCE LINE # 482
+0066 800C              SJMP    ?C0111
+0068         ?C0112:
+                                           ; SOURCE LINE # 484
+                                           ; SOURCE LINE # 485
+0068 900000      E     MOV     DPTR,#USB_State
+006B 7403              MOV     A,#03H
+006D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 486
+006E 900000      E     MOV     DPTR,#Ep_Status+01H
+0071 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 487
+0072 A3                INC     DPTR
+0073 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 488
+                                           ; SOURCE LINE # 489
+0074         ?C0111:
+                                           ; SOURCE LINE # 490
+0074 120000      R     LCALL   L?0162
+0077 6008              JZ      ?C0123
+                                           ; SOURCE LINE # 491
+0079         ?C0121:
+                                           ; SOURCE LINE # 492
+0079 E596              MOV     A,USB0ADR
+007B 20E7FB            JB      ACC.7,?C0121
+007E         ?C0122:
+007E 120000      R     LCALL   L?0164
+                                           ; SOURCE LINE # 494
+                                           ; SOURCE LINE # 495
+0081         ?C0123:
+0081 22                RET     
+             ; FUNCTION Set_Configuration (END)
+
+             ; FUNCTION Get_Interface (BEGIN)
+                                           ; SOURCE LINE # 508
+                                           ; SOURCE LINE # 509
+                                           ; SOURCE LINE # 511
+0000 120000      R     LCALL   L?0168
+0003 7024              JNZ     ?C0125
+0005 900000      E     MOV     DPTR,#Setup
+0008 E0                MOVX    A,@DPTR
+0009 6481              XRL     A,#081H
+000B 701C              JNZ     ?C0125
+000D 900000      E     MOV     DPTR,#Setup+02H
+0010 E0                MOVX    A,@DPTR
+0011 7016              JNZ     ?C0125
+0013 A3                INC     DPTR
+0014 E0                MOVX    A,@DPTR
+0015 7012              JNZ     ?C0125
+0017 A3                INC     DPTR
+0018 E0                MOVX    A,@DPTR
+0019 700E              JNZ     ?C0125
+001B A3                INC     DPTR
+001C E0                MOVX    A,@DPTR
+001D 700A              JNZ     ?C0125
+001F A3                INC     DPTR
+0020 E0                MOVX    A,@DPTR
+0021 7006              JNZ     ?C0125
+0023 A3                INC     DPTR
+0024 E0                MOVX    A,@DPTR
+0025 6401              XRL     A,#01H
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 61  
+
+0027 6005              JZ      ?C0124
+0029         ?C0125:
+                                           ; SOURCE LINE # 516
+                                           ; SOURCE LINE # 517
+0029 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 518
+002C 8006              SJMP    ?C0126
+002E         ?C0124:
+                                           ; SOURCE LINE # 521
+                                           ; SOURCE LINE # 522
+002E 120000      R     LCALL   L?0158
+                                           ; SOURCE LINE # 523
+0031 120000      R     LCALL   L?0166
+                                           ; SOURCE LINE # 524
+0034         ?C0126:
+                                           ; SOURCE LINE # 525
+0034 120000      R     LCALL   L?0162
+0037 6008              JZ      ?C0130
+                                           ; SOURCE LINE # 526
+0039         ?C0128:
+                                           ; SOURCE LINE # 527
+0039 E596              MOV     A,USB0ADR
+003B 20E7FB            JB      ACC.7,?C0128
+003E         ?C0129:
+                                           ; SOURCE LINE # 528
+                                           ; SOURCE LINE # 529
+003E 120000      R     LCALL   L?0157
+                                           ; SOURCE LINE # 530
+                                           ; SOURCE LINE # 531
+0041         ?C0130:
+0041 22                RET     
+             ; FUNCTION Get_Interface (END)
+
+             ; FUNCTION Set_Interface (BEGIN)
+                                           ; SOURCE LINE # 543
+                                           ; SOURCE LINE # 544
+                                           ; SOURCE LINE # 545
+0000 900000      E     MOV     DPTR,#Setup
+0003 E0                MOVX    A,@DPTR
+0004 6401              XRL     A,#01H
+0006 701C              JNZ     ?C0132
+0008 900000      E     MOV     DPTR,#Setup+06H
+000B E0                MOVX    A,@DPTR
+000C 7016              JNZ     ?C0132
+000E A3                INC     DPTR
+000F E0                MOVX    A,@DPTR
+0010 7012              JNZ     ?C0132
+0012 900000      E     MOV     DPTR,#Setup+02H
+0015 E0                MOVX    A,@DPTR
+0016 700C              JNZ     ?C0132
+0018 A3                INC     DPTR
+0019 E0                MOVX    A,@DPTR
+001A 7008              JNZ     ?C0132
+001C A3                INC     DPTR
+001D E0                MOVX    A,@DPTR
+001E 7004              JNZ     ?C0132
+0020 A3                INC     DPTR
+0021 E0                MOVX    A,@DPTR
+0022 6003              JZ      ?C0131
+0024         ?C0132:
+                                           ; SOURCE LINE # 549
+                                           ; SOURCE LINE # 550
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 62  
+
+0024 120000      E     LCALL   Force_Stall
+                                           ; SOURCE LINE # 551
+0027         ?C0131:
+                                           ; SOURCE LINE # 552
+0027 120000      R     LCALL   L?0162
+002A 6008              JZ      ?C0136
+                                           ; SOURCE LINE # 553
+002C         ?C0134:
+                                           ; SOURCE LINE # 554
+002C E596              MOV     A,USB0ADR
+002E 20E7FB            JB      ACC.7,?C0134
+0031         ?C0135:
+0031 120000      R     LCALL   L?0164
+                                           ; SOURCE LINE # 556
+                                           ; SOURCE LINE # 557
+0034         ?C0136:
+0034 22                RET     
+             ; FUNCTION Set_Interface (END)
+
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 63  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+DWORD. . . . . . . . . . . . . . . . .  TYPEDEF  -----  U_LONG   -----  4
+P3 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B0H  1
+Get_Status . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+endpoint_descriptor. . . . . . . . . .  TYPEDEF  CODE   STRUCT   -----  7
+  bLength. . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0000H  1
+  bDescriptorType. . . . . . . . . . .  MEMBER   -----  U_CHAR   0001H  1
+  bEndpointAddress . . . . . . . . . .  MEMBER   -----  U_CHAR   0002H  1
+  bmAttributes . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0003H  1
+  wMaxPacketSize . . . . . . . . . . .  MEMBER   -----  UNION    0004H  2
+  bInterval. . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0006H  1
+setup_buffer . . . . . . . . . . . . .  TYPEDEF  -----  STRUCT   -----  8
+  bmRequestType. . . . . . . . . . . .  MEMBER   -----  U_CHAR   0000H  1
+  bRequest . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0001H  1
+  wValue . . . . . . . . . . . . . . .  MEMBER   -----  UNION    0002H  2
+  wIndex . . . . . . . . . . . . . . .  MEMBER   -----  UNION    0004H  2
+  wLength. . . . . . . . . . . . . . .  MEMBER   -----  UNION    0006H  2
+Data_Ptr . . . . . . . . . . . . . . .  EXTERN   XDATA  PTR      -----  3
+Setup. . . . . . . . . . . . . . . . .  EXTERN   XDATA  STRUCT   -----  8
+Get_Interface. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+device_descriptor. . . . . . . . . . .  TYPEDEF  CODE   STRUCT   -----  18
+  bLength. . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0000H  1
+  bDescriptorType. . . . . . . . . . .  MEMBER   -----  U_CHAR   0001H  1
+  bcdUSB . . . . . . . . . . . . . . .  MEMBER   -----  UNION    0002H  2
+  bDeviceClass . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0004H  1
+  bDeviceSubClass. . . . . . . . . . .  MEMBER   -----  U_CHAR   0005H  1
+  bDeviceProtocol. . . . . . . . . . .  MEMBER   -----  U_CHAR   0006H  1
+  bMaxPacketSize0. . . . . . . . . . .  MEMBER   -----  U_CHAR   0007H  1
+  idVendor . . . . . . . . . . . . . .  MEMBER   -----  UNION    0008H  2
+  idProduct. . . . . . . . . . . . . .  MEMBER   -----  UNION    000AH  2
+  bcdDevice. . . . . . . . . . . . . .  MEMBER   -----  UNION    000CH  2
+  iManufacturer. . . . . . . . . . . .  MEMBER   -----  U_CHAR   000EH  1
+  iProduct . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000FH  1
+  iSerialNumber. . . . . . . . . . . .  MEMBER   -----  U_CHAR   0010H  1
+  bNumConfigurations . . . . . . . . .  MEMBER   -----  U_CHAR   0011H  1
+Clear_Feature. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+Ep_Status. . . . . . . . . . . . . . .  EXTERN   XDATA  ARRAY    -----  -----
+Set_Interface. . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+String_Desc_Table. . . . . . . . . . .  EXTERN   XDATA  ARRAY    -----  -----
+Get_Descriptor . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+configuration_descriptor . . . . . . .  TYPEDEF  CODE   STRUCT   -----  9
+  bLength. . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0000H  1
+  bDescriptorType. . . . . . . . . . .  MEMBER   -----  U_CHAR   0001H  1
+  wTotalLength . . . . . . . . . . . .  MEMBER   -----  UNION    0002H  2
+  bNumInterfaces . . . . . . . . . . .  MEMBER   -----  U_CHAR   0004H  1
+  bConfigurationValue. . . . . . . . .  MEMBER   -----  U_CHAR   0005H  1
+  iConfiguration . . . . . . . . . . .  MEMBER   -----  U_CHAR   0006H  1
+  bmAttributes . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0007H  1
+  bMaxPower. . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0008H  1
+Device_Desc. . . . . . . . . . . . . .  EXTERN   CODE   STRUCT   -----  18
+BYTE . . . . . . . . . . . . . . . . .  TYPEDEF  -----  U_CHAR   -----  1
+Config_Desc. . . . . . . . . . . . . .  EXTERN   CODE   STRUCT   -----  9
+_CBW . . . . . . . . . . . . . . . . .  * TAG *  -----  STRUCT   -----  31
+  dCBWSignature. . . . . . . . . . . .  MEMBER   -----  U_LONG   0000H  4
+  dCBWTag. . . . . . . . . . . . . . .  MEMBER   -----  U_LONG   0004H  4
+  dCBWDataTransferLength . . . . . . .  MEMBER   -----  U_LONG   0008H  4
+  bmCBWFlags . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000CH  1
+  bCBWLUN. . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000DH  1
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 64  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+  bCBWCBLength . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000EH  1
+  CBWCB. . . . . . . . . . . . . . . .  MEMBER   -----  ARRAY    000FH  16
+WORD . . . . . . . . . . . . . . . . .  TYPEDEF  -----  UNION    -----  2
+  i. . . . . . . . . . . . . . . . . .  MEMBER   -----  U_INT    0000H  2
+  c. . . . . . . . . . . . . . . . . .  MEMBER   -----  ARRAY    0000H  2
+_CSW . . . . . . . . . . . . . . . . .  * TAG *  -----  STRUCT   -----  13
+  dCSWSignature. . . . . . . . . . . .  MEMBER   -----  U_LONG   0000H  4
+  dCSWTag. . . . . . . . . . . . . . .  MEMBER   -----  U_LONG   0004H  4
+  dCSWDataResidue. . . . . . . . . . .  MEMBER   -----  U_LONG   0008H  4
+  bCSWStatus . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000CH  1
+USB_State. . . . . . . . . . . . . . .  EXTERN   XDATA  U_CHAR   -----  1
+ONES_PACKET. . . . . . . . . . . . . .  PUBLIC   CODE   ARRAY    0000H  2
+Force_Stall. . . . . . . . . . . . . .  EXTERN   CODE   PROC     -----  -----
+Set_Address. . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+Endpoint1_Desc . . . . . . . . . . . .  EXTERN   CODE   STRUCT   -----  7
+Endpoint2_Desc . . . . . . . . . . . .  EXTERN   CODE   STRUCT   -----  7
+ZERO_PACKET. . . . . . . . . . . . . .  PUBLIC   CODE   ARRAY    0002H  2
+CBW. . . . . . . . . . . . . . . . . .  TYPEDEF  -----  STRUCT   -----  31
+  dCBWSignature. . . . . . . . . . . .  MEMBER   -----  U_LONG   0000H  4
+  dCBWTag. . . . . . . . . . . . . . .  MEMBER   -----  U_LONG   0004H  4
+  dCBWDataTransferLength . . . . . . .  MEMBER   -----  U_LONG   0008H  4
+  bmCBWFlags . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000CH  1
+  bCBWLUN. . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000DH  1
+  bCBWCBLength . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000EH  1
+  CBWCB. . . . . . . . . . . . . . . .  MEMBER   -----  ARRAY    000FH  16
+interface_descriptor . . . . . . . . .  TYPEDEF  CODE   STRUCT   -----  9
+  bLength. . . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0000H  1
+  bDescriptorType. . . . . . . . . . .  MEMBER   -----  U_CHAR   0001H  1
+  bInterfaceNumber . . . . . . . . . .  MEMBER   -----  U_CHAR   0002H  1
+  bAlternateSetting. . . . . . . . . .  MEMBER   -----  U_CHAR   0003H  1
+  bNumEndpoints. . . . . . . . . . . .  MEMBER   -----  U_CHAR   0004H  1
+  bInterfaceClass. . . . . . . . . . .  MEMBER   -----  U_CHAR   0005H  1
+  bInterfaceSubClass . . . . . . . . .  MEMBER   -----  U_CHAR   0006H  1
+  bInterfaceProtocol . . . . . . . . .  MEMBER   -----  U_CHAR   0007H  1
+  iInterface . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   0008H  1
+Set_Feature. . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+Get_Configuration. . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+CSW. . . . . . . . . . . . . . . . . .  TYPEDEF  -----  STRUCT   -----  13
+  dCSWSignature. . . . . . . . . . . .  MEMBER   -----  U_LONG   0000H  4
+  dCSWTag. . . . . . . . . . . . . . .  MEMBER   -----  U_LONG   0004H  4
+  dCSWDataResidue. . . . . . . . . . .  MEMBER   -----  U_LONG   0008H  4
+  bCSWStatus . . . . . . . . . . . . .  MEMBER   -----  U_CHAR   000CH  1
+Set_Configuration. . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+USB0ADR. . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0096H  1
+USB0DAT. . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0097H  1
+Data_Sent. . . . . . . . . . . . . . .  EXTERN   XDATA  U_INT    -----  2
+Interface_Desc . . . . . . . . . . . .  EXTERN   CODE   STRUCT   -----  9
+Data_Size. . . . . . . . . . . . . . .  EXTERN   XDATA  U_INT    -----  2
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1213    ----
+   CONSTANT SIZE    =      4    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V8.02   F34X_MSD_USB_STD_REQ          07/24/2007 22:07:38 PAGE 65  
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

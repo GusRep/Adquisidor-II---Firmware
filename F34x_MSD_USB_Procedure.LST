@@ -1,0 +1,798 @@
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN F34x_MSD_USB_Procedure.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.exe F34x_MSD_USB_Procedure.asm XR GEN DB EP NOMOD51
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;//----------------------------------------------------------------------------
+                       2     ;// F34x_MSD_USB_Procedure.asm
+                       3     ;//----------------------------------------------------------------------------
+                       4     ;// Copyright 2006 Silicon Laboratories, Inc.
+                       5     ;// http://www.silabs.com
+                       6     ;//
+                       7     ;// Program Description:
+                       8     ;//
+                       9     ;// This file contains commands for USB interface.
+                      10     ;//
+                      11     ;//
+                      12     ;//
+                      13     ;// How To Test:    See Readme.txt
+                      14     ;//
+                      15     ;//
+                      16     ;// FID:            34X000064
+                      17     ;// Target:         C8051F34x
+                      18     ;// Tool chain:     Keil
+                      19     ;// Command Line:   See Readme.txt
+                      20     ;// Project Name:   F34x_USB_MSD
+                      21     ;//
+                      22     ;// Release 1.1
+                      23     ;//    -All changes by PKC
+                      24     ;//    -09 JUN 2006
+                      25     ;//    -Removed individual SFR definitions and included c8051f340.inc
+                      26     ;//
+                      27     ;// Release 1.0
+                      28     ;//    -Initial Release
+                      29     ;//
+                      30     
+                      31     ;$include (c8051f340.inc) ; Include register definition file
+                +1    32     ;------------------------------------------------------------------------------
+                +1    33     ; C8051F340.INC
+                +1    34     ;------------------------------------------------------------------------------
+                +1    35     ; Copyright 2005 Silicon Laboratories, Inc.
+                +1    36     ; http://www.silabs.com
+                +1    37     ;
+                +1    38     ; Program Description:
+                +1    39     ;
+                +1    40     ; Register/bit definitions for the C8051F34x family.
+                +1    41     ;
+                +1    42     ;
+                +1    43     ; FID:            34X000003
+                +1    44     ; Target:         C8051F340, 'F341, 'F342, 'F343, 'F344, 'F345, 'F346, 'F347
+                +1    45     ; Tool chain:     Keil
+                +1    46     ; Command Line:   None
+                +1    47     ;
+                +1    48     ; Release 1.0
+                +1    49     ;    -Initial Revision (GP\PKC)
+                +1    50     ;    -13 DEC 2005
+                +1    51     ;
+                +1    52     
+                +1    53     ;------------------------------------------------------------------------------
+                +1    54     ; Byte Registers
+                +1    55     ;------------------------------------------------------------------------------
+                +1    56     
+  0080          +1    57     P0        DATA  080H                   ; Port 0 Latch
+  0081          +1    58     SP        DATA  081H                   ; Stack Pointer
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     2
+
+  0082          +1    59     DPL       DATA  082H                   ; Data Pointer Low
+  0083          +1    60     DPH       DATA  083H                   ; Data Pointer High
+  0084          +1    61     EMI0TC    DATA  084H                   ; External Memory Interface Timing
+  0085          +1    62     EMI0CF    DATA  085H                   ; External Memory Interface Config
+  0086          +1    63     OSCLCN    DATA  086H                   ; Internal Low-Freq Oscillator Control
+  0087          +1    64     PCON      DATA  087H                   ; Power Control
+  0088          +1    65     TCON      DATA  088H                   ; Timer/Counter Control
+  0089          +1    66     TMOD      DATA  089H                   ; Timer/Counter Mode
+  008A          +1    67     TL0       DATA  08AH                   ; Timer/Counter 0 Low
+  008B          +1    68     TL1       DATA  08BH                   ; Timer/Counter 1 Low
+  008C          +1    69     TH0       DATA  08CH                   ; Timer/Counter 0 High
+  008D          +1    70     TH1       DATA  08DH                   ; Timer/Counter 1 High
+  008E          +1    71     CKCON     DATA  08EH                   ; Clock Control
+  008F          +1    72     PSCTL     DATA  08FH                   ; Program Store R/W Control
+  0090          +1    73     P1        DATA  090H                   ; Port 1 Latch
+  0091          +1    74     TMR3CN    DATA  091H                   ; Timer/Counter 3Control
+  0092          +1    75     TMR3RLL   DATA  092H                   ; Timer/Counter 3 Reload Low
+  0093          +1    76     TMR3RLH   DATA  093H                   ; Timer/Counter 3 Reload High
+  0094          +1    77     TMR3L     DATA  094H                   ; Timer/Counter 3Low
+  0095          +1    78     TMR3H     DATA  095H                   ; Timer/Counter 3 High
+  0096          +1    79     USB0ADR   DATA  096H                   ; USB0 Indirect Address Register
+  0097          +1    80     USB0DAT   DATA  097H                   ; USB0 Data Register
+  0098          +1    81     SCON0     DATA  098H                   ; UART0 Control
+  0099          +1    82     SBUF0     DATA  099H                   ; UART0 Data Buffer
+  009A          +1    83     CPT1CN    DATA  09AH                   ; Comparator1 Control
+  009B          +1    84     CPT0CN    DATA  09BH                   ; Comparator0 Control
+  009C          +1    85     CPT1MD    DATA  09CH                   ; Comparator1 Mode Selection
+  009D          +1    86     CPT0MD    DATA  09DH                   ; Comparator0 Mode Selection
+  009E          +1    87     CPT1MX    DATA  09EH                   ; Comparator1 MUX Selection
+  009F          +1    88     CPT0MX    DATA  09FH                   ; Comparator0 MUX Selection
+  00A0          +1    89     P2        DATA  0A0H                   ; Port 2 Latch
+  00A1          +1    90     SPI0CFG   DATA  0A1H                   ; SPI Configuration
+  00A2          +1    91     SPI0CKR   DATA  0A2H                   ; SPI Clock Rate Control
+  00A3          +1    92     SPI0DAT   DATA  0A3H                   ; SPI Data
+  00A4          +1    93     P0MDOUT   DATA  0A4H                   ; Port 0 Output Mode Configuration
+  00A5          +1    94     P1MDOUT   DATA  0A5H                   ; Port 1 Output Mode Configuration
+  00A6          +1    95     P2MDOUT   DATA  0A6H                   ; Port 2 Output Mode Configuration
+  00A7          +1    96     P3MDOUT   DATA  0A7H                   ; Port 3 Output Mode Configuration
+  00A8          +1    97     IE        DATA  0A8H                   ; Interrupt Enable
+  00A9          +1    98     CLKSEL    DATA  0A9H                   ; Clock Select
+  00AA          +1    99     EMI0CN    DATA  0AAH                   ; External Memory Interface Control
+  00AC          +1   100     SBCON1    DATA  0ACH                   ; UART1 Baud Rate Generator Control
+  00AE          +1   101     P4MDOUT   DATA  0AEH                   ; Port 4 Output Mode Configuration
+  00AF          +1   102     PFE0CN    DATA  0AFH                   ; Prefetch Engine Control
+  00B0          +1   103     P3        DATA  0B0H                   ; Port 3 Latch
+  00B1          +1   104     OSCXCN    DATA  0B1H                   ; External Oscillator Control
+  00B2          +1   105     OSCICN    DATA  0B2H                   ; Internal Oscillator Control
+  00B3          +1   106     OSCICL    DATA  0B3H                   ; Internal Oscillator Calibration
+  00B4          +1   107     SBRLL1    DATA  0B4H                   ; UART1 Baud Rate Generator Low
+  00B5          +1   108     SBRLH1    DATA  0B5H                   ; UART1 Baud Rate Generator High
+  00B6          +1   109     FLSCL     DATA  0B6H                   ; Flash Scale
+  00B7          +1   110     FLKEY     DATA  0B7H                   ; Flash Lock and Key
+  00B8          +1   111     IP        DATA  0B8H                   ; Interrupt Priority
+  00B9          +1   112     CLKMUL    DATA  0B9H                   ; Clock Multiplier
+  00BA          +1   113     AMX0N     DATA  0BAH                   ; AMUX0 Negative Channel Select
+  00BB          +1   114     AMX0P     DATA  0BBH                   ; AMUX0 Positive Channel Select
+  00BC          +1   115     ADC0CF    DATA  0BCH                   ; ADC0 Configuration
+  00BD          +1   116     ADC0L     DATA  0BDH                   ; ADC0 Low
+  00BE          +1   117     ADC0H     DATA  0BEH                   ; ADC0 High
+  00C0          +1   118     SMB0CN    DATA  0C0H                   ; SMBus Control
+  00C1          +1   119     SMB0CF    DATA  0C1H                   ; SMBus Configuration
+  00C2          +1   120     SMB0DAT   DATA  0C2H                   ; SMBus Data
+  00C3          +1   121     ADC0GTL   DATA  0C3H                   ; ADC0 Greater-Than Compare Low
+  00C4          +1   122     ADC0GTH   DATA  0C4H                   ; ADC0 Greater-Than Compare High
+  00C5          +1   123     ADC0LTL   DATA  0C5H                   ; ADC0 Less-Than Compare Word Low
+  00C6          +1   124     ADC0LTH   DATA  0C6H                   ; ADC0 Less-Than Compare Word High
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     3
+
+  00C7          +1   125     P4        DATA  0C7H                   ; Port 4 Latch
+  00C8          +1   126     TMR2CN    DATA  0C8H                   ; Timer/Counter 2 Control
+  00C9          +1   127     REG0CN    DATA  0C9H                   ; Voltage Regulator Control
+  00CA          +1   128     TMR2RLL   DATA  0CAH                   ; Timer/Counter 2 Reload Low
+  00CB          +1   129     TMR2RLH   DATA  0CBH                   ; Timer/Counter 2 Reload High
+  00CC          +1   130     TMR2L     DATA  0CCH                   ; Timer/Counter 2 Low
+  00CD          +1   131     TMR2H     DATA  0CDH                   ; Timer/Counter 2 High
+  00D0          +1   132     PSW       DATA  0D0H                   ; Program Status Word
+  00D1          +1   133     REF0CN    DATA  0D1H                   ; Voltage Reference Control
+  00D2          +1   134     SCON1     DATA  0D2H                   ; UART1 Control
+  00D3          +1   135     SBUF1     DATA  0D3H                   ; UART1 Data Buffer
+  00D4          +1   136     P0SKIP    DATA  0D4H                   ; Port 0 Skip
+  00D5          +1   137     P1SKIP    DATA  0D5H                   ; Port 1 Skip
+  00D6          +1   138     P2SKIP    DATA  0D6H                   ; Port 2 Skip
+  00D7          +1   139     USB0XCN   DATA  0D7H                   ; USB0 Transceiver Control
+  00D8          +1   140     PCA0CN    DATA  0D8H                   ; PCA Control
+  00D9          +1   141     PCA0MD    DATA  0D9H                   ; PCA Mode
+  00DA          +1   142     PCA0CPM0  DATA  0DAH                   ; PCA Module 0 Mode Register
+  00DB          +1   143     PCA0CPM1  DATA  0DBH                   ; PCA Module 1 Mode Register
+  00DC          +1   144     PCA0CPM2  DATA  0DCH                   ; PCA Module 2 Mode Register
+  00DD          +1   145     PCA0CPM3  DATA  0DDH                   ; PCA Module 3 Mode Register
+  00DE          +1   146     PCA0CPM4  DATA  0DEH                   ; PCA Module 4 Mode Register
+  00DF          +1   147     P3SKIP    DATA  0DFH                   ; Port 3Skip
+  00E0          +1   148     ACC       DATA  0E0H                   ; Accumulator
+  00E1          +1   149     XBR0      DATA  0E1H                   ; Port I/O Crossbar Control 0
+  00E2          +1   150     XBR1      DATA  0E2H                   ; Port I/O Crossbar Control 1
+  00E3          +1   151     XBR2      DATA  0E3H                   ; Port I/O Crossbar Control 2
+  00E4          +1   152     IT01CF    DATA  0E4H                   ; INT0/INT1 Configuration
+  00E5          +1   153     SMOD1     DATA  0E5H                   ; UART1 Mode
+  00E6          +1   154     EIE1      DATA  0E6H                   ; Extended Interrupt Enable 1
+  00E7          +1   155     EIE2      DATA  0E7H                   ; Extended Interrupt Enable 2
+  00E8          +1   156     ADC0CN    DATA  0E8H                   ; ADC0 Control
+  00E9          +1   157     PCA0CPL1  DATA  0E9H                   ; PCA Capture 1 Low
+  00EA          +1   158     PCA0CPH1  DATA  0EAH                   ; PCA Capture 1 High
+  00EB          +1   159     PCA0CPL2  DATA  0EBH                   ; PCA Capture 2 Low
+  00EC          +1   160     PCA0CPH2  DATA  0ECH                   ; PCA Capture 2 High
+  00ED          +1   161     PCA0CPL3  DATA  0EDH                   ; PCA Capture 3 Low
+  00EE          +1   162     PCA0CPH3  DATA  0EEH                   ; PCA Capture 3High
+  00EF          +1   163     RSTSRC    DATA  0EFH                   ; Reset Source Configuration/Status
+  00F0          +1   164     B         DATA  0F0H                   ; B Register
+  00F1          +1   165     P0MDIN    DATA  0F1H                   ; Port 0 Input Mode Configuration
+  00F2          +1   166     P1MDIN    DATA  0F2H                   ; Port 1 Input Mode Configuration
+  00F3          +1   167     P2MDIN    DATA  0F3H                   ; Port 2 Input Mode Configuration
+  00F4          +1   168     P3MDIN    DATA  0F4H                   ; Port 3 Input Mode Configuration
+  00F5          +1   169     P4MDIN    DATA  0F5H                   ; Port 4 Input Mode Configuration
+  00F6          +1   170     EIP1      DATA  0F6H                   ; Extended Interrupt Priority 1
+  00F7          +1   171     EIP2      DATA  0F7H                   ; Extended Interrupt Priority 2
+  00F8          +1   172     SPI0CN    DATA  0F8H                   ; SPI Control
+  00F9          +1   173     PCA0L     DATA  0F9H                   ; PCA Counter Low
+  00FA          +1   174     PCA0H     DATA  0FAH                   ; PCA Counter High
+  00FB          +1   175     PCA0CPL0  DATA  0FBH                   ; PCA Capture 0 Low
+  00FC          +1   176     PCA0CPH0  DATA  0FCH                   ; PCA Capture 0 High
+  00FD          +1   177     PCA0CPL4  DATA  0FDH                   ; PCA Capture 4 Low
+  00FE          +1   178     PCA0CPH4  DATA  0FEH                   ; PCA Capture 4 High
+  00FF          +1   179     VDM0CN    DATA  0FFH                   ; VDD Monitor Control
+                +1   180     
+                +1   181     ;------------------------------------------------------------------------------
+                +1   182     ; Bit Definitions
+                +1   183     ;------------------------------------------------------------------------------
+                +1   184     
+                +1   185     ; TCON  088H
+  008F          +1   186     TF1     BIT     TCON.7                 ; Timer1 overflow flag
+  008E          +1   187     TR1     BIT     TCON.6                 ; Timer1 on/off control
+  008D          +1   188     TF0     BIT     TCON.5                 ; Timer0 overflow flag
+  008C          +1   189     TR0     BIT     TCON.4                 ; Timer0 on/off control
+  008B          +1   190     IE1     BIT     TCON.3                 ; Ext. Interrupt 1 edge flag
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     4
+
+  008A          +1   191     IT1     BIT     TCON.2                 ; Ext. Interrupt 1 type
+  0089          +1   192     IE0     BIT     TCON.1                 ; Ext. Interrupt 0 edge flag
+  0088          +1   193     IT0     BIT     TCON.0                 ; Ext. Interrupt 0 type
+                +1   194     
+                +1   195     ; SCON0  098H
+  009F          +1   196     S0MODE  BIT     SCON0.7                ; Serial mode control bit 0
+                +1   197                                            ; Bit 6 unused
+  009D          +1   198     MCE0    BIT     SCON0.5                ; Multiprocessor communication enable
+  009C          +1   199     REN0    BIT     SCON0.4                ; Receive enable
+  009B          +1   200     TB80    BIT     SCON0.3                ; Transmit bit 8
+  009A          +1   201     RB80    BIT     SCON0.2                ; Receive bit 8
+  0099          +1   202     TI0     BIT     SCON0.1                ; Transmit interrupt flag
+  0098          +1   203     RI0     BIT     SCON0.0                ; Receive interrupt flag
+                +1   204     
+                +1   205     ; IE  0A8H
+  00AF          +1   206     EA      BIT     IE.7                   ; Global interrupt enable
+  00AE          +1   207     ESPI0   BIT     IE.6                   ; Bit 6 unused
+  00AD          +1   208     ET2     BIT     IE.5                   ; Bit 5 unused
+  00AC          +1   209     ES0     BIT     IE.4                   ; UART0 interrupt enable
+  00AB          +1   210     ET1     BIT     IE.3                   ; Timer1 interrupt enable
+  00AA          +1   211     EX1     BIT     IE.2                   ; External interrupt 1 enable
+  00A9          +1   212     ET0     BIT     IE.1                   ; Timer0 interrupt enable
+  00A8          +1   213     EX0     BIT     IE.0                   ; External interrupt 0 enable
+                +1   214     
+                +1   215     ; IP  0B8H
+                +1   216                                            ; Bit 7 unused
+  00BE          +1   217     PSPI0   BIT     IP.6                   ; SPI0 interrupt priority
+  00BD          +1   218     PT2     BIT     IP.5                   ; Timer2 priority
+  00BC          +1   219     PS0     BIT     IP.4                   ; UART0 priority
+  00BB          +1   220     PT1     BIT     IP.3                   ; Timer1 priority
+  00BA          +1   221     PX1     BIT     IP.2                   ; External interrupt 1 priority
+  00B9          +1   222     PT0     BIT     IP.1                   ; Timer0 priority
+  00B8          +1   223     PX0     BIT     IP.0                   ; External interrupt 0 priority
+                +1   224     
+                +1   225     ; SMB0CN  0C0H
+  00C7          +1   226     MASTER  BIT     SMB0CN.7               ; Master/slave indicator
+  00C6          +1   227     TXMODE  BIT     SMB0CN.6               ; Transmit mode indicator
+  00C5          +1   228     STA     BIT     SMB0CN.5               ; Start flag
+  00C4          +1   229     STO     BIT     SMB0CN.4               ; Stop flag
+  00C3          +1   230     ACKRQ   BIT     SMB0CN.3               ; Acknowledge request
+  00C2          +1   231     ARBLOST BIT     SMB0CN.2               ; Arbitration lost indicator
+  00C1          +1   232     ACK     BIT     SMB0CN.1               ; Acknowledge flag
+  00C0          +1   233     SI      BIT     SMB0CN.0               ; SMBus interrupt flag
+                +1   234     
+                +1   235     ; TMR2CN  0C8H
+  00CF          +1   236     TF2H    BIT     TMR2CN.7               ; Timer2 high byte overflow flag
+  00CE          +1   237     TF2L    BIT     TMR2CN.6               ; Timer2 low byte overflow flag
+  00CD          +1   238     TF2LEN  BIT     TMR2CN.5               ; Timer2 low byte interrupt enable
+  00CC          +1   239     T2CE    BIT     TMR2CN.4               ; Timer2 capture enable
+  00CB          +1   240     T2SPLIT BIT     TMR2CN.3               ; Timer2 split mode enable
+  00CA          +1   241     TR2     BIT     TMR2CN.2               ; Timer2 on/off control
+  00C9          +1   242     T2CSS   BIT     TMR2CN.1               ; Timer 2 Capture Source select
+  00C8          +1   243     T2XCLK  BIT     TMR2CN.0               ; Timer2 external clock select
+                +1   244     
+                +1   245     ; PSW  0D0H
+  00D7          +1   246     CY      BIT     PSW.7                  ; Carry flag
+  00D6          +1   247     AC      BIT     PSW.6                  ; Auxiliary carry flag
+  00D5          +1   248     F0      BIT     PSW.5                  ; User flag 0
+  00D4          +1   249     RS1     BIT     PSW.4                  ; Register bank select 1
+  00D3          +1   250     RS0     BIT     PSW.3                  ; Register bank select 0
+  00D2          +1   251     OV      BIT     PSW.2                  ; Overflow flag
+  00D1          +1   252     F1      BIT     PSW.1                  ; User flag 1
+  00D0          +1   253     P       BIT     PSW.0                  ; Accumulator parity flag
+                +1   254     
+                +1   255     ; PCA0CN  0D8H
+  00DF          +1   256     CF      BIT     PCA0CN.7               ; PCA0 counter overflow flag
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     5
+
+  00DE          +1   257     CR      BIT     PCA0CN.6               ; PCA0 counter run control
+                +1   258                                            ; Bit5 UNUSED
+  00DC          +1   259     CCF4    BIT     PCA0CN.4               ; PCA0 module4 capture/compare flag
+  00DB          +1   260     CCF3    BIT     PCA0CN.3               ; PCA0 module3 capture/compare flag
+  00DA          +1   261     CCF2    BIT     PCA0CN.2               ; PCA0 module2 capture/compare flag
+  00D9          +1   262     CCF1    BIT     PCA0CN.1               ; PCA0 module1 capture/compare flag
+  00D8          +1   263     CCF0    BIT     PCA0CN.0               ; PCA0 module0 capture/compare flag
+                +1   264     
+                +1   265     ; ADC0CN  0E8H
+  00EF          +1   266     AD0EN   BIT     ADC0CN.7               ; ADC0 enable
+  00EE          +1   267     AD0TM   BIT     ADC0CN.6               ; ADC0 track mode
+  00ED          +1   268     AD0INT  BIT     ADC0CN.5               ; ADC0 converision complete interrupt flag
+  00EC          +1   269     AD0BUSY BIT     ADC0CN.4               ; ADC0 busy flag
+  00EB          +1   270     AD0WINT BIT     ADC0CN.3               ; ADC0 window compare interrupt flag
+  00EA          +1   271     AD0CM2  BIT     ADC0CN.2               ; ADC0 conversion mode select 2
+  00E9          +1   272     AD0CM1  BIT     ADC0CN.1               ; ADC0 conversion mode select 1
+  00E8          +1   273     AD0CM0  BIT     ADC0CN.0               ; ADC0 conversion mode select 0
+                +1   274     
+                +1   275     ; SPI0CN  0F8H
+  00FF          +1   276     SPIF    BIT     SPI0CN.7               ; SPI0 interrupt flag
+  00FE          +1   277     WCOL    BIT     SPI0CN.6               ; SPI0 write collision flag
+  00FD          +1   278     MODF    BIT     SPI0CN.5               ; SPI0 mode fault flag
+  00FC          +1   279     RXOVRN  BIT     SPI0CN.4               ; SPI0 rx overrun flag
+  00FB          +1   280     NSSMD1  BIT     SPI0CN.3               ; SPI0 slave select mode 1
+  00FA          +1   281     NSSMD0  BIT     SPI0CN.2               ; SPI0 slave select mode 0
+  00F9          +1   282     TXBMT   BIT     SPI0CN.1               ; SPI0 transmit buffer empty
+  00F8          +1   283     SPIEN   BIT     SPI0CN.0               ; SPI0 SPI enable
+                +1   284     
+                +1   285     ;------------------------------------------------------------------------------
+                +1   286     ; End Of File
+                +1   287     ;------------------------------------------------------------------------------
+                     288     
+                     289     USB_PROCEDURE SEGMENT CODE
+----                 290     RSEG USB_PROCEDURE
+                     291     
+                     292     PUBLIC  _?Fifo_Write
+                     293     PUBLIC  _Fifo_Read
+                     294     
+0000                 295     _?Fifo_Write:
+                     296     ;R1,R2,R3 - buffer address
+                     297     ;R7 - endpoint address
+                     298     ;R4,R5 - LENGTH OF BUFFER
+                     299     
+0000                 300     BEGIN_WAIT_ON_USB:
+                     301             
+0000 E596            302                     MOV             A,USB0ADR
+0002 20E7FB          303                     JB              ACC.7,BEGIN_WAIT_ON_USB
+0005 8F96            304                     MOV             USB0ADR,R7
+                     305     
+0007 EB              306                     MOV             A,R3
+0008 6024            307                     JZ              COPY_IDATA
+000A B40139          308                     CJNE    a,#0x01,COPY_CODE
+                     309             
+000D 8A83            310                     MOV             DPH,R2
+000F 8982            311                     MOV             DPL,R1
+                     312     
+0011                 313     XDATA_WRITE_COPY_LABEL:
+                     314     
+0011 ED              315                     MOV             A,R5
+0012 1D              316                     DEC             R5
+0013 7006            317                     JNZ             XDATA_WRITE_DATA        
+0015 7DFF            318                     MOV             r5,#0xff
+0017 EC              319                     MOV             A,R4                    
+0018 6013            320                     JZ              XDATA_FINISH_COPY 
+001A 1C              321                     DEC             R4      
+                     322     
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     6
+
+001B                 323     XDATA_WRITE_DATA:
+                     324                                     
+001B E596            325                     MOV             A,USB0ADR
+001D 20E7FB          326                     JB              ACC.7,XDATA_WRITE_DATA
+                     327                     
+0020 E0              328                     MOVX    A,@DPTR
+0021 F597            329                     MOV   USB0DAT,A 
+                     330     
+0023 0582            331                     INC             DPL
+0025 E582            332                     MOV             A,DPL
+0027 7002            333                     JNZ             XDATA_NO_DPH
+0029 0583            334                     INC             DPH
+                     335     
+002B                 336     XDATA_NO_DPH:
+                     337             
+002B 80E4            338                     SJMP    XDATA_WRITE_COPY_LABEL
+                     339     
+002D                 340     XDATA_FINISH_COPY:
+                     341     
+002D 22              342                     RET
+                     343     
+                     344     
+                     345     ;/////////////////////////////
+                     346     ;// COPY DATA FROM IDATA
+                     347     ;/////////////////////////////  
+                     348     
+002E                 349     COPY_IDATA:
+                     350             
+002E E9              351                     MOV     A,R1
+002F F8              352                     MOV     R0,A ; R0 - POINTER TO DATA DDDRESS
+                     353     
+0030                 354     IDATA_WRITE_COPY_LABEL:
+                     355             
+0030 ED              356                     MOV             A,R5
+0031 1D              357                     DEC             R5
+0032 7006            358                     JNZ             IDATA_WRITE_DATA        
+0034 7DFF            359                     MOV             r5,#0xff
+0036 EC              360                     MOV             A,R4                    
+0037 600C            361                     JZ              IDATA_FINISH_COPY 
+0039 1C              362                     DEC             R4      
+                     363     
+003A                 364     IDATA_WRITE_DATA:
+                     365                                     
+003A E596            366                     MOV             A,USB0ADR
+003C 20E7FB          367                     JB              ACC.7,IDATA_WRITE_DATA
+                     368                     
+003F E6              369                     MOV             A,@R0
+0040 F597            370                     MOV   USB0DAT,A 
+                     371     
+0042 08              372                     INC             R0
+                     373             
+0043 80EB            374                     SJMP    IDATA_WRITE_COPY_LABEL
+                     375     
+0045                 376     IDATA_FINISH_COPY:
+                     377     
+0045 22              378                     RET
+                     379     
+                     380     ;////////////////////////////////
+                     381     ;///    copy from code segment
+                     382     ;////////////////////////////////
+                     383     
+0046                 384     COPY_CODE:
+                     385     
+0046 8A83            386                     MOV             DPH,R2
+0048 8982            387                     MOV             DPL,R1
+                     388     
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     7
+
+004A                 389     CODE_WRITE_COPY_LABEL:
+                     390     
+004A ED              391                     MOV             A,R5
+004B 1D              392                     DEC             R5
+004C 7006            393                     JNZ             CODE_WRITE_DATA 
+004E 7DFF            394                     MOV             r5,#0xff
+0050 EC              395                     MOV             A,R4                    
+0051 6014            396                     JZ              CODE_FINISH_COPY 
+0053 1C              397                     DEC             R4      
+                     398     
+0054                 399     CODE_WRITE_DATA:
+                     400                                     
+0054 E596            401                     MOV             A,USB0ADR
+0056 20E7FB          402                     JB              ACC.7,CODE_WRITE_DATA
+                     403                     
+0059 E4              404                     CLR             A
+005A 93              405                     MOVC    A,@A + DPTR
+005B F597            406                     MOV   USB0DAT,A 
+                     407     
+005D 0582            408                     INC             DPL
+005F E582            409                     MOV             A,DPL
+0061 7002            410                     JNZ             CODE_NO_DPH
+0063 0583            411                     INC             DPH
+                     412     
+0065                 413     CODE_NO_DPH:
+                     414             
+0065 80E3            415                     SJMP    CODE_WRITE_COPY_LABEL
+                     416     
+                     417     
+0067                 418     CODE_FINISH_COPY:
+                     419     
+0067 22              420                     RET
+                     421     
+                     422     ;/////////////////////////////////////////
+                     423     ;/////////////////////////////////////////
+                     424     ;/////////////////////////////////////////
+                     425     
+                     426     ;/////////////////////////////////////////
+                     427     ;////   FIFO READ PROCEDURE
+                     428     ;/////////////////////////////////////////
+                     429     
+0068                 430     _Fifo_Read:
+                     431     ;R1,R2,R3 - buffer address
+                     432     ;R7 - endpoint address
+                     433     ;R4,R5 - LENGTH OF BUFFER
+                     434     
+0068 EB              435                     MOV             A,R3
+0069 602E            436                     JZ              READ_COPY_IDATA
+                     437     
+006B 8A83            438                     MOV             DPH,R2
+006D 8982            439                     MOV   DPL,R1
+                     440     
+006F ED              441                     MOV             A,R5
+0070 7004            442                     JNZ             READ_BEGIN_XDATA_WAIT_ON_USB
+0072 EC              443                     MOV             A,R4
+0073 6023            444                     JZ              READ_XDATA_FINISH_COPY
+0075 1C              445                     DEC             R4
+                     446     
+0076                 447     READ_BEGIN_XDATA_WAIT_ON_USB:
+                     448             
+0076 E596            449                     MOV             A,USB0ADR
+0078 20E7FB          450                     JB              ACC.7,READ_BEGIN_XDATA_WAIT_ON_USB
+007B 8F96            451                     MOV             USB0ADR,R7
+007D 4396C0          452                     ORL             USB0ADR,#0xC0
+                     453     
+0080                 454     READ_XDATA_COPY_LABEL:
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     8
+
+                     455     
+0080 E596            456                     MOV             A,USB0ADR
+0082 20E7FB          457                     JB              ACC.7,READ_XDATA_COPY_LABEL
+                     458                     
+0085 E597            459                     MOV             A,USB0DAT
+0087 F0              460                     MOVX    @DPTR,A
+                     461                     
+                     462                     
+0088 DD04            463                     DJNZ    R5,XDATA_READ_NO_DEC_HI_COUNTER
+                     464                     
+008A EC              465                     MOV             A,R4            
+008B 600B            466                     JZ              READ_XDATA_FINISH_COPY  
+008D 1C              467                     DEC             R4
+                     468     
+008E                 469     XDATA_READ_NO_DEC_HI_COUNTER:
+                     470                             
+008E 0582            471                     INC             DPL
+0090 E582            472                     MOV             A,DPL
+0092 70EC            473                     JNZ             READ_XDATA_COPY_LABEL
+0094 0583            474                     INC             DPH
+0096 80E8            475                     SJMP    READ_XDATA_COPY_LABEL
+                     476     
+0098                 477     READ_XDATA_FINISH_COPY:
+                     478     
+                     479             ;       CLR     A
+                     480             ;       MOV             USB0ADR,A
+0098 22              481                     RET
+                     482     
+0099                 483     READ_COPY_IDATA:
+                     484     
+0099 E9              485               MOV           A,R1
+009A F8              486                     MOV             R0,A ; R0 - POINTER TO DATA DDDRESS
+                     487     
+009B ED              488                     MOV             A,R5
+009C 7004            489                     JNZ             READ_BEGIN_IDATA_WAIT_ON_USB
+009E EC              490                     MOV             A,R4
+009F 601C            491                     JZ              READ_IDATA_FINISH_COPY
+00A1 1C              492                     DEC             R4
+                     493     
+00A2                 494     READ_BEGIN_IDATA_WAIT_ON_USB:
+                     495             
+00A2 E596            496                     MOV             A,USB0ADR
+00A4 20E7FB          497                     JB              ACC.7,READ_BEGIN_IDATA_WAIT_ON_USB
+00A7 8F96            498                     MOV             USB0ADR,R7
+00A9 4396C0          499                     ORL             USB0ADR,#0xC0
+                     500     
+00AC                 501     READ_IDATA_COPY_LABEL:
+                     502     
+00AC E596            503                     MOV             A,USB0ADR
+00AE 20E7FB          504                     JB              ACC.7,READ_IDATA_COPY_LABEL
+                     505                     
+00B1 E597            506                     MOV             A,USB0DAT
+00B3 F2              507                     MOVX    @R0,A
+                     508                     
+                     509                     
+00B4 DD04            510                     DJNZ    R5,IDATA_READ_NO_DEC_HI_COUNTER
+                     511                     
+00B6 EC              512                     MOV             A,R4            
+00B7 6004            513                     JZ              READ_IDATA_FINISH_COPY  
+00B9 1C              514                     DEC             R4
+                     515     
+00BA                 516     IDATA_READ_NO_DEC_HI_COUNTER:
+                     517                             
+00BA 08              518                     INC             R0
+00BB 80EF            519                     SJMP    READ_IDATA_COPY_LABEL
+                     520     
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE     9
+
+00BD                 521     READ_IDATA_FINISH_COPY:
+                     522     
+                     523             ;       CLR             A
+                     524             ;       MOV             USB0ADR,A
+                     525     
+00BD 22              526                     RET
+                     527     END     
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE    10
+
+XREF SYMBOL TABLE LISTING
+---- ------ ----- -------
+
+
+N A M E                       T Y P E  V A L U E   ATTRIBUTES / REFERENCES
+
+AC . . . . . . . . . . . . .  B ADDR   00D0H.6 A      247#
+ACC. . . . . . . . . . . . .  D ADDR   00E0H   A      148# 303 326 367 402 450 457 497 504
+ACK. . . . . . . . . . . . .  B ADDR   00C0H.1 A      232#
+ACKRQ. . . . . . . . . . . .  B ADDR   00C0H.3 A      230#
+AD0BUSY. . . . . . . . . . .  B ADDR   00E8H.4 A      269#
+AD0CM0 . . . . . . . . . . .  B ADDR   00E8H.0 A      273#
+AD0CM1 . . . . . . . . . . .  B ADDR   00E8H.1 A      272#
+AD0CM2 . . . . . . . . . . .  B ADDR   00E8H.2 A      271#
+AD0EN. . . . . . . . . . . .  B ADDR   00E8H.7 A      266#
+AD0INT . . . . . . . . . . .  B ADDR   00E8H.5 A      268#
+AD0TM. . . . . . . . . . . .  B ADDR   00E8H.6 A      267#
+AD0WINT. . . . . . . . . . .  B ADDR   00E8H.3 A      270#
+ADC0CF . . . . . . . . . . .  D ADDR   00BCH   A      115#
+ADC0CN . . . . . . . . . . .  D ADDR   00E8H   A      156# 266 267 268 269 270 271 272 273
+ADC0GTH. . . . . . . . . . .  D ADDR   00C4H   A      122#
+ADC0GTL. . . . . . . . . . .  D ADDR   00C3H   A      121#
+ADC0H. . . . . . . . . . . .  D ADDR   00BEH   A      117#
+ADC0L. . . . . . . . . . . .  D ADDR   00BDH   A      116#
+ADC0LTH. . . . . . . . . . .  D ADDR   00C6H   A      124#
+ADC0LTL. . . . . . . . . . .  D ADDR   00C5H   A      123#
+AMX0N. . . . . . . . . . . .  D ADDR   00BAH   A      113#
+AMX0P. . . . . . . . . . . .  D ADDR   00BBH   A      114#
+ARBLOST. . . . . . . . . . .  B ADDR   00C0H.2 A      231#
+B. . . . . . . . . . . . . .  D ADDR   00F0H   A      164#
+BEGIN_WAIT_ON_USB. . . . . .  C ADDR   0000H   R   SEG=USB_PROCEDURE   300# 303
+CCF0 . . . . . . . . . . . .  B ADDR   00D8H.0 A      263#
+CCF1 . . . . . . . . . . . .  B ADDR   00D8H.1 A      262#
+CCF2 . . . . . . . . . . . .  B ADDR   00D8H.2 A      261#
+CCF3 . . . . . . . . . . . .  B ADDR   00D8H.3 A      260#
+CCF4 . . . . . . . . . . . .  B ADDR   00D8H.4 A      259#
+CF . . . . . . . . . . . . .  B ADDR   00D8H.7 A      256#
+CKCON. . . . . . . . . . . .  D ADDR   008EH   A      71#
+CLKMUL . . . . . . . . . . .  D ADDR   00B9H   A      112#
+CLKSEL . . . . . . . . . . .  D ADDR   00A9H   A      98#
+CODE_FINISH_COPY . . . . . .  C ADDR   0067H   R   SEG=USB_PROCEDURE   396 418#
+CODE_NO_DPH. . . . . . . . .  C ADDR   0065H   R   SEG=USB_PROCEDURE   410 413#
+CODE_WRITE_COPY_LABEL. . . .  C ADDR   004AH   R   SEG=USB_PROCEDURE   389# 415
+CODE_WRITE_DATA. . . . . . .  C ADDR   0054H   R   SEG=USB_PROCEDURE   393 399# 402
+COPY_CODE. . . . . . . . . .  C ADDR   0046H   R   SEG=USB_PROCEDURE   308 384#
+COPY_IDATA . . . . . . . . .  C ADDR   002EH   R   SEG=USB_PROCEDURE   307 349#
+CPT0CN . . . . . . . . . . .  D ADDR   009BH   A      84#
+CPT0MD . . . . . . . . . . .  D ADDR   009DH   A      86#
+CPT0MX . . . . . . . . . . .  D ADDR   009FH   A      88#
+CPT1CN . . . . . . . . . . .  D ADDR   009AH   A      83#
+CPT1MD . . . . . . . . . . .  D ADDR   009CH   A      85#
+CPT1MX . . . . . . . . . . .  D ADDR   009EH   A      87#
+CR . . . . . . . . . . . . .  B ADDR   00D8H.6 A      257#
+CY . . . . . . . . . . . . .  B ADDR   00D0H.7 A      246#
+DPH. . . . . . . . . . . . .  D ADDR   0083H   A      60# 310 334 386 411 438 474
+DPL. . . . . . . . . . . . .  D ADDR   0082H   A      59# 311 331 332 387 408 409 439 471 472
+EA . . . . . . . . . . . . .  B ADDR   00A8H.7 A      206#
+EIE1 . . . . . . . . . . . .  D ADDR   00E6H   A      154#
+EIE2 . . . . . . . . . . . .  D ADDR   00E7H   A      155#
+EIP1 . . . . . . . . . . . .  D ADDR   00F6H   A      170#
+EIP2 . . . . . . . . . . . .  D ADDR   00F7H   A      171#
+EMI0CF . . . . . . . . . . .  D ADDR   0085H   A      62#
+EMI0CN . . . . . . . . . . .  D ADDR   00AAH   A      99#
+EMI0TC . . . . . . . . . . .  D ADDR   0084H   A      61#
+ES0. . . . . . . . . . . . .  B ADDR   00A8H.4 A      209#
+ESPI0. . . . . . . . . . . .  B ADDR   00A8H.6 A      207#
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE    11
+
+ET0. . . . . . . . . . . . .  B ADDR   00A8H.1 A      212#
+ET1. . . . . . . . . . . . .  B ADDR   00A8H.3 A      210#
+ET2. . . . . . . . . . . . .  B ADDR   00A8H.5 A      208#
+EX0. . . . . . . . . . . . .  B ADDR   00A8H.0 A      213#
+EX1. . . . . . . . . . . . .  B ADDR   00A8H.2 A      211#
+F0 . . . . . . . . . . . . .  B ADDR   00D0H.5 A      248#
+F1 . . . . . . . . . . . . .  B ADDR   00D0H.1 A      252#
+FLKEY. . . . . . . . . . . .  D ADDR   00B7H   A      110#
+FLSCL. . . . . . . . . . . .  D ADDR   00B6H   A      109#
+IDATA_FINISH_COPY. . . . . .  C ADDR   0045H   R   SEG=USB_PROCEDURE   361 376#
+IDATA_READ_NO_DEC_HI_COUNTER  C ADDR   00BAH   R   SEG=USB_PROCEDURE   510 516#
+IDATA_WRITE_COPY_LABEL . . .  C ADDR   0030H   R   SEG=USB_PROCEDURE   354# 374
+IDATA_WRITE_DATA . . . . . .  C ADDR   003AH   R   SEG=USB_PROCEDURE   358 364# 367
+IE . . . . . . . . . . . . .  D ADDR   00A8H   A      97# 206 207 208 209 210 211 212 213
+IE0. . . . . . . . . . . . .  B ADDR   0088H.1 A      192#
+IE1. . . . . . . . . . . . .  B ADDR   0088H.3 A      190#
+IP . . . . . . . . . . . . .  D ADDR   00B8H   A      111# 217 218 219 220 221 222 223
+IT0. . . . . . . . . . . . .  B ADDR   0088H.0 A      193#
+IT01CF . . . . . . . . . . .  D ADDR   00E4H   A      152#
+IT1. . . . . . . . . . . . .  B ADDR   0088H.2 A      191#
+MASTER . . . . . . . . . . .  B ADDR   00C0H.7 A      226#
+MCE0 . . . . . . . . . . . .  B ADDR   0098H.5 A      198#
+MODF . . . . . . . . . . . .  B ADDR   00F8H.5 A      278#
+NSSMD0 . . . . . . . . . . .  B ADDR   00F8H.2 A      281#
+NSSMD1 . . . . . . . . . . .  B ADDR   00F8H.3 A      280#
+OSCICL . . . . . . . . . . .  D ADDR   00B3H   A      106#
+OSCICN . . . . . . . . . . .  D ADDR   00B2H   A      105#
+OSCLCN . . . . . . . . . . .  D ADDR   0086H   A      63#
+OSCXCN . . . . . . . . . . .  D ADDR   00B1H   A      104#
+OV . . . . . . . . . . . . .  B ADDR   00D0H.2 A      251#
+P. . . . . . . . . . . . . .  B ADDR   00D0H.0 A      253#
+P0 . . . . . . . . . . . . .  D ADDR   0080H   A      57#
+P0MDIN . . . . . . . . . . .  D ADDR   00F1H   A      165#
+P0MDOUT. . . . . . . . . . .  D ADDR   00A4H   A      93#
+P0SKIP . . . . . . . . . . .  D ADDR   00D4H   A      136#
+P1 . . . . . . . . . . . . .  D ADDR   0090H   A      73#
+P1MDIN . . . . . . . . . . .  D ADDR   00F2H   A      166#
+P1MDOUT. . . . . . . . . . .  D ADDR   00A5H   A      94#
+P1SKIP . . . . . . . . . . .  D ADDR   00D5H   A      137#
+P2 . . . . . . . . . . . . .  D ADDR   00A0H   A      89#
+P2MDIN . . . . . . . . . . .  D ADDR   00F3H   A      167#
+P2MDOUT. . . . . . . . . . .  D ADDR   00A6H   A      95#
+P2SKIP . . . . . . . . . . .  D ADDR   00D6H   A      138#
+P3 . . . . . . . . . . . . .  D ADDR   00B0H   A      103#
+P3MDIN . . . . . . . . . . .  D ADDR   00F4H   A      168#
+P3MDOUT. . . . . . . . . . .  D ADDR   00A7H   A      96#
+P3SKIP . . . . . . . . . . .  D ADDR   00DFH   A      147#
+P4 . . . . . . . . . . . . .  D ADDR   00C7H   A      125#
+P4MDIN . . . . . . . . . . .  D ADDR   00F5H   A      169#
+P4MDOUT. . . . . . . . . . .  D ADDR   00AEH   A      101#
+PCA0CN . . . . . . . . . . .  D ADDR   00D8H   A      140# 256 257 259 260 261 262 263
+PCA0CPH0 . . . . . . . . . .  D ADDR   00FCH   A      176#
+PCA0CPH1 . . . . . . . . . .  D ADDR   00EAH   A      158#
+PCA0CPH2 . . . . . . . . . .  D ADDR   00ECH   A      160#
+PCA0CPH3 . . . . . . . . . .  D ADDR   00EEH   A      162#
+PCA0CPH4 . . . . . . . . . .  D ADDR   00FEH   A      178#
+PCA0CPL0 . . . . . . . . . .  D ADDR   00FBH   A      175#
+PCA0CPL1 . . . . . . . . . .  D ADDR   00E9H   A      157#
+PCA0CPL2 . . . . . . . . . .  D ADDR   00EBH   A      159#
+PCA0CPL3 . . . . . . . . . .  D ADDR   00EDH   A      161#
+PCA0CPL4 . . . . . . . . . .  D ADDR   00FDH   A      177#
+PCA0CPM0 . . . . . . . . . .  D ADDR   00DAH   A      142#
+PCA0CPM1 . . . . . . . . . .  D ADDR   00DBH   A      143#
+PCA0CPM2 . . . . . . . . . .  D ADDR   00DCH   A      144#
+PCA0CPM3 . . . . . . . . . .  D ADDR   00DDH   A      145#
+PCA0CPM4 . . . . . . . . . .  D ADDR   00DEH   A      146#
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE    12
+
+PCA0H. . . . . . . . . . . .  D ADDR   00FAH   A      174#
+PCA0L. . . . . . . . . . . .  D ADDR   00F9H   A      173#
+PCA0MD . . . . . . . . . . .  D ADDR   00D9H   A      141#
+PCON . . . . . . . . . . . .  D ADDR   0087H   A      64#
+PFE0CN . . . . . . . . . . .  D ADDR   00AFH   A      102#
+PS0. . . . . . . . . . . . .  B ADDR   00B8H.4 A      219#
+PSCTL. . . . . . . . . . . .  D ADDR   008FH   A      72#
+PSPI0. . . . . . . . . . . .  B ADDR   00B8H.6 A      217#
+PSW. . . . . . . . . . . . .  D ADDR   00D0H   A      132# 246 247 248 249 250 251 252 253
+PT0. . . . . . . . . . . . .  B ADDR   00B8H.1 A      222#
+PT1. . . . . . . . . . . . .  B ADDR   00B8H.3 A      220#
+PT2. . . . . . . . . . . . .  B ADDR   00B8H.5 A      218#
+PX0. . . . . . . . . . . . .  B ADDR   00B8H.0 A      223#
+PX1. . . . . . . . . . . . .  B ADDR   00B8H.2 A      221#
+RB80 . . . . . . . . . . . .  B ADDR   0098H.2 A      201#
+READ_BEGIN_IDATA_WAIT_ON_USB  C ADDR   00A2H   R   SEG=USB_PROCEDURE   489 494# 497
+READ_BEGIN_XDATA_WAIT_ON_USB  C ADDR   0076H   R   SEG=USB_PROCEDURE   442 447# 450
+READ_COPY_IDATA. . . . . . .  C ADDR   0099H   R   SEG=USB_PROCEDURE   436 483#
+READ_IDATA_COPY_LABEL. . . .  C ADDR   00ACH   R   SEG=USB_PROCEDURE   501# 504 519
+READ_IDATA_FINISH_COPY . . .  C ADDR   00BDH   R   SEG=USB_PROCEDURE   491 513 521#
+READ_XDATA_COPY_LABEL. . . .  C ADDR   0080H   R   SEG=USB_PROCEDURE   454# 457 473 475
+READ_XDATA_FINISH_COPY . . .  C ADDR   0098H   R   SEG=USB_PROCEDURE   444 466 477#
+REF0CN . . . . . . . . . . .  D ADDR   00D1H   A      133#
+REG0CN . . . . . . . . . . .  D ADDR   00C9H   A      127#
+REN0 . . . . . . . . . . . .  B ADDR   0098H.4 A      199#
+RI0. . . . . . . . . . . . .  B ADDR   0098H.0 A      203#
+RS0. . . . . . . . . . . . .  B ADDR   00D0H.3 A      250#
+RS1. . . . . . . . . . . . .  B ADDR   00D0H.4 A      249#
+RSTSRC . . . . . . . . . . .  D ADDR   00EFH   A      163#
+RXOVRN . . . . . . . . . . .  B ADDR   00F8H.4 A      279#
+S0MODE . . . . . . . . . . .  B ADDR   0098H.7 A      196#
+SBCON1 . . . . . . . . . . .  D ADDR   00ACH   A      100#
+SBRLH1 . . . . . . . . . . .  D ADDR   00B5H   A      108#
+SBRLL1 . . . . . . . . . . .  D ADDR   00B4H   A      107#
+SBUF0. . . . . . . . . . . .  D ADDR   0099H   A      82#
+SBUF1. . . . . . . . . . . .  D ADDR   00D3H   A      135#
+SCON0. . . . . . . . . . . .  D ADDR   0098H   A      81# 196 198 199 200 201 202 203
+SCON1. . . . . . . . . . . .  D ADDR   00D2H   A      134#
+SI . . . . . . . . . . . . .  B ADDR   00C0H.0 A      233#
+SMB0CF . . . . . . . . . . .  D ADDR   00C1H   A      119#
+SMB0CN . . . . . . . . . . .  D ADDR   00C0H   A      118# 226 227 228 229 230 231 232 233
+SMB0DAT. . . . . . . . . . .  D ADDR   00C2H   A      120#
+SMOD1. . . . . . . . . . . .  D ADDR   00E5H   A      153#
+SP . . . . . . . . . . . . .  D ADDR   0081H   A      58#
+SPI0CFG. . . . . . . . . . .  D ADDR   00A1H   A      90#
+SPI0CKR. . . . . . . . . . .  D ADDR   00A2H   A      91#
+SPI0CN . . . . . . . . . . .  D ADDR   00F8H   A      172# 276 277 278 279 280 281 282 283
+SPI0DAT. . . . . . . . . . .  D ADDR   00A3H   A      92#
+SPIEN. . . . . . . . . . . .  B ADDR   00F8H.0 A      283#
+SPIF . . . . . . . . . . . .  B ADDR   00F8H.7 A      276#
+STA. . . . . . . . . . . . .  B ADDR   00C0H.5 A      228#
+STO. . . . . . . . . . . . .  B ADDR   00C0H.4 A      229#
+T2CE . . . . . . . . . . . .  B ADDR   00C8H.4 A      239#
+T2CSS. . . . . . . . . . . .  B ADDR   00C8H.1 A      242#
+T2SPLIT. . . . . . . . . . .  B ADDR   00C8H.3 A      240#
+T2XCLK . . . . . . . . . . .  B ADDR   00C8H.0 A      243#
+TB80 . . . . . . . . . . . .  B ADDR   0098H.3 A      200#
+TCON . . . . . . . . . . . .  D ADDR   0088H   A      65# 186 187 188 189 190 191 192 193
+TF0. . . . . . . . . . . . .  B ADDR   0088H.5 A      188#
+TF1. . . . . . . . . . . . .  B ADDR   0088H.7 A      186#
+TF2H . . . . . . . . . . . .  B ADDR   00C8H.7 A      236#
+TF2L . . . . . . . . . . . .  B ADDR   00C8H.6 A      237#
+TF2LEN . . . . . . . . . . .  B ADDR   00C8H.5 A      238#
+TH0. . . . . . . . . . . . .  D ADDR   008CH   A      69#
+TH1. . . . . . . . . . . . .  D ADDR   008DH   A      70#
+TI0. . . . . . . . . . . . .  B ADDR   0098H.1 A      202#
+A51 MACRO ASSEMBLER  F34X_MSD_USB_PROCEDURE                                               07/24/2007 22:07:38 PAGE    13
+
+TL0. . . . . . . . . . . . .  D ADDR   008AH   A      67#
+TL1. . . . . . . . . . . . .  D ADDR   008BH   A      68#
+TMOD . . . . . . . . . . . .  D ADDR   0089H   A      66#
+TMR2CN . . . . . . . . . . .  D ADDR   00C8H   A      126# 236 237 238 239 240 241 242 243
+TMR2H. . . . . . . . . . . .  D ADDR   00CDH   A      131#
+TMR2L. . . . . . . . . . . .  D ADDR   00CCH   A      130#
+TMR2RLH. . . . . . . . . . .  D ADDR   00CBH   A      129#
+TMR2RLL. . . . . . . . . . .  D ADDR   00CAH   A      128#
+TMR3CN . . . . . . . . . . .  D ADDR   0091H   A      74#
+TMR3H. . . . . . . . . . . .  D ADDR   0095H   A      78#
+TMR3L. . . . . . . . . . . .  D ADDR   0094H   A      77#
+TMR3RLH. . . . . . . . . . .  D ADDR   0093H   A      76#
+TMR3RLL. . . . . . . . . . .  D ADDR   0092H   A      75#
+TR0. . . . . . . . . . . . .  B ADDR   0088H.4 A      189#
+TR1. . . . . . . . . . . . .  B ADDR   0088H.6 A      187#
+TR2. . . . . . . . . . . . .  B ADDR   00C8H.2 A      241#
+TXBMT. . . . . . . . . . . .  B ADDR   00F8H.1 A      282#
+TXMODE . . . . . . . . . . .  B ADDR   00C0H.6 A      227#
+USB0ADR. . . . . . . . . . .  D ADDR   0096H   A      79# 302 304 325 366 401 449 451 452 456 496 498 499 503
+USB0DAT. . . . . . . . . . .  D ADDR   0097H   A      80# 329 370 406 459 506
+USB0XCN. . . . . . . . . . .  D ADDR   00D7H   A      139#
+USB_PROCEDURE. . . . . . . .  C SEG    00BEH       REL=UNIT   289# 290
+VDM0CN . . . . . . . . . . .  D ADDR   00FFH   A      179#
+WCOL . . . . . . . . . . . .  B ADDR   00F8H.6 A      277#
+XBR0 . . . . . . . . . . . .  D ADDR   00E1H   A      149#
+XBR1 . . . . . . . . . . . .  D ADDR   00E2H   A      150#
+XBR2 . . . . . . . . . . . .  D ADDR   00E3H   A      151#
+XDATA_FINISH_COPY. . . . . .  C ADDR   002DH   R   SEG=USB_PROCEDURE   320 340#
+XDATA_NO_DPH . . . . . . . .  C ADDR   002BH   R   SEG=USB_PROCEDURE   333 336#
+XDATA_READ_NO_DEC_HI_COUNTER  C ADDR   008EH   R   SEG=USB_PROCEDURE   463 469#
+XDATA_WRITE_COPY_LABEL . . .  C ADDR   0011H   R   SEG=USB_PROCEDURE   313# 338
+XDATA_WRITE_DATA . . . . . .  C ADDR   001BH   R   SEG=USB_PROCEDURE   317 323# 326
+_?FIFO_WRITE . . . . . . . .  C ADDR   0000H   R   SEG=USB_PROCEDURE   292 295#
+_FIFO_READ . . . . . . . . .  C ADDR   0068H   R   SEG=USB_PROCEDURE   293 430#
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
